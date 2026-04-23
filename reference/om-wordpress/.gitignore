@@ -1,6 +1,7 @@
 vendor/
 node_modules/
 .phpunit.result.cache
+.phpunit.cache/
 .phpcs.cache
 phpcs-report.xml
 phpunit.xml.local
