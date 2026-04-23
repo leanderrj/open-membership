@@ -1,0 +1,87 @@
+{{!--
+  om-feed.hbs — the paid feed template.
+
+  Ghost invokes this template at /feed/om/:token/ (see routes.example.yaml).
+  The route passes :token into `token` via Ghost's dynamic routing.
+
+  In Mode B (sidecar), Ghost does NOT render this template directly. The
+  reverse proxy sends /feed/om/* to the sidecar, which renders its own feed
+  after validating the token and looking up the member. This template is
+  kept here for Mode A (Ghost(Pro)) and as a reference for the expected
+  XML shape.
+
+  The `om_feed` helper must be registered by om-ghost at theme install
+  time. It returns:
+    - entitled: boolean
+    - member:   { id, tier, features[] } or null
+    - items:    array of posts the member is entitled to, with access_hint
+--}}
+{{~ om_feed token=token as |ctx| ~}}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:om="http://purl.org/rss/modules/membership/">
+  <channel>
+    <title>{{@site.title}}</title>
+    <link>{{@site.url}}</link>
+    <description>{{@site.description}}</description>
+    <language>{{@site.locale}}</language>
+    <atom:link href="{{@site.url}}/feed/om/{{token}}/" rel="self" type="application/rss+xml" />
+
+    <om:provider>{{@site.url}}</om:provider>
+    <om:discovery>{{@site.url}}/.well-known/open-membership/</om:discovery>
+
+    {{#each ctx.auth_methods}}
+      <om:authMethod>{{this}}</om:authMethod>
+    {{/each}}
+
+    {{#each ctx.tiers}}
+      <om:tier id="{{id}}" price="{{price}}" period="{{period}}">{{label}}</om:tier>
+    {{/each}}
+
+    {{#each ctx.features}}
+      <om:feature id="{{id}}">{{label}}</om:feature>
+    {{/each}}
+
+    {{#if ctx.revocation}}
+      <om:revocation policy="{{ctx.revocation.policy}}" grace_hours="{{ctx.revocation.grace_hours}}" />
+    {{/if}}
+
+    {{#unless ctx.entitled}}
+      <!-- Token invalid or subscription inactive. Preview only. -->
+      <om:access>members-only</om:access>
+      <item>
+        <title>Your subscription is not active</title>
+        <link>{{@site.url}}/signup/</link>
+        <description>Renew or start a subscription to receive the full paid feed.</description>
+      </item>
+    {{else}}
+      {{#each ctx.items}}
+        <item>
+          <title>{{title}}</title>
+          <link>{{url}}</link>
+          <guid isPermaLink="true">{{url}}</guid>
+          <pubDate>{{pub_date}}</pubDate>
+
+          <om:access>{{access}}</om:access>
+          {{#if required_features}}
+            {{#each required_features}}
+              <om:feature>{{this}}</om:feature>
+            {{/each}}
+          {{/if}}
+
+          {{#if preview_html}}
+            <om:preview>{{{preview_html}}}</om:preview>
+          {{/if}}
+
+          {{#if full_html}}
+            <content:encoded><![CDATA[{{{full_html}}}]]></content:encoded>
+          {{else}}
+            <om:unlock>{{@site.url}}/api/om/token</om:unlock>
+          {{/if}}
+        </item>
+      {{/each}}
+    {{/unless}}
+  </channel>
+</rss>

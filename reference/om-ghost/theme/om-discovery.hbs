@@ -1,0 +1,15 @@
+{{!--
+  om-discovery.hbs — renders .well-known/open-membership as JSON.
+
+  Ghost renders Handlebars templates as the body of the response.
+  routes.example.yaml sets content_type: application/json for this path.
+
+  As with om-feed.hbs, this template is the Mode A fallback. In Mode B the
+  sidecar serves the discovery document from service/discovery.ts so that
+  the JSON can be generated programmatically from om-config.yaml + Stripe
+  rather than from static Handlebars.
+
+  The `om_discovery` helper (registered by om-ghost) returns a JSON-
+  serialisable object matching the SPEC §9 shape.
+--}}
+{{{json (om_discovery)}}}

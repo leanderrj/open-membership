@@ -1,0 +1,20 @@
+{{!--
+  om-head.hbs — include in your theme's default.hbs inside <head>.
+
+  Emits the om discovery link and a personalised paid feed link for the
+  currently-signed-in member. Non-members receive only the discovery link,
+  which is what the spec requires for readers to find the offers endpoint.
+--}}
+
+<link rel="alternate"
+      type="application/open-membership+json"
+      href="{{@site.url}}/.well-known/open-membership/" />
+
+{{#if @member}}
+  {{#if @member.subscription_token}}
+    <link rel="alternate"
+          type="application/rss+xml"
+          title="Paid feed for {{@member.name}}"
+          href="{{@site.url}}/feed/om/{{@member.subscription_token}}/" />
+  {{/if}}
+{{/if}}
