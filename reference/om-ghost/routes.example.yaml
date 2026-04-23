@@ -1,0 +1,27 @@
+# Merge these entries into your Ghost site's routes.yaml.
+#
+# In Mode B (self-hosted + sidecar), the feed and discovery routes are
+# typically handled by the sidecar behind a reverse proxy rather than by
+# Ghost itself. The routes below are for Mode A (Ghost(Pro) + Worker) and
+# for Ghost's built-in dynamic routing where the Handlebars templates are
+# sufficient to emit static parts of the document.
+#
+# See https://ghost.org/docs/themes/routing/ for full Ghost routing syntax.
+
+routes:
+  /feed/om/{token}/:
+    template: om-feed
+    content_type: text/xml
+
+  /.well-known/open-membership/:
+    template: om-discovery
+    content_type: application/json
+
+collections:
+  /:
+    permalink: /{slug}/
+    template: index
+
+taxonomies:
+  tag: /tag/{slug}/
+  author: /author/{slug}/

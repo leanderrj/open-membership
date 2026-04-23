@@ -1,0 +1,113 @@
+# om-ghost publisher configuration
+#
+# This file declares what the Ghost site is selling and how om-ghost should
+# translate Ghost's Members/tiers into om-spec offers, features, and JWT
+# entitlement claims.
+#
+# Copy to om-config.yaml and edit. Keep om-config.yaml out of source control.
+
+spec_version: "0.4"
+
+provider:
+  url: https://publisher.example
+  name: Publisher Example
+  # Optional DID for the publisher. If omitted, om-ghost derives did:web
+  # from `provider.url`.
+  # did: did:web:publisher.example
+
+authentication:
+  # The methods om-ghost will advertise in <om:authMethod>.
+  # Supported today: url-token, bearer.
+  # Planned: http-basic (Level 2), dpop (Level 3), vc-presentation (Level 4).
+  methods:
+    - url-token
+    - bearer
+
+# Maps om features to human-readable names. Features are the unit of
+# entitlement; tiers aggregate features.
+features:
+  full-text:
+    label: Full article text
+  ad-free:
+    label: Ad-free reading
+  early-access:
+    label: Early access (48h before public)
+  backstage:
+    label: Backstage newsletter and annotations
+
+# Tier definitions. Each tier lists the features it includes and the Stripe
+# price IDs that confer it. A subscriber on any of those prices receives the
+# listed features in their JWT `entitlements` claim.
+tiers:
+  free:
+    label: Free
+    features: []
+
+  paid:
+    label: Supporter
+    features: [full-text, ad-free]
+    stripe_price_ids:
+      - price_monthly_REPLACE_ME
+      - price_yearly_REPLACE_ME
+
+  founding:
+    label: Founding member
+    features: [full-text, ad-free, early-access, backstage]
+    stripe_price_ids:
+      - price_founding_REPLACE_ME
+
+# Payment service providers. om-ghost currently supports `stripe` only.
+# Additional PSPs (Mollie, Lightning) arrive in Phase 2.
+psps:
+  stripe:
+    account: acct_REPLACE_ME     # shown to readers; not used for auth
+    mode: native-entitlements    # or "subscription-derived"
+
+# Checkout offers. Each offer is surfaced in the feed via <om:offer> and
+# resolves to a Stripe Checkout Session when a reader starts checkout.
+offers:
+  supporter-monthly:
+    tier: paid
+    price:
+      amount: "12.00"
+      currency: USD
+      period: P1M
+    checkout:
+      psp: stripe
+      price_id: price_monthly_REPLACE_ME
+    trial_days: 7
+
+  supporter-yearly:
+    tier: paid
+    price:
+      amount: "120.00"
+      currency: USD
+      period: P1Y
+    checkout:
+      psp: stripe
+      price_id: price_yearly_REPLACE_ME
+
+  founding-monthly:
+    tier: founding
+    price:
+      amount: "30.00"
+      currency: USD
+      period: P1M
+    checkout:
+      psp: stripe
+      price_id: price_founding_REPLACE_ME
+
+# Revocation declaration surfaced in both the feed and discovery doc.
+revocation:
+  policy: prospective-only      # or "retroactive" — see SPEC §2
+  grace_hours: 48
+
+# Optional: proration policy shown with offers and included in discovery.
+proration:
+  default: credit-unused         # or "charge-difference" | "none"
+
+# Optional: privacy declaration. Only set if the publisher actually supports
+# pseudonymous mode end-to-end (requires OM-VC-SD — out of scope for v0.1).
+# privacy:
+#   level: pseudonymous
+#   supported_presentations: [full, selective-disclosure]
