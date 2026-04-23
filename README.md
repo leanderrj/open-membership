@@ -18,6 +18,10 @@
 6. **[GOVERNANCE.md](GOVERNANCE.md)** — custodian shortlist, working-group charter, and decision-making conventions
 7. **[COMPETITIVE-LANDSCAPE.md](COMPETITIVE-LANDSCAPE.md)** — what already exists, what doesn't, and where `om` adds value
 
+### Upstream specs we build on
+
+- **[`references/`](references/)** — verbatim copies of the source specifications the design depends on: RSS 1.0, RSS 2.0, Atom (RFC 4287), ActivityPub, and the Podcasting 2.0 namespace. See [`references/README.md`](references/README.md) for the full index.
+
 ### Reference implementations
 
 - **[`reference/om-ghost/`](reference/om-ghost/)** — Ghost plugin + Node sidecar (Mode B) and Cloudflare Worker variant (Mode A). Targets conformance Level 5 (Commerce). TypeScript, Hono, Stripe, SQLite / KV.

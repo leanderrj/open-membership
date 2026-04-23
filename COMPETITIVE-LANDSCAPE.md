@@ -66,6 +66,28 @@ Rapidly adopting ActivityPub for federation. Monetization is unsolved at the pro
 
 **Strategic position:** `om` complements ActivityPub the way it complements Podcasting 2.0. An `om`-aware publisher running Ghost with both the `om` plugin and Ghost's ActivityPub plugin has federated discovery AND interoperable paid content, something no current platform provides.
 
+### 9. Video-content platforms (PeerTube, Nebula, Floatplane, Corridor Digital)
+
+Not directly competitive with `om` — `om` is a syndication-feed spec, these are video-hosting platforms — but the distribution of choices among paid-video creators is an important data point, because it's the exact scenario a video-aware `om` would eventually target.
+
+**PeerTube.** A decentralized, ActivityPub-federated video platform developed by the French non-profit Framasoft. Open-source. Self-hostable. Uses WebTorrent-style P2P to share bandwidth between viewers. Federates with Mastodon and the broader Fediverse. **Has no native paid-subscription model.** Publishers who want to monetize bolt on external services (Liberapay, Stripe links in descriptions), which means paid content on PeerTube suffers the same "federated identity meets opaque commerce" problem ActivityPub has for text.
+
+**Nebula.** Proprietary subscription platform founded by YouTube educational creators (CGP Grey, Real Engineering, Lindsay Ellis and others). Built on a custom in-house stack specifically to escape the technical constraints of third-party platforms like Vimeo. Closed ecosystem; not federated; not open-source.
+
+**Floatplane.** Proprietary platform built by Linus Media Group (Linus Tech Tips). Designed for high-bitrate, early-access video for paid subscribers. Modern web stack (React frontend, PHP backend, Amazon IVS + Cloudflare CDN). Closed.
+
+**Corridor Digital (`corridordigital.com`).** Proprietary subscription platform built by the Corridor VFX team to host 4K extended cuts and their podcast. Custom site, internal hosting. The team has been vocal about the three problems they built it to solve: compression (they wanted higher bitrates than YouTube allows), safety harbor (from demonetization and age restriction), and focused community (no algorithmic distraction).
+
+**The pattern is consistent.** The three creator-owned paid-video platforms of meaningful scale each built their own stack from scratch rather than federate on PeerTube. Their reasoning, in their own words, comes down to the same three gaps:
+
+1. **No open subscription primitive.** PeerTube's ActivityPub federation handles discovery and comments, not paywalls. Each platform built Stripe-based billing in-house.
+2. **No open quality control.** High-bitrate video + DRM-like access control needs a content layer the open spec doesn't define.
+3. **No reader/client that expects this content.** Even if an open video-subscription spec existed, there's no Apple Podcasts of paid video federation — so a creator going fully-open sacrifices the audience they'd reach on a curated walled garden like Nebula.
+
+**Strategic position for `om`.** `om` is text-and-audio-first today. Extending to video would be a 2.x concern, not 1.0. But the lesson is instructive: the same gap that pushes Nebula, Floatplane, and Corridor to build custom stacks is the gap `om` closes for text. A paid-video extension to `om` (reusing the entitlement, discovery, and token models) is a plausible 2.x direction *if* at least one open video reader emerges willing to expect the spec. Until such a reader exists, ActivityPub-federated video (PeerTube) and closed paid-video platforms will continue to coexist without a bridge.
+
+The more immediate takeaway: when we approach Ghost-hosted journalism publishers with `om`, the fact that every serious creator-owned paid platform is proprietary is an asset, not a threat. It validates that the monetization problem is real and unsolved by open federation — and it validates that creators are willing to pay for a solution.
+
 ## What doesn't exist
 
 This is the gap matrix from OPEN-MEMBERSHIP-RSS-0.4.md §H.4, restated as what `om` 1.0 provides:
