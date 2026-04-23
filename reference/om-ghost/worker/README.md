@@ -1,46 +1,80 @@
-# Cloudflare Worker (Mode A) — stub
+# Cloudflare Worker (Mode A)
 
-The Ghost(Pro) deployment path uses a Cloudflare Worker in place of the
-Node sidecar under [`../service/`](../service/). The worker:
+The Cloudflare Worker variant of `om-ghost`. Share source with the Node
+sidecar under [`../service/`](../service/) — the Hono app is built in
+[`../shared/app.ts`](../shared/app.ts), and Mode A supplies KV-backed
+adapters for the same cache / idempotency / rate-limit interfaces the
+Node service uses.
 
-- receives `/api/om/*` requests (via a `routes.json` in the Worker config or a route on the publisher's Cloudflare zone)
-- receives Stripe webhooks at `/api/om/webhook`
-- reads Ghost via Admin API (same `shared/ghost-client.ts` as Mode B)
-- reads Stripe via the REST API
-- maintains the feed-token → member cache in Workers KV (so it survives worker restarts)
+## When to use Mode A
 
-## Why this is a stub
+- Publisher is on Ghost(Pro) and can't run a sidecar.
+- Publisher already uses Cloudflare for their zone.
+- Publisher wants global edge latency on the feed and checkout endpoints.
 
-The shared library under [`../shared/`](../shared/) uses only `fetch`, `crypto.subtle`-equivalent primitives, and `jose`, which all work in Workers. The outstanding work is:
+## When NOT to use Mode A
 
-1. Replace `feed-cache.ts`'s `Map` with a `KVNamespace`-backed cache
-2. Swap `express` routers for a thin `Request → Response` handler (Hono or plain `fetch` export)
-3. Write a `wrangler.toml` that declares the KV binding and the secrets
+- You need strict rate-limit guarantees (KV is eventually consistent;
+  use a Durable Object or the Node sidecar instead).
+- You have tens of thousands of subscribers and want to warm the cache
+  eagerly at startup (not possible in Workers; Mode A is on-demand).
 
-This is planned for om-ghost v0.2 once the Node sidecar is stable.
+## Deploy
 
-## Expected layout
+```bash
+# 1. One-time: create KV namespaces and capture the ids
+wrangler kv namespace create OM_FEED_CACHE
+wrangler kv namespace create OM_IDEMPOTENCY
+wrangler kv namespace create OM_RATE_LIMIT
+
+# 2. Paste the ids into worker/wrangler.toml (replace REPLACE_ME_* values)
+
+# 3. Set secrets
+wrangler secret put GHOST_ADMIN_KEY
+wrangler secret put GHOST_CONTENT_KEY
+wrangler secret put STRIPE_SECRET_KEY
+wrangler secret put STRIPE_WEBHOOK_SECRET
+wrangler secret put OM_FEED_TOKEN_KEY
+wrangler secret put OM_JWT_SIGNING_KEY
+
+# 4. Copy om-config.yaml to the om-ghost root (it's bundled at build)
+cp om-config.example.yaml ../om-config.yaml
+# edit as needed
+
+# 5. Deploy
+wrangler deploy
+```
+
+## Zone routing
+
+On your Cloudflare zone, add route patterns so the Worker receives only
+the om-namespaced paths. Everything else must pass through to Ghost(Pro):
 
 ```
-worker/
-├── wrangler.toml
-├── src/
-│   ├── index.ts           # fetch handler, dispatches by path
-│   ├── kv-cache.ts        # KV-backed FeedCache
-│   └── routes/            # same shape as service/routes/
-└── README.md              # this file
+https://publisher.example/api/om/*           → om-ghost worker
+https://publisher.example/.well-known/open-membership  → om-ghost worker
+https://publisher.example/feed/om/*          → om-ghost worker
 ```
 
-## Secrets
+## Stripe webhook
 
-Same as Mode B, configured via `wrangler secret put`:
+Point your Stripe webhook destination at
+`https://publisher.example/api/om/webhook` and enable at least these
+events:
 
-- `GHOST_URL`
-- `GHOST_ADMIN_KEY`
-- `STRIPE_SECRET_KEY`
-- `STRIPE_WEBHOOK_SECRET`
-- `OM_FEED_TOKEN_KEY`
-- `OM_JWT_SIGNING_KEY`
+- `checkout.session.completed`
+- `customer.subscription.created`
+- `customer.subscription.updated`
+- `customer.subscription.deleted`
 
-`om-config.yaml` is bundled into the worker at build time (it's small
-and rarely changes) rather than loaded from KV.
+## Known limitations
+
+- **Rate limiting is best-effort** because KV is eventually consistent.
+  Under parallel load from one IP, a small overshoot is possible.
+- **Cache is on-demand**: the first feed request from a newly-paid
+  member waits on a Ghost Admin API call (~200ms). Subsequent requests
+  are cache-hits (~5ms).
+- **No startup phase**: config validation happens per request. The
+  cached parse is cheap (once per Worker instance lifetime), but
+  malformed config won't crash a Worker at deploy time — it will
+  return 500 on the first request.

@@ -3,7 +3,8 @@
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "bundler",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
+    "types": ["node", "@cloudflare/workers-types"],
     "outDir": "./dist",
     "rootDir": ".",
     "strict": true,
@@ -19,6 +20,12 @@
     "declaration": true,
     "sourceMap": true
   },
-  "include": ["service/**/*", "shared/**/*", "worker/**/*.ts", "test/**/*"],
+  "include": [
+    "service/**/*",
+    "shared/**/*",
+    "worker/**/*.ts",
+    "worker/**/*.d.ts",
+    "test/**/*"
+  ],
   "exclude": ["dist", "node_modules"]
 }

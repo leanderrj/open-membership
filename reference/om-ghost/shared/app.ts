@@ -413,13 +413,12 @@ function registerWebhook(app: Hono, deps: Deps): void {
     }
 
     const rawBody = await c.req.raw.arrayBuffer();
-    const buf = Buffer.from(rawBody);
 
     let event: Stripe.Event;
     try {
-      event = parseWebhookEvent(
+      event = await parseWebhookEvent(
         deps.stripe,
-        buf,
+        rawBody,
         signature,
         deps.env.stripeWebhookSecret,
       );

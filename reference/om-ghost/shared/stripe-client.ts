@@ -64,13 +64,29 @@ export async function createPortalSession(
 
 /**
  * Verify a webhook event using the stored signing secret.
- * Returns the parsed event or throws on invalid signature.
+ *
+ * Uses constructEventAsync so the same code path runs in Node and in
+ * Cloudflare Workers. The async variant delegates signature
+ * verification through a pluggable CryptoProvider which, when omitted,
+ * auto-selects node:crypto or Web Crypto depending on the runtime.
+ *
+ * Throws Stripe.errors.StripeSignatureVerificationError on mismatch.
  */
-export function parseWebhookEvent(
+export async function parseWebhookEvent(
   stripe: Stripe,
-  rawBody: Buffer | string,
+  rawBody: ArrayBufferLike | Uint8Array | string,
   signatureHeader: string,
   webhookSecret: string,
-): Stripe.Event {
-  return stripe.webhooks.constructEvent(rawBody, signatureHeader, webhookSecret);
+): Promise<Stripe.Event> {
+  const body =
+    typeof rawBody === "string"
+      ? rawBody
+      : rawBody instanceof Uint8Array
+        ? new TextDecoder("utf-8").decode(rawBody)
+        : new TextDecoder("utf-8").decode(new Uint8Array(rawBody));
+  return stripe.webhooks.constructEventAsync(
+    body,
+    signatureHeader,
+    webhookSecret,
+  );
 }

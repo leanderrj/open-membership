@@ -1,14 +1,14 @@
-import { createHmac } from "node:crypto";
 import type { MemberState, OmConfig } from "./types.js";
 import { featuresForTier, tierForPriceId } from "./config.js";
 import { UpstreamError, ConfigError } from "./errors.js";
+import { base64UrlEncode, hexToBytes, hmacSha256, utf8 } from "./crypto.js";
 
 /**
  * Ghost Admin API client.
  *
- * We implement the JWT-auth'd REST protocol directly (rather than pull
- * in @ts-ghost/admin-api) so the same client runs unchanged in Node and
- * in Cloudflare Workers.
+ * Implements the JWT-auth'd REST protocol directly so the same client
+ * runs unchanged in Node and in Cloudflare Workers. All signing is
+ * done through Web Crypto (shared/crypto.ts), not node:crypto.
  *
  * Reference: https://ghost.org/docs/admin-api/
  */
@@ -26,7 +26,7 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 export class GhostClient {
   private readonly base: string;
   private readonly keyId: string;
-  private readonly secret: string;
+  private readonly secretBytes: Uint8Array;
   private readonly timeoutMs: number;
 
   constructor(opts: GhostClientOpts) {
@@ -36,7 +36,13 @@ export class GhostClient {
       throw new ConfigError("GHOST_ADMIN_KEY must be of the form id:secret");
     }
     this.keyId = parts[0];
-    this.secret = parts[1];
+    try {
+      this.secretBytes = hexToBytes(parts[1]);
+    } catch {
+      throw new ConfigError(
+        "GHOST_ADMIN_KEY secret must be a hex-encoded string",
+      );
+    }
     this.timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   }
 
@@ -63,10 +69,6 @@ export class GhostClient {
     }
   }
 
-  /**
-   * Iterate members with an active subscription. Paginates server-side;
-   * used to warm the feed cache at startup.
-   */
   async *iterateActiveMembers(pageSize = 100): AsyncIterable<GhostMember> {
     let page = 1;
     while (true) {
@@ -84,7 +86,6 @@ export class GhostClient {
     }
   }
 
-  /** Health probe for /ready. */
   async ping(): Promise<boolean> {
     try {
       const res = await this.authedFetch(`${this.base}/site/`);
@@ -107,7 +108,7 @@ export class GhostClient {
   }
 
   private async authedFetch(url: string): Promise<Response> {
-    const token = this.signToken();
+    const token = await this.signToken();
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), this.timeoutMs);
     try {
@@ -128,16 +129,15 @@ export class GhostClient {
     }
   }
 
-  private signToken(): string {
+  private async signToken(): Promise<string> {
     const now = Math.floor(Date.now() / 1000);
     const header = { alg: "HS256", typ: "JWT", kid: this.keyId };
     const payload = { iat: now, exp: now + 300, aud: "/admin/" };
-    const enc = (obj: unknown) => base64Url(JSON.stringify(obj));
-    const toSign = `${enc(header)}.${enc(payload)}`;
-    const mac = createHmac("sha256", Buffer.from(this.secret, "hex"))
-      .update(toSign)
-      .digest();
-    return `${toSign}.${base64UrlBuf(mac)}`;
+    const toSign = `${base64UrlEncode(utf8(JSON.stringify(header)))}.${base64UrlEncode(
+      utf8(JSON.stringify(payload)),
+    )}`;
+    const mac = await hmacSha256(this.secretBytes, toSign);
+    return `${toSign}.${base64UrlEncode(mac)}`;
   }
 }
 
@@ -174,18 +174,6 @@ export interface GhostMember {
     price?: { id: string; nickname?: string };
     customer?: { id: string };
   }>;
-}
-
-function base64Url(s: string): string {
-  return base64UrlBuf(Buffer.from(s, "utf8"));
-}
-
-function base64UrlBuf(b: Buffer): string {
-  return b
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/g, "");
 }
 
 async function safeReadText(res: Response): Promise<string | null> {

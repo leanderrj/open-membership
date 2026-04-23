@@ -31,15 +31,15 @@ export interface FeedCache {
  * Used by every cache implementation so they stay in agreement on the
  * token shape.
  */
-export function tokenForMember(
+export async function tokenForMember(
   config: OmConfig,
   feedTokenKey: string,
   member: GhostMember,
-): { token: string; state: MemberState } | null {
+): Promise<{ token: string; state: MemberState } | null> {
   const state = memberStateFromGhost(member, config);
   if (state.subscription_status === "none") return null;
   const planId = member.subscriptions?.[0]?.price?.id ?? state.tier_id;
-  const token = issueFeedToken(feedTokenKey, state.uuid, planId);
+  const token = await issueFeedToken(feedTokenKey, state.uuid, planId);
   return { token, state };
 }
 
@@ -59,7 +59,7 @@ export class InMemoryFeedCache implements FeedCache {
 
   async warm(): Promise<void> {
     for await (const m of this.ghost.iterateActiveMembers()) {
-      this.upsert(m);
+      await this.upsert(m);
     }
   }
 
@@ -86,10 +86,10 @@ export class InMemoryFeedCache implements FeedCache {
     return this.byToken.size;
   }
 
-  private upsert(m: GhostMember): MemberState | null {
-    const derived = tokenForMember(this.config, this.feedTokenKey, m);
+  private async upsert(m: GhostMember): Promise<MemberState | null> {
+    const derived = await tokenForMember(this.config, this.feedTokenKey, m);
     if (!derived) {
-      this.evictMemberId(m.id);
+      await this.evictMemberId(m.id);
       return null;
     }
     const prior = this.byMemberId.get(m.id);
