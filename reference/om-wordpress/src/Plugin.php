@@ -53,7 +53,7 @@ final class Plugin {
 
 		$this->logger       = new Logger( 'om-wp' );
 		$this->config       = new ConfigRepository();
-		$this->subscribers  = new SubscriberRepository();
+		$this->subscribers  = new SubscriberRepository( $this->config );
 		$this->idempotency  = new IdempotencyStore();
 		$this->rate_limiter = new RateLimiter();
 
