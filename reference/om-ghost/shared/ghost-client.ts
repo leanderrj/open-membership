@@ -1,14 +1,14 @@
 import { createHmac } from "node:crypto";
 import type { MemberState, OmConfig } from "./types.js";
 import { featuresForTier, tierForPriceId } from "./config.js";
+import { UpstreamError, ConfigError } from "./errors.js";
 
 /**
- * Minimal Ghost Admin API client.
+ * Ghost Admin API client.
  *
- * We intentionally don't pull in the full @ts-ghost/admin-api SDK in the
- * shared library — the worker variant (Cloudflare) can't ship it. This
- * client speaks the same JWT-auth'd REST API using `fetch`, which both
- * Node and Workers have natively.
+ * We implement the JWT-auth'd REST protocol directly (rather than pull
+ * in @ts-ghost/admin-api) so the same client runs unchanged in Node and
+ * in Cloudflare Workers.
  *
  * Reference: https://ghost.org/docs/admin-api/
  */
@@ -17,72 +17,115 @@ export interface GhostClientOpts {
   ghostUrl: string;
   /** Admin API key in "id:secret" form, as shown in Ghost Admin. */
   adminKey: string;
+  /** Fetch timeout in milliseconds. Default 15s. */
+  timeoutMs?: number;
 }
+
+const DEFAULT_TIMEOUT_MS = 15_000;
 
 export class GhostClient {
   private readonly base: string;
   private readonly keyId: string;
   private readonly secret: string;
+  private readonly timeoutMs: number;
 
   constructor(opts: GhostClientOpts) {
     this.base = opts.ghostUrl.replace(/\/$/, "") + "/ghost/api/admin";
     const parts = opts.adminKey.split(":");
     if (parts.length !== 2 || !parts[0] || !parts[1]) {
-      throw new Error("GHOST_ADMIN_KEY must be of the form id:secret");
+      throw new ConfigError("GHOST_ADMIN_KEY must be of the form id:secret");
     }
     this.keyId = parts[0];
     this.secret = parts[1];
+    this.timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   }
 
   async getMemberByUuid(uuid: string): Promise<GhostMember | null> {
     const url = `${this.base}/members/?filter=${encodeURIComponent(`uuid:${uuid}`)}&limit=1`;
-    const res = await this.authedFetch(url);
-    if (!res.ok) return null;
-    const body = (await res.json()) as { members?: GhostMember[] };
+    const body = await this.get<{ members?: GhostMember[] }>(url);
+    return body.members?.[0] ?? null;
+  }
+
+  async getMemberByEmail(email: string): Promise<GhostMember | null> {
+    const url = `${this.base}/members/?filter=${encodeURIComponent(`email:${email}`)}&limit=1`;
+    const body = await this.get<{ members?: GhostMember[] }>(url);
     return body.members?.[0] ?? null;
   }
 
   async getMemberById(id: string): Promise<GhostMember | null> {
-    const res = await this.authedFetch(`${this.base}/members/${id}/`);
-    if (!res.ok) return null;
-    const body = (await res.json()) as { members?: GhostMember[] };
-    return body.members?.[0] ?? null;
-  }
-
-  /**
-   * List all members with an active subscription. Used to seed the feed
-   * token cache on startup. For large sites this paginates; for the
-   * reference implementation we accept the "fetch all active subscribers"
-   * cost as acceptable at startup.
-   */
-  async *iterateActiveMembers(): AsyncIterable<GhostMember> {
-    let page = 1;
-    while (true) {
-      const url = `${this.base}/members/?filter=${encodeURIComponent("status:paid")}&limit=100&page=${page}`;
-      const res = await this.authedFetch(url);
-      if (!res.ok) return;
-      const body = (await res.json()) as {
-        members: GhostMember[];
-        meta: { pagination: { pages: number } };
-      };
-      for (const m of body.members) yield m;
-      if (page >= body.meta.pagination.pages) return;
-      page++;
+    const url = `${this.base}/members/${encodeURIComponent(id)}/`;
+    try {
+      const body = await this.get<{ members?: GhostMember[] }>(url);
+      return body.members?.[0] ?? null;
+    } catch (err) {
+      if (err instanceof UpstreamError && /\b404\b/.test(err.message)) return null;
+      throw err;
     }
   }
 
   /**
-   * Ghost's Admin API requires a short-lived JWT signed with the admin
-   * secret. The `kid` header is the key id and the aud is "/admin/".
+   * Iterate members with an active subscription. Paginates server-side;
+   * used to warm the feed cache at startup.
    */
+  async *iterateActiveMembers(pageSize = 100): AsyncIterable<GhostMember> {
+    let page = 1;
+    while (true) {
+      const url = `${this.base}/members/?filter=${encodeURIComponent(
+        "status:paid",
+      )}&limit=${pageSize}&page=${page}`;
+      const body = await this.get<{
+        members: GhostMember[];
+        meta?: { pagination?: { pages?: number } };
+      }>(url);
+      for (const m of body.members) yield m;
+      const pages = body.meta?.pagination?.pages ?? page;
+      if (page >= pages) return;
+      page++;
+    }
+  }
+
+  /** Health probe for /ready. */
+  async ping(): Promise<boolean> {
+    try {
+      const res = await this.authedFetch(`${this.base}/site/`);
+      return res.ok;
+    } catch {
+      return false;
+    }
+  }
+
+  private async get<T>(url: string): Promise<T> {
+    const res = await this.authedFetch(url);
+    if (!res.ok) {
+      const bodyText = await safeReadText(res);
+      throw new UpstreamError(
+        "ghost",
+        `${res.status} ${res.statusText}${bodyText ? `: ${truncate(bodyText, 200)}` : ""}`,
+      );
+    }
+    return (await res.json()) as T;
+  }
+
   private async authedFetch(url: string): Promise<Response> {
     const token = this.signToken();
-    return fetch(url, {
-      headers: {
-        Authorization: `Ghost ${token}`,
-        Accept: "application/json",
-      },
-    });
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), this.timeoutMs);
+    try {
+      return await fetch(url, {
+        headers: {
+          Authorization: `Ghost ${token}`,
+          Accept: "application/json",
+        },
+        signal: ctrl.signal,
+      });
+    } catch (err) {
+      throw new UpstreamError(
+        "ghost",
+        err instanceof Error ? err.message : "network error",
+      );
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   private signToken(): string {
@@ -129,6 +172,7 @@ export interface GhostMember {
     id: string;
     status: string;
     price?: { id: string; nickname?: string };
+    customer?: { id: string };
   }>;
 }
 
@@ -142,4 +186,16 @@ function base64UrlBuf(b: Buffer): string {
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=+$/g, "");
+}
+
+async function safeReadText(res: Response): Promise<string | null> {
+  try {
+    return await res.text();
+  } catch {
+    return null;
+  }
+}
+
+function truncate(s: string, n: number): string {
+  return s.length <= n ? s : s.slice(0, n) + "…";
 }

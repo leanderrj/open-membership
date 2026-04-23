@@ -3,5 +3,7 @@ dist/
 .env
 .env.local
 om-config.yaml
+state/
 *.log
 .DS_Store
+.wrangler/

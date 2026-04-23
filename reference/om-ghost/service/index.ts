@@ -1,120 +1,186 @@
-import express from "express";
+import { serve, type ServerType } from "@hono/node-server";
+import { mkdirSync } from "node:fs";
+import { resolve } from "node:path";
+import { loadEnv, corsOrigins } from "./env.js";
+import { createNodeLogger } from "./logger.js";
 import { loadConfig } from "../shared/config.js";
 import { GhostClient } from "../shared/ghost-client.js";
+import { ContentApiClient } from "../shared/content-client.js";
 import { createStripeClient } from "../shared/stripe-client.js";
-import { FeedCache } from "./feed-cache.js";
-import { buildDiscovery } from "./discovery.js";
-import { checkoutRouter } from "./routes/checkout.js";
-import { entitlementsRouter } from "./routes/entitlements.js";
-import { tokenRouter } from "./routes/token.js";
-import { portalRouter } from "./routes/portal.js";
-import { webhookRouter } from "./routes/webhook.js";
+import { InMemoryFeedCache } from "../shared/feed-cache.js";
+import { MemoryRateLimiter } from "./rate-limit-memory.js";
+import { SqliteIdempotencyStore } from "./idempotency-sqlite.js";
+import { buildApp } from "../shared/app.js";
+import type { Deps } from "../shared/deps.js";
 
 /**
- * om-ghost Mode B entrypoint.
- *
- * A publisher running self-hosted Ghost puts this service behind the
- * same reverse proxy that fronts Ghost. The proxy routes:
- *
- *   /api/om/*                    → this service
- *   /.well-known/open-membership → this service (or Ghost via theme)
- *   /feed/om/*                   → this service (v0.2+; see NOTE below)
- *   everything else              → Ghost
- *
- * NOTE: feed rendering is not wired in v0.1. The spec-compliant feed
- * body is described in theme/om-feed.hbs; rendering it from the sidecar
- * requires pulling post bodies from the Ghost Content API with a
- * per-member access filter, which is the next milestone. v0.1 focuses
- * on discovery + checkout + entitlements + tokens + webhook.
+ * Node entrypoint (Mode B). Parses env, builds every dependency,
+ * mounts the Hono app, and listens. SIGTERM/SIGINT trigger graceful
+ * shutdown: stop accepting connections, drain in-flight requests,
+ * close the SQLite store, flush logs.
  */
 async function main(): Promise<void> {
-  const env = readEnv();
-  const config = await loadConfig(env.configPath);
-
-  const ghost = new GhostClient({
-    ghostUrl: env.ghostUrl,
-    adminKey: env.ghostAdminKey,
-  });
-  const stripe = createStripeClient({
-    secretKey: env.stripeSecretKey,
-    webhookSecret: env.stripeWebhookSecret,
+  const env = loadEnv();
+  const logger = createNodeLogger({
+    level: env.LOG_LEVEL,
+    service: "om-ghost",
+    publicUrl: env.PUBLIC_URL,
   });
 
-  const cache = new FeedCache(config, ghost, env.feedTokenKey);
-
-  // Warm the cache asynchronously so startup isn't blocked on a large
-  // subscriber list. Feed requests that race the warm-up will fall back
-  // to on-demand Ghost lookup when that code path lands in v0.2.
-  cache.warm().catch((err) => {
-    console.error(`om-ghost: feed cache warm failed: ${err?.message ?? err}`);
-  });
-
-  const app = express();
-
-  // Webhook router MUST see the raw body for signature verification.
-  // Mount it before the JSON parser.
-  app.use(
-    "/api/om/webhook",
-    express.raw({ type: "application/json" }),
-    webhookRouter(stripe, env.stripeWebhookSecret, cache),
+  const config = await loadConfig(resolve(env.OM_CONFIG_PATH));
+  logger.info(
+    { provider: config.provider.url, spec: config.spec_version },
+    "config loaded",
   );
 
-  app.use(express.json());
+  mkdirSync(env.OM_STATE_DIR, { recursive: true });
 
-  app.get("/.well-known/open-membership", (_req, res) => {
-    res
-      .type("application/json")
-      .json(buildDiscovery(config, env.publicUrl));
+  const ghost = new GhostClient({
+    ghostUrl: env.GHOST_URL,
+    adminKey: env.GHOST_ADMIN_KEY,
   });
-
-  app.use("/api/om/checkout", checkoutRouter(config, stripe, env.publicUrl));
-  app.use("/api/om/entitlements", entitlementsRouter(config, stripe, cache));
-  app.use("/api/om/token", tokenRouter(config, cache, env.jwtSigningKey, env.publicUrl));
-  app.use("/api/om/portal", portalRouter(stripe, cache, env.publicUrl));
-
-  app.get("/health", (_req, res) => {
-    res.json({ ok: true, cache_size: cache.size() });
+  const content = new ContentApiClient({
+    ghostUrl: env.GHOST_URL,
+    contentApiKey: env.GHOST_CONTENT_KEY,
   });
+  const stripe = createStripeClient({
+    secretKey: env.STRIPE_SECRET_KEY,
+    webhookSecret: env.STRIPE_WEBHOOK_SECRET,
+  });
+  const cache = new InMemoryFeedCache(config, ghost, env.OM_FEED_TOKEN_KEY);
+  const idempotency = new SqliteIdempotencyStore(
+    resolve(env.OM_STATE_DIR, "idempotency.sqlite"),
+  );
+  const rateLimiter = new MemoryRateLimiter();
 
-  app.listen(env.port, () => {
-    console.log(
-      `om-ghost listening on :${env.port} (provider=${config.provider.url})`,
+  const deps: Deps = {
+    config,
+    env: {
+      publicUrl: env.PUBLIC_URL,
+      feedTokenKey: env.OM_FEED_TOKEN_KEY,
+      jwtSigningKey: env.OM_JWT_SIGNING_KEY,
+      stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET,
+      corsAllowOrigins: corsOrigins(env),
+    },
+    ghost,
+    content,
+    stripe,
+    cache,
+    idempotency,
+    rateLimiter,
+    logger,
+    clock: () => new Date(),
+  };
+
+  // Warm the feed cache in the background. A cold restart still serves
+  // non-members correctly; members hit an empty cache briefly, which
+  // returns 403 + signup prompt until warmup completes. We log the
+  // progress so an operator can observe readiness.
+  cache
+    .warm()
+    .then(async () =>
+      logger.info({ cache_size: await cache.size() }, "feed cache warmed"),
+    )
+    .catch((err) =>
+      logger.error({ err: String(err) }, "feed cache warm failed"),
     );
+
+  const app = buildApp(deps);
+
+  const server = serve(
+    { fetch: app.fetch, port: env.PORT, hostname: env.HOST },
+    (info) => {
+      logger.info(
+        { port: info.port, address: info.address },
+        "om-ghost listening",
+      );
+    },
+  );
+
+  installShutdown(server, { rateLimiter, idempotency, logger });
+
+  // Periodically prune the idempotency table. Stripe keeps webhooks for
+  // at most 30 days; we retain 7 and prune hourly.
+  const pruneTimer = setInterval(
+    () =>
+      idempotency.prune(7 * 24 * 60 * 60).catch((err) => {
+        logger.warn({ err: String(err) }, "idempotency prune failed");
+      }),
+    60 * 60 * 1000,
+  );
+  pruneTimer.unref?.();
+}
+
+/**
+ * Wire SIGTERM/SIGINT to a graceful shutdown: stop accepting new
+ * connections, wait for in-flight requests to finish (with a deadline),
+ * close resources.
+ */
+function installShutdown(
+  server: ServerType,
+  resources: {
+    rateLimiter: MemoryRateLimiter;
+    idempotency: SqliteIdempotencyStore;
+    logger: ReturnType<typeof createNodeLogger>;
+  },
+): void {
+  const SHUTDOWN_DEADLINE_MS = 30_000;
+  let shuttingDown = false;
+
+  const shutdown = async (signal: string): Promise<void> => {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    resources.logger.info({ signal }, "shutdown initiated");
+
+    const deadline = setTimeout(() => {
+      resources.logger.warn(
+        { deadline_ms: SHUTDOWN_DEADLINE_MS },
+        "shutdown deadline exceeded; forcing exit",
+      );
+      process.exit(1);
+    }, SHUTDOWN_DEADLINE_MS);
+    deadline.unref?.();
+
+    await new Promise<void>((resolve1) => {
+      server.close(() => resolve1());
+    });
+
+    resources.rateLimiter.stop();
+    await resources.idempotency.close();
+
+    resources.logger.info({}, "shutdown complete");
+    process.exit(0);
+  };
+
+  process.on("SIGTERM", () => void shutdown("SIGTERM"));
+  process.on("SIGINT", () => void shutdown("SIGINT"));
+
+  process.on("uncaughtException", (err) => {
+    resources.logger.fatal(
+      { err: err.message, stack: err.stack },
+      "uncaughtException — terminating",
+    );
+    process.exit(1);
   });
-}
-
-interface Env {
-  port: number;
-  publicUrl: string;
-  ghostUrl: string;
-  ghostAdminKey: string;
-  stripeSecretKey: string;
-  stripeWebhookSecret: string;
-  feedTokenKey: string;
-  jwtSigningKey: string;
-  configPath: string;
-}
-
-function readEnv(): Env {
-  const need = (k: string): string => {
-    const v = process.env[k];
-    if (!v) throw new Error(`environment variable ${k} is required`);
-    return v;
-  };
-  return {
-    port: Number(process.env.PORT ?? 4000),
-    publicUrl: need("PUBLIC_URL"),
-    ghostUrl: need("GHOST_URL"),
-    ghostAdminKey: need("GHOST_ADMIN_KEY"),
-    stripeSecretKey: need("STRIPE_SECRET_KEY"),
-    stripeWebhookSecret: need("STRIPE_WEBHOOK_SECRET"),
-    feedTokenKey: need("OM_FEED_TOKEN_KEY"),
-    jwtSigningKey: need("OM_JWT_SIGNING_KEY"),
-    configPath: process.env.OM_CONFIG_PATH ?? "./om-config.yaml",
-  };
+  process.on("unhandledRejection", (reason) => {
+    resources.logger.fatal(
+      { reason: String(reason) },
+      "unhandledRejection — terminating",
+    );
+    process.exit(1);
+  });
 }
 
 main().catch((err) => {
-  console.error(`om-ghost: fatal: ${err?.message ?? err}`);
+  const msg = err instanceof Error ? err.message : String(err);
+  // At this point the logger may not be initialised yet.
+  console.error(
+    JSON.stringify({
+      level: "fatal",
+      time: new Date().toISOString(),
+      msg: "fatal during startup",
+      err: msg,
+    }),
+  );
   process.exit(1);
 });
