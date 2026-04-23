@@ -20,9 +20,9 @@
 
 ### Reference implementations
 
-- **[`reference/om-ghost/`](reference/om-ghost/)** — Ghost plugin + Node sidecar (Mode B) with Cloudflare Worker variant planned (Mode A). Targets conformance Level 5 (Commerce). Pre-v0.1.
-- `reference/om-wordpress/` — WordPress plugin. Planned for Phase 4, per the roadmap.
-- `reference/reader/` — reference reader. Planned alongside `om-ghost` so both sides of the wire are testable.
+- **[`reference/om-ghost/`](reference/om-ghost/)** — Ghost plugin + Node sidecar (Mode B) and Cloudflare Worker variant (Mode A). Targets conformance Level 5 (Commerce). TypeScript, Hono, Stripe, SQLite / KV.
+- **[`reference/om-wordpress/`](reference/om-wordpress/)** — WordPress plugin. Targets conformance Level 5. PHP 8.1+, Stripe SDK, firebase/php-jwt, custom rewrite for `/feed/om/:token` + `/.well-known/open-membership`, REST endpoints under `/wp-json/om/v1/*`.
+- `reference/reader/` — reference reader. Planned alongside the publishers so both sides of the wire are testable.
 
 ### Licensing
 
