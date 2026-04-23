@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<ruleset name="om-wordpress">
+	<description>Coding standards for the Open Membership RSS WordPress plugin.</description>
+
+	<file>src</file>
+	<file>tests</file>
+	<file>om-wordpress.php</file>
+	<file>uninstall.php</file>
+
+	<exclude-pattern>vendor/*</exclude-pattern>
+	<exclude-pattern>node_modules/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="ps"/>
+
+	<rule ref="WordPress-Core">
+		<!-- Allow PSR-4 file naming (ClassName.php) — PSR-4 conflicts with
+		     WordPress's filename-dash convention, and PSR-4 is required
+		     for autoloading. -->
+		<exclude name="WordPress.Files.FileName"/>
+		<!-- Short array syntax is fine in a modern PHP 8.1+ project. -->
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+	</rule>
+
+	<rule ref="WordPress-Extra">
+		<exclude name="WordPress.Files.FileName"/>
+	</rule>
+
+	<rule ref="PHPCompatibilityWP"/>
+	<config name="testVersion" value="8.1-"/>
+	<config name="minimum_wp_version" value="6.3"/>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array" value="om-wordpress"/>
+		</properties>
+	</rule>
+</ruleset>
