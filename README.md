@@ -1,8 +1,14 @@
-# Open Membership RSS — Roadmap Package
+# Open Membership RSS
 
-This is the comprehensive plan for taking the Open Membership RSS specification from 0.4 draft to 1.0 production-ready open standard.
+`om` is an open-spec extension to RSS for paid, tiered, time-gated, group-shared, value-for-value, and privacy-preserving content. This repository holds the specification, the supporting design docs, and the reference implementations.
 
-## Package contents
+## Repository contents
+
+### The specification
+
+- **[SPEC.md](SPEC.md)** — the canonical spec (currently 0.4 draft). This is what implementers cite.
+
+### Design and plan
 
 1. **[ROADMAP.md](ROADMAP.md)** — the master plan, 18 months from today to 1.0
 2. **[FEATURESET.md](FEATURESET.md)** — the authoritative feature inventory across all versions
@@ -11,6 +17,19 @@ This is the comprehensive plan for taking the Open Membership RSS specification 
 5. **[FUNDING.md](FUNDING.md)** — grant application packages for Sovereign Tech Fund, NLnet, and Stripe Open Source
 6. **[GOVERNANCE.md](GOVERNANCE.md)** — custodian shortlist, working-group charter, and decision-making conventions
 7. **[COMPETITIVE-LANDSCAPE.md](COMPETITIVE-LANDSCAPE.md)** — what already exists, what doesn't, and where `om` adds value
+
+### Reference implementations
+
+- **[`reference/om-ghost/`](reference/om-ghost/)** — Ghost plugin + Node sidecar (Mode B) with Cloudflare Worker variant planned (Mode A). Targets conformance Level 5 (Commerce). Pre-v0.1.
+- `reference/om-wordpress/` — WordPress plugin. Planned for Phase 4, per the roadmap.
+- `reference/reader/` — reference reader. Planned alongside `om-ghost` so both sides of the wire are testable.
+
+### Licensing
+
+- **[`LICENSE-SPEC`](LICENSE-SPEC)** — CC-BY-4.0, covers the specification prose and design documents.
+- **[`LICENSE`](LICENSE)** — MIT, covers all code including everything under `reference/`.
+
+The `om` namespace itself is not subject to copyright.
 
 ## The short version
 
