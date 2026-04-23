@@ -16,7 +16,7 @@ export interface StripeClientOpts {
 
 export function createStripeClient(opts: StripeClientOpts): Stripe {
   return new Stripe(opts.secretKey, {
-    apiVersion: "2024-11-20.acacia",
+    apiVersion: "2025-02-24.acacia",
     typescript: true,
   });
 }

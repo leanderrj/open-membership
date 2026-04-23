@@ -3,21 +3,34 @@
 Run with:
 
 ```bash
+npm install
 npm test
 ```
 
+Tests use `node:test` with `tsx` as the loader — no Jest/Vitest
+dependency. Everything runs in under a second.
+
 ## Coverage
 
-| Area | Status |
+| File | What it exercises |
 |---|---|
-| `shared/token.ts` — HMAC feed tokens | unit tests |
-| `shared/jwt.ts` — HS256 issuance/verify | unit tests |
-| `shared/config.ts` — yaml validation | TODO |
-| `service/discovery.ts` — document shape | TODO |
-| Stripe Checkout → entitlements e2e | TODO (test-mode Stripe) |
-| Ghost Admin API → FeedCache | TODO (dockerised Ghost) |
-| `om-test-suite` conformance (Levels 1, 2, 5) | waiting on test suite |
+| `token.test.ts` | HMAC feed token determinism, tamper resistance, constant-time verify (all via Web Crypto) |
+| `jwt.test.ts` | HS256 issuance, round-trip, audience/issuer binding |
+| `config.test.ts` | `tierForPriceId`, `featuresForTier` lookups |
+| `discovery.test.ts` | `.well-known/open-membership` document shape (SPEC §9) |
+| `feed-render.test.ts` | RSS+om XML shape, escaping, access decisions, CDATA handling |
+| `app.test.ts` | Full Hono app surface via `app.request()`: discovery, health, ready, feed, token, checkout, rate limit, webhook dedup |
 
-The integration and conformance tests land alongside the `om-test-suite`
-deliverable described in [`/ROADMAP.md`](../../../ROADMAP.md) and
-[`/SPEC.md` Part II §B](../../../SPEC.md).
+## What is NOT tested here
+
+- End-to-end against a real Ghost instance
+- End-to-end against Stripe test-mode (offers, checkout, webhooks)
+- om-test-suite conformance (Levels 1, 2, 5) — blocked on the test
+  suite itself existing (see ROADMAP.md)
+- Cloudflare Worker runtime — covered manually via `wrangler dev` and
+  `miniflare` in CI once we wire it up
+- Load tests
+
+The fixtures in [`fixtures.ts`](fixtures.ts) simulate Ghost members
+and posts, but the `GhostClient` / `ContentApiClient` / `Stripe`
+clients themselves go through stubs during handler tests.
