@@ -1,0 +1,21 @@
+---
+layout: base.njk
+---
+<article>
+  <header>
+    <h1>{{ title }}</h1>
+    <p><time datetime="{{ page.date | rfc822Date }}">{{ page.date | rfc822Date }}</time></p>
+    <p>Access: <code>{{ om_access or "open" }}</code>{% if om_required_tiers %} (tiers: {{ om_required_tiers | join(", ") }}){% endif %}</p>
+  </header>
+  {% if (om_access == "locked") or (om_access == "members-only") %}
+    {% if om_preview %}
+      <p class="preview">{{ om_preview }}</p>
+    {% endif %}
+    <p class="unlock">
+      Full article is gated. Subscribers receive it via the
+      <a href="/.well-known/open-membership">Open Membership</a> feed.
+    </p>
+  {% else %}
+    {{ content | safe }}
+  {% endif %}
+</article>

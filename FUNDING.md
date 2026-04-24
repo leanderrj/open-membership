@@ -1,4 +1,93 @@
-# Funding Pitches
+# Budget & Funding
+
+Where the money goes (budget below) and where it comes from (grant pitches further down). The [ROADMAP](ROADMAP.md) is spec and technical milestones only; the financial dimension lives here.
+
+---
+
+## Budget
+
+Direct engineering and event spend across the 18-month roadmap, by phase. All figures are approximate and in euros unless noted.
+
+### Phase 1 — Ship something real (months 1–3)
+
+| Month | Work | Effort | Cost |
+|---|---|---|---|
+| M1 | Ghost plugin v0.1 scaffolding | 1 engineer-month | €15,000 |
+| M2 | Stripe integration and entitlements | 1 engineer-month | €15,000 |
+| M3 | Miniflux reader fork (overlapping M2) | 2 engineer-months parallel | €30,000 |
+| | **Phase 1 total** | **3 engineer-months** | **€60,000** |
+
+### Phase 2 — First outside publisher (months 4–6)
+
+| Month | Work | Cost |
+|---|---|---|
+| M4 | Production hardening (Stripe live, Mollie PSP, webhook hardening) | €10,000 |
+| M4 | External security review (few days of a consultant) | €3,000 |
+| M4 | i18n (`tax_inclusive` on `<om:price>`) + anti-sharing primitive v0 | €4,000 |
+| M5 | Publisher outreach and onboarding (mostly time) | €5,000 equivalent |
+| M6 | First live paying subscriber + 0.4.1 errata (rolled into M4/M5 spend) | — |
+| | **Phase 2 total** | **~€22,000** |
+
+### Phase 3 — Governance and test infrastructure (months 7–9)
+
+| Month | Work | Cost |
+|---|---|---|
+| M7 | Custodian outreach (time only, pre-grant) | — |
+| M8 | Grant applications (time only, 2–4 weeks per application) | — |
+| M9 | Publisher test suite v1 | €15,000 |
+| M9 | Reader conformance harness | €10,000 |
+| M9 | Atom + JSON Feed appendix work | €3,000 |
+| | **Phase 3 total (pre-grant)** | **~€28,000** |
+
+### Phase 4 — Second reader, WordPress, and replication (months 10–12)
+
+| Month | Work | Cost |
+|---|---|---|
+| M10 | WordPress plugin | €20,000–€30,000 |
+| M10 | Platform Adapter Profile (incl. WooCommerce + Memberful validation passes) | €6,000 |
+| M11 | Second reader (NetNewsWire fork or Feeder for Android) | €20,000 |
+| M11 | Static-site reference (Eleventy + Cloudflare Workers) | €12,000 |
+| M12 | Publisher replication (outreach + onboarding time) | included in M5 cadence |
+| M12 | ActivityPub co-existence appendix (coordination + writing) | €5,000 |
+| | **Phase 4 total** | **~€68,000** |
+
+### Phase 5 — IETF submission prep (months 13–15)
+
+| Month | Work | Cost |
+|---|---|---|
+| M13 | Markdown-to-IETF format conversion (technical writer) | €8,000 |
+| M13 | Subscriber portability format (spec + Miniflux↔NetNewsWire round-trip proof) | €3,000 |
+| M14 | External review (security + privacy reviewers) | €3,000 |
+| M15 | IRSG submission (time only) | — |
+| | **Phase 5 total** | **~€14,000** |
+
+### Phase 6 — 1.0 release and event (months 16–18)
+
+| Month | Work | Cost |
+|---|---|---|
+| M16 | First IndieWebCamp-style event (venue, food, travel subsidies) | €8,000–€15,000 |
+| M17 | 1.0 errata freeze and RC (rolled into working-group time) | — |
+| M18 | 1.0 released (press + comms) | rolled in |
+| | **Phase 6 total** | **~€15,000** |
+
+### Total
+
+- **Direct engineering and event spend:** ~€205,000 (including ~€40,000 of interop-track work distributed across Phases 2–5)
+- **Matching grants secured:** ~€130,000 target (Sovereign Tech Fund + NLnet — see pitches below)
+- **Volunteer time:** working group members, reviewers, event attendees
+
+The critical path runs through Phase 2 (first outside publisher) and Phase 3 (custodian + test infrastructure). The interop-track additions are deliberately off the critical path.
+
+### Funding risk
+
+**Risk: Grant applications rejected.**
+- Probability: medium. These grants are competitive; rejection isn't a signal of quality.
+- Mitigation: apply to all three (Sovereign Tech Fund, NLnet, Stripe Open Source). Expect one yes.
+- Escalation: the project can survive on volunteer labor for months 7–15 if needed, but the IETF submission and second reader work become considerably slower. See "What if all three say no" at the end of this document.
+
+---
+
+## Funding pitches
 
 Three grant applications, each targeting a different funder with a different angle on the same protocol. Send in sequence about a week apart. Expect one yes, plan for two nos.
 

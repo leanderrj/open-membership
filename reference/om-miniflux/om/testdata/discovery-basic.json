@@ -1,0 +1,26 @@
+{
+  "spec_version": "0.4",
+  "provider": "https://fieldnotes.example",
+  "endpoints": {
+    "checkout": "https://fieldnotes.example/api/om/checkout",
+    "entitlements": "https://fieldnotes.example/api/om/entitlements",
+    "token": "https://fieldnotes.example/api/om/token",
+    "portal": "https://fieldnotes.example/api/om/portal"
+  },
+  "auth_methods": ["url-token"],
+  "tiers": [
+    {
+      "id": "paid",
+      "price": "USD 8.00",
+      "period": "monthly",
+      "description": "Supporter"
+    }
+  ],
+  "features": [],
+  "offers": [],
+  "psps": [],
+  "revocation": {
+    "policy": "prospective-only",
+    "grace_hours": 48
+  }
+}

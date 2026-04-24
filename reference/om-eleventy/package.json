@@ -1,0 +1,38 @@
+{
+  "name": "om-eleventy",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reference static-site Open Membership RSS publisher: Eleventy build + Cloudflare Workers edge.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "eleventy",
+    "build:watch": "eleventy --watch",
+    "build:serve": "eleventy --serve",
+    "worker:dev": "wrangler dev",
+    "worker:deploy": "wrangler deploy",
+    "worker:types": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint:tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tsndr/cloudflare-worker-jwt": "^2.5.4",
+    "stripe": "^17.5.0",
+    "xmlbuilder2": "^3.1.1",
+    "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-plugin-rss": "^2.0.2",
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "@types/node": "^22.10.5",
+    "miniflare": "^3.20241230.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "wrangler": "^3.99.0"
+  }
+}

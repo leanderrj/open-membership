@@ -1,0 +1,64 @@
+# om-eleventy publisher configuration
+#
+# Static, non-secret publisher-side config. Committed to the repo, bundled
+# into the Worker at deploy time, and copied into _site/ so build tools
+# can inspect it. Secrets (Stripe keys, HMAC keys) are set via
+# `wrangler secret put`; see wrangler.toml for the full list.
+
+spec_version: "0.4"
+
+provider:
+  url: https://publisher.example
+  name: Publisher Example
+
+authentication:
+  methods:
+    - url-token
+
+features:
+  full-text:
+    label: Full article text
+  archive:
+    label: Full archive access
+
+tiers:
+  free:
+    label: Free
+    features: []
+
+  paid:
+    label: Supporter
+    features: [full-text, archive]
+    stripe_price_ids:
+      - price_monthly_REPLACE_ME
+      - price_yearly_REPLACE_ME
+
+psps:
+  stripe:
+    account: acct_REPLACE_ME
+    mode: subscription-derived
+
+offers:
+  supporter-monthly:
+    tier: paid
+    price:
+      amount: "8.00"
+      currency: USD
+      period: P1M
+    checkout:
+      psp: stripe
+      price_id: price_monthly_REPLACE_ME
+
+  supporter-yearly:
+    tier: paid
+    price:
+      amount: "80.00"
+      currency: USD
+      period: P1Y
+    checkout:
+      psp: stripe
+      price_id: price_yearly_REPLACE_ME
+
+revocation:
+  policy: prospective-only
+  grace_hours: 48

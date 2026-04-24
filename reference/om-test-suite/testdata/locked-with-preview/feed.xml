@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:om="http://purl.org/rss/modules/membership/">
+  <channel>
+    <title>Locked With Preview Fixture</title>
+    <link>https://locked.fixture.invalid/</link>
+    <description>Exercises the preview-semantics rule: every locked item carries a non-empty om:preview. A reader at Level 1 MUST display the preview when access is locked.</description>
+
+    <om:provider>https://locked.fixture.invalid</om:provider>
+    <om:discovery>https://locked.fixture.invalid/.well-known/open-membership</om:discovery>
+    <om:authMethod>url-token</om:authMethod>
+
+    <om:tier id="paid" price="USD 5.00" period="monthly">Member</om:tier>
+
+    <item>
+      <title>Members-only long-form piece</title>
+      <guid isPermaLink="false">locked-1</guid>
+      <link>https://locked.fixture.invalid/posts/longform</link>
+      <description>Available to paid members. The preview below is what non-members see.</description>
+      <om:access>locked</om:access>
+      <om:preview>The lead paragraph, visible to all feed consumers so they know what they're subscribing to.</om:preview>
+    </item>
+
+    <item>
+      <title>Second members-only piece</title>
+      <guid isPermaLink="false">locked-2</guid>
+      <link>https://locked.fixture.invalid/posts/second-locked</link>
+      <description>Also gated.</description>
+      <om:access>locked</om:access>
+      <om:preview>Short teaser.</om:preview>
+    </item>
+  </channel>
+</rss>

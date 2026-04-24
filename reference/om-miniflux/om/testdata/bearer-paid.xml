@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:om="http://purl.org/rss/modules/membership/">
+  <channel>
+    <title>Field Notes (Bearer + Offer)</title>
+    <link>https://fieldnotes.example/</link>
+    <description>Bearer-auth feed with tiers, features, offers, and multiple gated items.</description>
+    <om:provider>https://fieldnotes.example</om:provider>
+    <om:discovery>https://fieldnotes.example/.well-known/open-membership</om:discovery>
+    <om:authMethod>bearer</om:authMethod>
+    <om:revocation policy="chargeback-revocation" grace_hours="24" />
+
+    <om:tier id="free" price="USD 0.00" period="monthly">Free</om:tier>
+    <om:tier id="paid" price="USD 8.00" period="monthly">Supporter</om:tier>
+    <om:tier id="founder" price="USD 200.00" period="yearly">Founding member</om:tier>
+
+    <om:feature id="long-form">Long-form essays</om:feature>
+    <om:feature id="audio">Audio versions</om:feature>
+
+    <om:psp id="stripe" account="acct_TEST_xxx" />
+
+    <om:offer id="paid-monthly" tier="paid">
+      <om:price amount="8.00" currency="USD" period="P1M" />
+      <om:checkout psp="stripe" price_id="price_TEST_paid_monthly" />
+      <om:trial days="7" />
+      <om:proration>daily</om:proration>
+    </om:offer>
+    <om:offer id="paid-yearly" tier="paid">
+      <om:price amount="80.00" currency="USD" period="P1Y" />
+      <om:checkout psp="stripe" price_id="price_TEST_paid_yearly" />
+    </om:offer>
+    <om:offer id="founder-yearly" tier="founder">
+      <om:price amount="200.00" currency="USD" period="P1Y" />
+      <om:checkout psp="stripe" price_id="price_TEST_founder_yearly" />
+    </om:offer>
+
+    <item>
+      <title>Public essay</title>
+      <link>https://fieldnotes.example/public</link>
+      <guid>https://fieldnotes.example/public</guid>
+      <description>Everyone reads this one.</description>
+      <om:access>open</om:access>
+    </item>
+    <item>
+      <title>Paid-tier essay</title>
+      <link>https://fieldnotes.example/paid</link>
+      <guid>https://fieldnotes.example/paid</guid>
+      <description>Teaser.</description>
+      <om:access tier="paid">preview</om:access>
+      <om:preview>Opening two paragraphs; the rest is for paid members.</om:preview>
+    </item>
+    <item>
+      <title>Founder-only longread</title>
+      <link>https://fieldnotes.example/founder</link>
+      <guid>https://fieldnotes.example/founder</guid>
+      <description>Deep dive.</description>
+      <om:access tier="founder">members-only</om:access>
+    </item>
+  </channel>
+</rss>

@@ -58,6 +58,7 @@ Features organize into seven categories. Every element in the spec fits exactly 
 | Bundle trust declaration | Lifecycle & governance | 0.4 | 8 | `<om:trust>` |
 | Gift subscriptions | Lifecycle & governance | 0.4 | 5 | `<om:gift>` |
 | Licensing (CC-compatible) | Lifecycle & governance | 0.3 | 1 | `<om:license>` |
+| Subscriber portability format | Lifecycle & governance | 1.0 | 5 | (companion spec, JSON-LD) |
 
 ## Conformance levels
 
@@ -110,8 +111,9 @@ Adds:
 - Entitlement polling and token refresh
 - Feature-based access checks (`<om:feature>` IDs in JWT claims)
 - Proration policy display
+- Subscriber Portability Format 1.0 export + import — see [SPEC-PORTABILITY.md](SPEC-PORTABILITY.md); round-trip required at 1.0
 
-**Implementer effort:** ~2–4 weeks.
+**Implementer effort:** ~2–4 weeks (commerce) + ~1 week (portability).
 
 ### Level 6 — Value-for-value
 

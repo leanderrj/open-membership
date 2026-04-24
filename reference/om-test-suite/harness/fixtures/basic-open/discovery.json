@@ -1,0 +1,12 @@
+{
+  "spec_version": "0.4",
+  "provider": "https://basic-open.fixture.invalid",
+  "auth_methods": ["url-token"],
+  "tiers": [
+    { "id": "free", "price": "USD 0.00", "period": "monthly", "label": "Free" }
+  ],
+  "revocation": {
+    "policy": "prospective-only",
+    "grace_hours": 0
+  }
+}

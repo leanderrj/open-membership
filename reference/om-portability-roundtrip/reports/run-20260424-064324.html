@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>OM portability round-trip report</title>
+<style>
+body { font-family: -apple-system, sans-serif; max-width: 1100px; margin: 2em auto; padding: 0 1em; }
+h1 { border-bottom: 2px solid #222; padding-bottom: 0.3em; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #ccc; padding: 0.4em 0.6em; vertical-align: top; text-align: left; }
+th { background: #f6f6f6; }
+.pass { color: #0a7a0a; font-weight: bold; }
+.fail { color: #b00; font-weight: bold; }
+.summary { background: #fafafa; padding: 1em; border: 1px solid #ddd; }
+details { margin: 0.2em 0; }
+code { font-size: 0.85em; }
+.edge { background: #fff6e5; }
+</style>
+</head>
+<body>
+<h1>OM portability round-trip report</h1>
+<div class="summary">
+<p><strong>Harness:</strong> 0.1.0 &middot; <strong>Spec:</strong> SPEC-PORTABILITY.md 1.0-draft-2026-04-24</p>
+<p><strong>Window:</strong> 2026-04-24T06:43:24Z &ndash; 2026-04-24T06:43:24Z</p>
+<p><strong>Reader A:</strong> fixture-reader-a 0.1.0 (Miniflux-shape (url-token preference))</p>
+<p><strong>Reader B:</strong> fixture-reader-b 0.1.0 (NetNewsWire-shape (bearer/VC preference))</p>
+<p><strong>Summary:</strong> 0 pass / 1 fail / 0 skipped of 1</p>
+</div>
+
+<table>
+<thead><tr><th>ID</th><th>Description</th><th>Envelope</th><th>Direction</th><th>Result</th><th>Duration</th></tr></thead>
+<tbody>
+
+<tr class="fail">
+<td><code>core-bundle-age</code></td>
+<td>OM-VC issued by aggregator with audience through age envelope</td>
+<td>age</td>
+<td>A-&gt;B-&gt;A</td>
+<td><span class="fail">FAIL</span></td>
+<td></td>
+</tr>
+<tr><td colspan="6">
+<details><summary>11 check(s) &middot; spec ref SPEC-PORTABILITY.md §14.3</summary>
+<table>
+<thead><tr><th>Check</th><th>Result</th><th>Spec</th><th>Message</th></tr></thead>
+<tbody>
+
+<tr><td><code>plaintext-allowed</code></td><td><span class="pass">PASS</span></td><td>§9.3</td><td>non-plaintext envelope; §9.3 N/A</td></tr>
+
+<tr><td><code>integrity-input</code></td><td><span class="pass">PASS</span></td><td>§7.1 §7.2</td><td>checksum dc1d8a9716ac verified</td></tr>
+
+<tr><td><code>no-cross-publisher-id</code></td><td><span class="pass">PASS</span></td><td>§8 P1</td><td>no identifier repeats across providers (modulo allowed exceptions)</td></tr>
+
+<tr><td><code>discovery-reverify</code></td><td><span class="pass">PASS</span></td><td>§11</td><td>0 discovery URL(s) present; real readers re-fetch here</td></tr>
+
+<tr><td><code>integrity-hop1</code></td><td><span class="pass">PASS</span></td><td>§7.1 §7.2</td><td>checksum c524c1917fe9 verified</td></tr>
+
+<tr><td><code>encryption-envelope-age</code></td><td><span class="pass">PASS</span></td><td>§9</td><td>age: 1540 bytes plaintext -&gt; 1722 bytes ciphertext -&gt; plaintext</td></tr>
+
+<tr><td><code>integrity-hop2</code></td><td><span class="pass">PASS</span></td><td>§7.1 §7.2</td><td>checksum 0626d5ea8956 verified</td></tr>
+
+<tr><td><code>encryption-envelope-age</code></td><td><span class="pass">PASS</span></td><td>§9</td><td>age: 1540 bytes plaintext -&gt; 1722 bytes ciphertext -&gt; plaintext</td></tr>
+
+<tr><td><code>integrity-hop3-final</code></td><td><span class="pass">PASS</span></td><td>§7.1 §7.2</td><td>checksum 1c619ce4d005 verified</td></tr>
+
+<tr><td><code>pseudonym-preservation</code></td><td><span class="pass">PASS</span></td><td>§8 P2</td><td>no OM-VC-SD memberships; P2 vacuously satisfied</td></tr>
+
+<tr><td><code>field-preservation</code></td><td><span class="fail">FAIL</span></td><td>§14.3</td><td>round-trip diverged:
+start: {&#34;spec_version&#34;:&#34;1.0&#34;,&#34;subject&#34;:{&#34;local_id&#34;:&#34;urn:uuid:subject-bundle&#34;,&#34;display_name&#34;:&#34;fixture-bundle&#34;},&#34;memberships&#34;:null,&#34;bundles&#34;:[{&#34;aggregator&#34;:&#34;https://indie-bundle.example&#34;,&#34;bundle_id&#34;:&#34;indie-news&#34;,&#34;audience&#34;:[&#34;https://fieldnotes.example&#34;,&#34;https://underreported.example&#34;,&#34;https://localcity.example&#34;],&#34;credential&#34;:{&#34;type&#34;:&#34;OM-VC&#34;,&#34;profile&#34;:&#34;https://purl.org/rss/modules/membership/vc-profile/1.0&#34;,&#34;credential_jsonld&#34;:{&#34;@context&#34;:[&#34;https://www.w3.org/ns/credentials/v2&#34;],&#34;type&#34;:[&#34;VerifiableCredential&#34;,&#34;OMBundleMembershipCredential&#34;],&#34;issuer&#34;:&#34;https://indie-bundle.example/issuer/1&#34;,&#34;credentialSubject&#34;:{&#34;id&#34;:&#34;did:key:bundle-holder-dummy&#34;,&#34;audience&#34;:[&#34;https://fieldnotes.example&#34;,&#34;https://underreported.example&#34;,&#34;https://localcity.example&#34;]},&#34;proof&#34;:{&#34;type&#34;:&#34;DataIntegrityProof&#34;,&#34;cryptosuite&#34;:&#34;eddsa-jcs-2022&#34;,&#34;proofValue&#34;:&#34;z-dummy-bundle-proof&#34;}},&#34;holder_key_jwk&#34;:{&#34;kty&#34;:&#34;OKP&#34;,&#34;crv&#34;:&#34;Ed25519&#34;,&#34;d&#34;:&#34;dummy-bundle-holder-private&#34;,&#34;x&#34;:&#34;dummy-bundle-holder-public&#34;},&#34;status_list_url&#34;:&#34;https://indie-bundle.example/status/1#17&#34;},&#34;added_at&#34;:&#34;2026-04-01T00:00:00Z&#34;,&#34;updated_at&#34;:&#34;2026-04-23T00:00:00Z&#34;}],&#34;gifts_pending&#34;:null}
+end:   {&#34;spec_version&#34;:&#34;1.0&#34;,&#34;subject&#34;:{&#34;local_id&#34;:&#34;urn:uuid:subject-bundle&#34;,&#34;display_name&#34;:&#34;fixture-bundle&#34;},&#34;memberships&#34;:null,&#34;bundles&#34;:[{&#34;aggregator&#34;:&#34;https://indie-bundle.example&#34;,&#34;bundle_id&#34;:&#34;indie-news&#34;,&#34;audience&#34;:[&#34;https://fieldnotes.example&#34;,&#34;https://underreported.example&#34;,&#34;https://localcity.example&#34;],&#34;credential&#34;:{&#34;type&#34;:&#34;OM-VC&#34;,&#34;profile&#34;:&#34;https://purl.org/rss/modules/membership/vc-profile/1.0&#34;,&#34;credential_jsonld&#34;:{&#34;@context&#34;:[&#34;https://www.w3.org/ns/credentials/v2&#34;],&#34;type&#34;:[&#34;VerifiableCredential&#34;,&#34;OMBundleMembershipCredential&#34;],&#34;issuer&#34;:&#34;https://indie-bundle.example/issuer/1&#34;,&#34;credentialSubject&#34;:{&#34;id&#34;:&#34;did:key:bundle-holder-dummy&#34;,&#34;audience&#34;:[&#34;https://fieldnotes.example&#34;,&#34;https://underreported.example&#34;,&#34;https://localcity.example&#34;]},&#34;proof&#34;:{&#34;type&#34;:&#34;DataIntegrityProof&#34;,&#34;cryptosuite&#34;:&#34;eddsa-jcs-2022&#34;,&#34;proofValue&#34;:&#34;z-dummy-bundle-proof&#34;}},&#34;holder_key_jwk&#34;:{&#34;kty&#34;:&#34;OKP&#34;,&#34;crv&#34;:&#34;Ed25519&#34;,&#34;d&#34;:&#34;dummy-bundle-holder-private&#34;,&#34;x&#34;:&#34;dummy-bundle-holder-public&#34;},&#34;status_list_url&#34;:&#34;https://indie-bundle.example/status/1#17&#34;},&#34;added_at&#34;:&#34;2026-04-01T00:00:00Z&#34;,&#34;updated_at&#34;:&#34;2026-04-23T00:00:00Z&#34;}],&#34;gifts_pending&#34;:null}</td></tr>
+
+</tbody>
+</table>
+</details>
+</td></tr>
+
+</tbody>
+</table>
+<p style="color:#666;font-size:0.85em">Report format per <code>reports/README.md</code>. Pass criterion per SPEC-PORTABILITY.md §14.3.</p>
+</body>
+</html>

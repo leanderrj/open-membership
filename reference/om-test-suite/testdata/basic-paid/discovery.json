@@ -1,0 +1,22 @@
+{
+  "spec_version": "0.4",
+  "provider": "https://basic-paid.fixture.invalid",
+  "auth_methods": ["url-token"],
+  "tiers": [
+    { "id": "free", "price": "USD 0.00", "period": "monthly", "label": "Free" },
+    { "id": "paid", "price": "USD 8.00", "period": "monthly", "label": "Paid" }
+  ],
+  "offers": [
+    { "id": "paid-monthly", "tier": "paid", "psp": "stripe" }
+  ],
+  "checkout": {
+    "endpoint": "https://basic-paid.fixture.invalid/api/checkout"
+  },
+  "entitlements": {
+    "endpoint": "https://basic-paid.fixture.invalid/api/entitlements"
+  },
+  "revocation": {
+    "policy": "prospective-only",
+    "grace_hours": 48
+  }
+}

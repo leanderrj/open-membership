@@ -1,0 +1,46 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://purl.org/rss/modules/membership/portability/v1"
+  ],
+  "type": "OMMembershipExport",
+  "spec_version": "1.0",
+  "exported_at": "2026-04-24T10:00:00Z",
+  "exported_by": {
+    "reader": "fixture-reader-a",
+    "reader_version": "0.0.0",
+    "reader_instance_id": "urn:uuid:a0000000-0000-0000-0000-000000000002"
+  },
+  "subject": {
+    "local_id": "urn:uuid:subject-bearer",
+    "display_name": "fixture-bearer"
+  },
+  "memberships": [
+    {
+      "provider": "https://podcastco.example",
+      "discovery": "https://podcastco.example/.well-known/open-membership",
+      "feed_url": "https://podcastco.example/feed/om/",
+      "auth_method": "bearer",
+      "added_at": "2026-02-10T00:00:00Z",
+      "updated_at": "2026-04-23T00:00:00Z",
+      "entitlements": {
+        "tiers": ["paid"],
+        "valid_until": "2026-05-01T00:00:00Z"
+      },
+      "credential": {
+        "type": "bearer_token",
+        "access_token": "dummy-access-token-do-not-use-bearer",
+        "refresh_token": "dummy-refresh-token-do-not-use-bearer",
+        "expires_at": "2026-04-24T11:00:00Z",
+        "token_endpoint": "https://podcastco.example/api/token"
+      }
+    }
+  ],
+  "integrity": {
+    "checksum": {
+      "alg": "sha-256",
+      "canonicalization": "jcs",
+      "value": "PLACEHOLDER_RECOMPUTED_AT_LOAD"
+    }
+  }
+}

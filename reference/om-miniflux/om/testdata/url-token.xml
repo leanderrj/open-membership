@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:om="http://purl.org/rss/modules/membership/">
+  <channel>
+    <title>Field Notes (Paid)</title>
+    <link>https://fieldnotes.example/</link>
+    <description>A feed gated by url-token auth with one preview item.</description>
+    <om:provider>https://fieldnotes.example</om:provider>
+    <om:discovery>https://fieldnotes.example/.well-known/open-membership</om:discovery>
+    <om:authMethod>url-token</om:authMethod>
+    <om:tier id="paid" price="USD 8.00" period="monthly">Supporter</om:tier>
+    <om:unlock href="https://fieldnotes.example/api/om/unlock" method="POST" />
+    <om:revocation policy="prospective-only" grace_hours="48" />
+    <item>
+      <title>Free welcome</title>
+      <link>https://fieldnotes.example/welcome</link>
+      <guid>https://fieldnotes.example/welcome</guid>
+      <description>Welcome post for everyone.</description>
+      <om:access>open</om:access>
+    </item>
+    <item>
+      <title>Members-only longread</title>
+      <link>https://fieldnotes.example/longread</link>
+      <guid>https://fieldnotes.example/longread</guid>
+      <description>The teaser goes here.</description>
+      <om:access tier="paid">preview</om:access>
+      <om:preview>Paragraph-one teaser; the rest requires the paid tier.</om:preview>
+    </item>
+  </channel>
+</rss>

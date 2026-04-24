@@ -1,0 +1,1829 @@
+{
+  "harness_version": "0.1.0",
+  "spec_version": "1.0-draft-2026-04-24",
+  "started_at": "2026-04-24T06:43:20.714375Z",
+  "finished_at": "2026-04-24T06:43:21.061099Z",
+  "reader_a": {
+    "name": "fixture-reader-a",
+    "version": "0.1.0",
+    "kind": "Miniflux-shape (url-token preference)",
+    "notes": "fixture stub; replace per contract.md for production readers"
+  },
+  "reader_b": {
+    "name": "fixture-reader-b",
+    "version": "0.1.0",
+    "kind": "NetNewsWire-shape (bearer/VC preference)",
+    "notes": "fixture stub; replace per contract.md for production readers"
+  },
+  "runs": [
+    {
+      "id": "core-url-token-age",
+      "description": "url-token single publisher through age envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 0536b410f3f8 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum daa713b3825c verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 907 bytes plaintext -\u003e 1089 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 416fb6f777c1 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 907 bytes plaintext -\u003e 1089 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 8d47d3ed531c verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "core-url-token-jwe",
+      "description": "url-token single publisher through jwe envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "jwe",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 0536b410f3f8 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum d84846f5edc4 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 906 bytes plaintext -\u003e 1502 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum d8504fdc02a9 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 906 bytes plaintext -\u003e 1502 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum bbbd39977a93 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "core-bearer-age",
+      "description": "bearer access+refresh token through age envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum df712b2bc18e verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum be9dcdc1aabc verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1121 bytes plaintext -\u003e 1303 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum b2c6e3c82d94 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1121 bytes plaintext -\u003e 1303 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum d75b3a52a5eb verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "core-bearer-jwe",
+      "description": "bearer access+refresh token through jwe envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "jwe",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum df712b2bc18e verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum 9560e76dd81c verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1121 bytes plaintext -\u003e 1789 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum fad39d7aeded verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1120 bytes plaintext -\u003e 1788 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 1750eb1f1391 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "core-dpop-age",
+      "description": "dpop-bound token with holder key through age envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 41782e99d1dc verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum de44ac3f8417 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1154 bytes plaintext -\u003e 1336 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 45e30591ee4e verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1154 bytes plaintext -\u003e 1336 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 34f01882e9da verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "core-dpop-jwe",
+      "description": "dpop-bound token with holder key through jwe envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "jwe",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 41782e99d1dc verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum c95f9070ca9e verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1154 bytes plaintext -\u003e 1833 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 2671b4182de2 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1154 bytes plaintext -\u003e 1833 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum cbfbace1dcc6 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "core-OM-VC-age",
+      "description": "OM-VC 1.0 verifiable credential through age envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum cb1cabd7ea8b verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum 31ec2d619a61 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1512 bytes plaintext -\u003e 1694 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum fcd09e3debdf verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1512 bytes plaintext -\u003e 1694 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum f6b63854470e verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "core-OM-VC-jwe",
+      "description": "OM-VC 1.0 verifiable credential through jwe envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "jwe",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum cb1cabd7ea8b verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum d218b9a5eacb verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1512 bytes plaintext -\u003e 2310 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 6c28a0b05886 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1512 bytes plaintext -\u003e 2310 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 526fee5a04bc verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "core-OM-VC-SD-age",
+      "description": "OM-VC-SD selective disclosure + pseudonym through age envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 10d42e8960bb verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum d5e47aaad3c7 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1527 bytes plaintext -\u003e 1709 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 90286bcc652e verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1528 bytes plaintext -\u003e 1710 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 5ddc9018a813 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "1 per-publisher pseudonym(s) preserved byte-equal",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "core-OM-VC-SD-jwe",
+      "description": "OM-VC-SD selective disclosure + pseudonym through jwe envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "jwe",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 10d42e8960bb verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum 16f208504b66 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1528 bytes plaintext -\u003e 2332 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 62c8a48a7f86 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1527 bytes plaintext -\u003e 2330 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum be104866b48e verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "1 per-publisher pseudonym(s) preserved byte-equal",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "core-bundle-age",
+      "description": "OM-VC issued by aggregator with audience through age envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": false,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum dc1d8a9716ac verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "0 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum 8a024d0a3a84 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1540 bytes plaintext -\u003e 1722 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 297f146a29d2 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1540 bytes plaintext -\u003e 1722 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum bd8a96dd7a74 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": false,
+          "Message": "round-trip diverged:\nstart: {\"spec_version\":\"1.0\",\"subject\":{\"local_id\":\"urn:uuid:subject-bundle\",\"display_name\":\"fixture-bundle\"},\"memberships\":null,\"bundles\":[{\"aggregator\":\"https://indie-bundle.example\",\"bundle_id\":\"indie-news\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"],\"credential\":{\"type\":\"OM-VC\",\"profile\":\"https://purl.org/rss/modules/membership/vc-profile/1.0\",\"credential_jsonld\":{\"@context\":[\"https://www.w3.org/ns/credentials/v2\"],\"type\":[\"VerifiableCredential\",\"OMBundleMembershipCredential\"],\"issuer\":\"https://indie-bundle.example/issuer/1\",\"credentialSubject\":{\"id\":\"did:key:bundle-holder-dummy\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"]},\"proof\":{\"type\":\"DataIntegrityProof\",\"cryptosuite\":\"eddsa-jcs-2022\",\"proofValue\":\"z-dummy-bundle-proof\"}},\"holder_key_jwk\":{\"kty\":\"OKP\",\"crv\":\"Ed25519\",\"d\":\"dummy-bundle-holder-private\",\"x\":\"dummy-bundle-holder-public\"},\"status_list_url\":\"https://indie-bundle.example/status/1#17\"},\"added_at\":\"2026-04-01T00:00:00Z\",\"updated_at\":\"2026-04-23T00:00:00Z\"}],\"gifts_pending\":null}\nend:   {\"spec_version\":\"1.0\",\"subject\":{\"local_id\":\"urn:uuid:subject-bundle\",\"display_name\":\"fixture-bundle\"},\"memberships\":null,\"bundles\":[{\"aggregator\":\"https://indie-bundle.example\",\"bundle_id\":\"indie-news\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"],\"credential\":{\"type\":\"OM-VC\",\"profile\":\"https://purl.org/rss/modules/membership/vc-profile/1.0\",\"credential_jsonld\":{\"@context\":[\"https://www.w3.org/ns/credentials/v2\"],\"type\":[\"VerifiableCredential\",\"OMBundleMembershipCredential\"],\"issuer\":\"https://indie-bundle.example/issuer/1\",\"credentialSubject\":{\"id\":\"did:key:bundle-holder-dummy\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"]},\"proof\":{\"type\":\"DataIntegrityProof\",\"cryptosuite\":\"eddsa-jcs-2022\",\"proofValue\":\"z-dummy-bundle-proof\"}},\"holder_key_jwk\":{\"kty\":\"OKP\",\"crv\":\"Ed25519\",\"d\":\"dummy-bundle-holder-private\",\"x\":\"dummy-bundle-holder-public\"},\"status_list_url\":\"https://indie-bundle.example/status/1#17\"},\"added_at\":\"2026-04-01T00:00:00Z\",\"updated_at\":\"2026-04-23T00:00:00Z\"}],\"gifts_pending\":null}",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "core-bundle-jwe",
+      "description": "OM-VC issued by aggregator with audience through jwe envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "jwe",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": false,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum dc1d8a9716ac verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "0 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum e25beb1c1be7 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1540 bytes plaintext -\u003e 2348 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 23f32000573b verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1540 bytes plaintext -\u003e 2348 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 8bd124283f1c verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": false,
+          "Message": "round-trip diverged:\nstart: {\"spec_version\":\"1.0\",\"subject\":{\"local_id\":\"urn:uuid:subject-bundle\",\"display_name\":\"fixture-bundle\"},\"memberships\":null,\"bundles\":[{\"aggregator\":\"https://indie-bundle.example\",\"bundle_id\":\"indie-news\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"],\"credential\":{\"type\":\"OM-VC\",\"profile\":\"https://purl.org/rss/modules/membership/vc-profile/1.0\",\"credential_jsonld\":{\"@context\":[\"https://www.w3.org/ns/credentials/v2\"],\"type\":[\"VerifiableCredential\",\"OMBundleMembershipCredential\"],\"issuer\":\"https://indie-bundle.example/issuer/1\",\"credentialSubject\":{\"id\":\"did:key:bundle-holder-dummy\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"]},\"proof\":{\"type\":\"DataIntegrityProof\",\"cryptosuite\":\"eddsa-jcs-2022\",\"proofValue\":\"z-dummy-bundle-proof\"}},\"holder_key_jwk\":{\"kty\":\"OKP\",\"crv\":\"Ed25519\",\"d\":\"dummy-bundle-holder-private\",\"x\":\"dummy-bundle-holder-public\"},\"status_list_url\":\"https://indie-bundle.example/status/1#17\"},\"added_at\":\"2026-04-01T00:00:00Z\",\"updated_at\":\"2026-04-23T00:00:00Z\"}],\"gifts_pending\":null}\nend:   {\"spec_version\":\"1.0\",\"subject\":{\"local_id\":\"urn:uuid:subject-bundle\",\"display_name\":\"fixture-bundle\"},\"memberships\":null,\"bundles\":[{\"aggregator\":\"https://indie-bundle.example\",\"bundle_id\":\"indie-news\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"],\"credential\":{\"type\":\"OM-VC\",\"profile\":\"https://purl.org/rss/modules/membership/vc-profile/1.0\",\"credential_jsonld\":{\"@context\":[\"https://www.w3.org/ns/credentials/v2\"],\"type\":[\"VerifiableCredential\",\"OMBundleMembershipCredential\"],\"issuer\":\"https://indie-bundle.example/issuer/1\",\"credentialSubject\":{\"id\":\"did:key:bundle-holder-dummy\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"]},\"proof\":{\"type\":\"DataIntegrityProof\",\"cryptosuite\":\"eddsa-jcs-2022\",\"proofValue\":\"z-dummy-bundle-proof\"}},\"holder_key_jwk\":{\"kty\":\"OKP\",\"crv\":\"Ed25519\",\"d\":\"dummy-bundle-holder-private\",\"x\":\"dummy-bundle-holder-public\"},\"status_list_url\":\"https://indie-bundle.example/status/1#17\"},\"added_at\":\"2026-04-01T00:00:00Z\",\"updated_at\":\"2026-04-23T00:00:00Z\"}],\"gifts_pending\":null}",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "plain-url-token-ab",
+      "description": "url-token plaintext envelope A-\u003eB-\u003eA (allowed by §9.3)",
+      "spec_ref": "SPEC-PORTABILITY.md §9.3",
+      "envelope": "plain",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "url-token-only plaintext export permitted",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 0536b410f3f8 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum d6a1703a75de verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-plain",
+          "Pass": true,
+          "Message": "plain: 907 bytes plaintext -\u003e 907 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum dbfeb866a309 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-plain",
+          "Pass": true,
+          "Message": "plain: 907 bytes plaintext -\u003e 907 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 4e56acfe9f6e verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "plain-url-token-ba",
+      "description": "url-token plaintext envelope B-\u003eA-\u003eB (allowed by §9.3)",
+      "spec_ref": "SPEC-PORTABILITY.md §9.3",
+      "envelope": "plain",
+      "direction": "B-\u003eA-\u003eB",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "url-token-only plaintext export permitted",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 0536b410f3f8 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum 8fb96e2ee79c verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-plain",
+          "Pass": true,
+          "Message": "plain: 907 bytes plaintext -\u003e 907 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 260de871781b verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-plain",
+          "Pass": true,
+          "Message": "plain: 906 bytes plaintext -\u003e 906 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 1ba877a3102f verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "edge-bearer-plain-rejected",
+      "description": "bearer membership in plaintext envelope MUST be rejected (§9.3 / §8 P3)",
+      "spec_ref": "SPEC-PORTABILITY.md §8 P3, §9.3",
+      "envelope": "plain",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": false,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": false,
+          "Message": "plaintext export contains disallowed auth method or bundle",
+          "SpecRef": "§8 P3, §9.3"
+        }
+      ]
+    },
+    {
+      "id": "edge-dpop-plain-rejected",
+      "description": "dpop key in plaintext envelope MUST be rejected",
+      "spec_ref": "SPEC-PORTABILITY.md §8 P3",
+      "envelope": "plain",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": false,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": false,
+          "Message": "plaintext export contains disallowed auth method or bundle",
+          "SpecRef": "§8 P3, §9.3"
+        }
+      ]
+    },
+    {
+      "id": "edge-omvc-plain-rejected",
+      "description": "OM-VC holder key in plaintext envelope MUST be rejected",
+      "spec_ref": "SPEC-PORTABILITY.md §8 P3",
+      "envelope": "plain",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": false,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": false,
+          "Message": "plaintext export contains disallowed auth method or bundle",
+          "SpecRef": "§8 P3, §9.3"
+        }
+      ]
+    },
+    {
+      "id": "edge-omvcsd-plain-rejected",
+      "description": "OM-VC-SD pseudonym secret in plaintext envelope MUST be rejected",
+      "spec_ref": "SPEC-PORTABILITY.md §8 P3",
+      "envelope": "plain",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": false,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": false,
+          "Message": "plaintext export contains disallowed auth method or bundle",
+          "SpecRef": "§8 P3, §9.3"
+        }
+      ]
+    },
+    {
+      "id": "edge-omvcsd-pseudonym-preserved-age",
+      "description": "OM-VC-SD per-publisher pseudonyms survive A-\u003eB-\u003eA (age)",
+      "spec_ref": "SPEC-PORTABILITY.md §8 P2",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 10d42e8960bb verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum f84ee825bcad verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1528 bytes plaintext -\u003e 1710 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 8a3e1f57e9ef verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1528 bytes plaintext -\u003e 1710 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 73dfb3b3eeb1 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "1 per-publisher pseudonym(s) preserved byte-equal",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "edge-omvcsd-pseudonym-preserved-jwe",
+      "description": "OM-VC-SD per-publisher pseudonyms survive A-\u003eB-\u003eA (jwe)",
+      "spec_ref": "SPEC-PORTABILITY.md §8 P2",
+      "envelope": "jwe",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 10d42e8960bb verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum 547f2f4bdaaa verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1528 bytes plaintext -\u003e 2332 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum b9f2ad6421a3 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-jwe",
+          "Pass": true,
+          "Message": "jwe: 1528 bytes plaintext -\u003e 2332 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 60cbcee80d81 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "1 per-publisher pseudonym(s) preserved byte-equal",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "edge-bundle-reverse-direction",
+      "description": "bundle credential survives B-\u003eA-\u003eB round trip",
+      "spec_ref": "SPEC-PORTABILITY.md §5",
+      "envelope": "age",
+      "direction": "B-\u003eA-\u003eB",
+      "expected_pass": true,
+      "pass": false,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum dc1d8a9716ac verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "0 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum 8f8b32312a52 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1540 bytes plaintext -\u003e 1722 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 38cde2fddd12 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1539 bytes plaintext -\u003e 1721 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum d827d0eaf0bf verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": false,
+          "Message": "round-trip diverged:\nstart: {\"spec_version\":\"1.0\",\"subject\":{\"local_id\":\"urn:uuid:subject-bundle\",\"display_name\":\"fixture-bundle\"},\"memberships\":null,\"bundles\":[{\"aggregator\":\"https://indie-bundle.example\",\"bundle_id\":\"indie-news\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"],\"credential\":{\"type\":\"OM-VC\",\"profile\":\"https://purl.org/rss/modules/membership/vc-profile/1.0\",\"credential_jsonld\":{\"@context\":[\"https://www.w3.org/ns/credentials/v2\"],\"type\":[\"VerifiableCredential\",\"OMBundleMembershipCredential\"],\"issuer\":\"https://indie-bundle.example/issuer/1\",\"credentialSubject\":{\"id\":\"did:key:bundle-holder-dummy\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"]},\"proof\":{\"type\":\"DataIntegrityProof\",\"cryptosuite\":\"eddsa-jcs-2022\",\"proofValue\":\"z-dummy-bundle-proof\"}},\"holder_key_jwk\":{\"kty\":\"OKP\",\"crv\":\"Ed25519\",\"d\":\"dummy-bundle-holder-private\",\"x\":\"dummy-bundle-holder-public\"},\"status_list_url\":\"https://indie-bundle.example/status/1#17\"},\"added_at\":\"2026-04-01T00:00:00Z\",\"updated_at\":\"2026-04-23T00:00:00Z\"}],\"gifts_pending\":null}\nend:   {\"spec_version\":\"1.0\",\"subject\":{\"local_id\":\"urn:uuid:subject-bundle\",\"display_name\":\"fixture-bundle\"},\"memberships\":null,\"bundles\":[{\"aggregator\":\"https://indie-bundle.example\",\"bundle_id\":\"indie-news\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"],\"credential\":{\"type\":\"OM-VC\",\"profile\":\"https://purl.org/rss/modules/membership/vc-profile/1.0\",\"credential_jsonld\":{\"@context\":[\"https://www.w3.org/ns/credentials/v2\"],\"type\":[\"VerifiableCredential\",\"OMBundleMembershipCredential\"],\"issuer\":\"https://indie-bundle.example/issuer/1\",\"credentialSubject\":{\"id\":\"did:key:bundle-holder-dummy\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"]},\"proof\":{\"type\":\"DataIntegrityProof\",\"cryptosuite\":\"eddsa-jcs-2022\",\"proofValue\":\"z-dummy-bundle-proof\"}},\"holder_key_jwk\":{\"kty\":\"OKP\",\"crv\":\"Ed25519\",\"d\":\"dummy-bundle-holder-private\",\"x\":\"dummy-bundle-holder-public\"},\"status_list_url\":\"https://indie-bundle.example/status/1#17\"},\"added_at\":\"2026-04-01T00:00:00Z\",\"updated_at\":\"2026-04-23T00:00:00Z\"}],\"gifts_pending\":null}",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "edge-checksum-tamper",
+      "description": "checksum mismatch on import is rejected (§7.1)",
+      "spec_ref": "SPEC-PORTABILITY.md §7.1",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 0536b410f3f8 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum a2339a6ff622 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 907 bytes plaintext -\u003e 1089 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum b9210b5ffbb6 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 907 bytes plaintext -\u003e 1089 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum ffed412164bc verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        },
+        {
+          "Name": "checksum-tamper-detected",
+          "Pass": true,
+          "Message": "tampered checksum detected on import",
+          "SpecRef": "§7.1"
+        }
+      ]
+    },
+    {
+      "id": "edge-collision-merge",
+      "description": "collision resolution: newer updated_at wins (§11.1)",
+      "spec_ref": "SPEC-PORTABILITY.md §11.1",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 0536b410f3f8 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum 02fc5f046305 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 907 bytes plaintext -\u003e 1089 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum ac7f5792598d verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 907 bytes plaintext -\u003e 1089 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 4e6dc7b53495 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        },
+        {
+          "Name": "collision-merge",
+          "Pass": true,
+          "Message": "collision resolution applied: newer updated_at wins, entitlements merged",
+          "SpecRef": "§11.1"
+        }
+      ]
+    },
+    {
+      "id": "edge-bearer-rotation-tolerated",
+      "description": "publisher-rotated bearer access_token does not fail round trip",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum df712b2bc18e verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum 7384f6e26298 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1120 bytes plaintext -\u003e 1302 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum e4114e9db54e verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1121 bytes plaintext -\u003e 1303 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 880a1ac6dc5f verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "edge-discovery-reverify",
+      "description": "importer re-fetches .well-known/open-membership (§11)",
+      "spec_ref": "SPEC-PORTABILITY.md §11",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 0536b410f3f8 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum 01aca63c0586 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 906 bytes plaintext -\u003e 1088 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 7c944595530f verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 907 bytes plaintext -\u003e 1089 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 0f65d8bba6e7 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    },
+    {
+      "id": "edge-no-cross-publisher-id",
+      "description": "§8 P1: no identifier other than local_id or pseudonym map appears twice",
+      "spec_ref": "SPEC-PORTABILITY.md §8 P1",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": true,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum 0536b410f3f8 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "1 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum 5be364b3dc73 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 907 bytes plaintext -\u003e 1089 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 5c9ebb1d5c22 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 907 bytes plaintext -\u003e 1089 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum da5dc161cb22 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": true,
+          "Message": "round-trip body byte-equivalent modulo permitted drift",
+          "SpecRef": "§14.3"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total": 26,
+    "pass": 23,
+    "fail": 3,
+    "skipped": 0,
+    "edge_cases": 0,
+    "core_pass": 0,
+    "core_total": 0
+  }
+}

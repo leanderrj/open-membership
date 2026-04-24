@@ -1,0 +1,39 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://purl.org/rss/modules/membership/portability/v1"
+  ],
+  "type": "OMMembershipExport",
+  "spec_version": "1.0",
+  "exported_at": "2026-04-24T10:00:00Z",
+  "exported_by": {
+    "reader": "fixture-reader-a",
+    "reader_version": "0.0.0",
+    "reader_instance_id": "urn:uuid:a0000000-0000-0000-0000-000000000001"
+  },
+  "subject": {
+    "local_id": "urn:uuid:subject-url-token",
+    "display_name": "fixture-url-token"
+  },
+  "memberships": [
+    {
+      "provider": "https://fieldnotes.example",
+      "discovery": "https://fieldnotes.example/.well-known/open-membership",
+      "feed_url": "https://fieldnotes.example/feed/om/8a7b9ctoken/",
+      "auth_method": "url-token",
+      "added_at": "2026-03-01T09:00:00Z",
+      "updated_at": "2026-04-20T09:00:00Z",
+      "entitlements": {
+        "tiers": ["paid"],
+        "valid_until": "2026-05-01T00:00:00Z"
+      }
+    }
+  ],
+  "integrity": {
+    "checksum": {
+      "alg": "sha-256",
+      "canonicalization": "jcs",
+      "value": "PLACEHOLDER_RECOMPUTED_AT_LOAD"
+    }
+  }
+}

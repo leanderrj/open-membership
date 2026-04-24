@@ -1,0 +1,66 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://purl.org/rss/modules/membership/portability/v1"
+  ],
+  "type": "OMMembershipExport",
+  "spec_version": "1.0",
+  "exported_at": "2026-04-24T10:00:00Z",
+  "exported_by": {
+    "reader": "fixture-reader-a",
+    "reader_version": "0.0.0",
+    "reader_instance_id": "urn:uuid:a0000000-0000-0000-0000-000000000005"
+  },
+  "subject": {
+    "local_id": "urn:uuid:subject-om-vc-sd",
+    "display_name": "fixture-om-vc-sd"
+  },
+  "memberships": [
+    {
+      "provider": "https://underreported.example",
+      "discovery": "https://underreported.example/.well-known/open-membership",
+      "feed_url": "https://underreported.example/feed/om/",
+      "auth_method": "vc-presentation",
+      "privacy_mode": "pseudonymous-required",
+      "added_at": "2026-01-15T00:00:00Z",
+      "updated_at": "2026-04-24T00:00:00Z",
+      "entitlements": {
+        "tiers": ["paid"],
+        "valid_until": "2027-01-15T00:00:00Z"
+      },
+      "credential": {
+        "type": "OM-VC-SD",
+        "profile": "https://purl.org/rss/modules/membership/vc-sd-profile/1.0",
+        "credential_jsonld": {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2"
+          ],
+          "type": ["VerifiableCredential", "OMMembershipCredential"],
+          "issuer": "https://underreported.example/issuer/1",
+          "credentialSubject": {
+            "tier": "paid"
+          },
+          "proof": {
+            "type": "DataIntegrityProof",
+            "cryptosuite": "bbs-2023",
+            "proofValue": "z-dummy-bbs-proof"
+          }
+        },
+        "holder_secret_jwk": {
+          "kty": "BBS+",
+          "d": "dummy-bbs-holder-secret"
+        },
+        "per_publisher_pseudonyms": {
+          "https://underreported.example": "pseudo-xyz-1234-underreported-stable"
+        }
+      }
+    }
+  ],
+  "integrity": {
+    "checksum": {
+      "alg": "sha-256",
+      "canonicalization": "jcs",
+      "value": "PLACEHOLDER_RECOMPUTED_AT_LOAD"
+    }
+  }
+}

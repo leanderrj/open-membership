@@ -1,0 +1,58 @@
+{
+  "spec_version": "0.4",
+  "provider": "https://fieldnotes.example",
+  "endpoints": {
+    "checkout": "https://fieldnotes.example/api/om/checkout",
+    "entitlements": "https://fieldnotes.example/api/om/entitlements",
+    "token": "https://fieldnotes.example/api/om/token",
+    "portal": "https://fieldnotes.example/api/om/portal",
+    "unlock": "https://fieldnotes.example/api/om/unlock",
+    "token_endpoint": "https://fieldnotes.example/oauth/token"
+  },
+  "auth_methods": ["url-token", "bearer"],
+  "tiers": [
+    {
+      "id": "paid",
+      "price": "USD 8.00",
+      "period": "monthly",
+      "description": "Supporter",
+      "includes": ["long-form"]
+    },
+    {
+      "id": "founder",
+      "price": "USD 200.00",
+      "period": "yearly",
+      "description": "Founding member",
+      "includes": ["long-form", "audio"]
+    }
+  ],
+  "features": [
+    { "id": "long-form", "description": "Long-form essays" },
+    { "id": "audio", "description": "Audio versions" }
+  ],
+  "offers": [
+    {
+      "id": "paid-monthly",
+      "tier": "paid",
+      "prices": [
+        { "amount": "8.00", "currency": "USD", "period": "P1M" }
+      ],
+      "checkout": { "psp": "stripe", "price_id": "price_TEST_paid_monthly" }
+    },
+    {
+      "id": "paid-yearly",
+      "tier": "paid",
+      "prices": [
+        { "amount": "80.00", "currency": "USD", "period": "P1Y", "tax_inclusive": true, "tax_jurisdiction": "NL" }
+      ],
+      "checkout": { "psp": "stripe", "price_id": "price_TEST_paid_yearly" }
+    }
+  ],
+  "psps": [
+    { "id": "stripe", "account": "acct_TEST_xxx" }
+  ],
+  "revocation": {
+    "policy": "chargeback-revocation",
+    "grace_hours": 24
+  }
+}

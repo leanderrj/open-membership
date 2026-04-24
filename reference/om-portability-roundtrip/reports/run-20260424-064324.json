@@ -1,0 +1,107 @@
+{
+  "harness_version": "0.1.0",
+  "spec_version": "1.0-draft-2026-04-24",
+  "started_at": "2026-04-24T06:43:24.582627Z",
+  "finished_at": "2026-04-24T06:43:24.611244Z",
+  "reader_a": {
+    "name": "fixture-reader-a",
+    "version": "0.1.0",
+    "kind": "Miniflux-shape (url-token preference)",
+    "notes": "fixture stub; replace per contract.md for production readers"
+  },
+  "reader_b": {
+    "name": "fixture-reader-b",
+    "version": "0.1.0",
+    "kind": "NetNewsWire-shape (bearer/VC preference)",
+    "notes": "fixture stub; replace per contract.md for production readers"
+  },
+  "runs": [
+    {
+      "id": "core-bundle-age",
+      "description": "OM-VC issued by aggregator with audience through age envelope",
+      "spec_ref": "SPEC-PORTABILITY.md §14.3",
+      "envelope": "age",
+      "direction": "A-\u003eB-\u003eA",
+      "expected_pass": true,
+      "pass": false,
+      "duration": "",
+      "checks": [
+        {
+          "Name": "plaintext-allowed",
+          "Pass": true,
+          "Message": "non-plaintext envelope; §9.3 N/A",
+          "SpecRef": "§9.3"
+        },
+        {
+          "Name": "integrity-input",
+          "Pass": true,
+          "Message": "checksum dc1d8a9716ac verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "no-cross-publisher-id",
+          "Pass": true,
+          "Message": "no identifier repeats across providers (modulo allowed exceptions)",
+          "SpecRef": "§8 P1"
+        },
+        {
+          "Name": "discovery-reverify",
+          "Pass": true,
+          "Message": "0 discovery URL(s) present; real readers re-fetch here",
+          "SpecRef": "§11"
+        },
+        {
+          "Name": "integrity-hop1",
+          "Pass": true,
+          "Message": "checksum c524c1917fe9 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1540 bytes plaintext -\u003e 1722 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop2",
+          "Pass": true,
+          "Message": "checksum 0626d5ea8956 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "encryption-envelope-age",
+          "Pass": true,
+          "Message": "age: 1540 bytes plaintext -\u003e 1722 bytes ciphertext -\u003e plaintext",
+          "SpecRef": "§9"
+        },
+        {
+          "Name": "integrity-hop3-final",
+          "Pass": true,
+          "Message": "checksum 1c619ce4d005 verified",
+          "SpecRef": "§7.1 §7.2"
+        },
+        {
+          "Name": "pseudonym-preservation",
+          "Pass": true,
+          "Message": "no OM-VC-SD memberships; P2 vacuously satisfied",
+          "SpecRef": "§8 P2"
+        },
+        {
+          "Name": "field-preservation",
+          "Pass": false,
+          "Message": "round-trip diverged:\nstart: {\"spec_version\":\"1.0\",\"subject\":{\"local_id\":\"urn:uuid:subject-bundle\",\"display_name\":\"fixture-bundle\"},\"memberships\":null,\"bundles\":[{\"aggregator\":\"https://indie-bundle.example\",\"bundle_id\":\"indie-news\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"],\"credential\":{\"type\":\"OM-VC\",\"profile\":\"https://purl.org/rss/modules/membership/vc-profile/1.0\",\"credential_jsonld\":{\"@context\":[\"https://www.w3.org/ns/credentials/v2\"],\"type\":[\"VerifiableCredential\",\"OMBundleMembershipCredential\"],\"issuer\":\"https://indie-bundle.example/issuer/1\",\"credentialSubject\":{\"id\":\"did:key:bundle-holder-dummy\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"]},\"proof\":{\"type\":\"DataIntegrityProof\",\"cryptosuite\":\"eddsa-jcs-2022\",\"proofValue\":\"z-dummy-bundle-proof\"}},\"holder_key_jwk\":{\"kty\":\"OKP\",\"crv\":\"Ed25519\",\"d\":\"dummy-bundle-holder-private\",\"x\":\"dummy-bundle-holder-public\"},\"status_list_url\":\"https://indie-bundle.example/status/1#17\"},\"added_at\":\"2026-04-01T00:00:00Z\",\"updated_at\":\"2026-04-23T00:00:00Z\"}],\"gifts_pending\":null}\nend:   {\"spec_version\":\"1.0\",\"subject\":{\"local_id\":\"urn:uuid:subject-bundle\",\"display_name\":\"fixture-bundle\"},\"memberships\":null,\"bundles\":[{\"aggregator\":\"https://indie-bundle.example\",\"bundle_id\":\"indie-news\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"],\"credential\":{\"type\":\"OM-VC\",\"profile\":\"https://purl.org/rss/modules/membership/vc-profile/1.0\",\"credential_jsonld\":{\"@context\":[\"https://www.w3.org/ns/credentials/v2\"],\"type\":[\"VerifiableCredential\",\"OMBundleMembershipCredential\"],\"issuer\":\"https://indie-bundle.example/issuer/1\",\"credentialSubject\":{\"id\":\"did:key:bundle-holder-dummy\",\"audience\":[\"https://fieldnotes.example\",\"https://underreported.example\",\"https://localcity.example\"]},\"proof\":{\"type\":\"DataIntegrityProof\",\"cryptosuite\":\"eddsa-jcs-2022\",\"proofValue\":\"z-dummy-bundle-proof\"}},\"holder_key_jwk\":{\"kty\":\"OKP\",\"crv\":\"Ed25519\",\"d\":\"dummy-bundle-holder-private\",\"x\":\"dummy-bundle-holder-public\"},\"status_list_url\":\"https://indie-bundle.example/status/1#17\"},\"added_at\":\"2026-04-01T00:00:00Z\",\"updated_at\":\"2026-04-23T00:00:00Z\"}],\"gifts_pending\":null}",
+          "SpecRef": "§14.3"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "pass": 0,
+    "fail": 1,
+    "skipped": 0,
+    "edge_cases": 0,
+    "core_pass": 0,
+    "core_total": 0
+  }
+}

@@ -1,6 +1,6 @@
 # Open Membership RSS — Roadmap to 1.0
 
-Eighteen months from spec draft to ratified open standard with multiple production deployments.
+Eighteen months from spec draft to ratified open standard with multiple production deployments. This document covers spec and technical milestones only; for budget and funding, see [FUNDING.md](FUNDING.md).
 
 ## Guiding principles
 
@@ -12,6 +12,22 @@ These are the rules the roadmap is built on. When a decision comes up that isn't
 4. **Indie ecosystem before incumbents.** Don't court Substack, Patreon, Spotify, or Apple. They'll adopt, fork, or ignore; none of those outcomes should be precondition for 1.0.
 5. **Governance before scale.** The custodian commitment happens before the protocol has "enough adopters to justify it," because that's exactly the Winer move that saved RSS from UserLand's collapse.
 6. **Publish negative results.** When something doesn't work — a publisher drops the spec, a PSP profile breaks, a test fails — write it up publicly. Open protocols accumulate trust through operational honesty, not marketing.
+
+## Interop & platform-surface track — SHIPPED
+
+All nine gaps surfaced in review after Ghost and WordPress shipped are now delivered as written artifacts in the repository. What remains on each is operational: deployment, external review, or production validation with a real publisher. Pointers:
+
+| Gap | Artifact | Remaining work |
+|---|---|---|
+| Atom + JSON Feed mappings | `SPEC-SYNDICATION-MAPPINGS.md` | Test suite validates both formats (see test suite row) |
+| Platform Adapter Profile | `SPEC-ADAPTER-PROFILE.md` | Validated against WooCommerce + Memberful without rework; no further work pre-1.0 |
+| Static-site reference | `reference/om-eleventy/` (scaffolded) | Onboard a real Eleventy publisher; production deploy |
+| ActivityPub co-existence | `SPEC-ACTIVITYPUB.md` | Review pass with Ghost-AP / WP-AP maintainers |
+| Reader conformance harness | `reference/om-test-suite/` (scaffolded, Level 1 live, L2/L5 stubbed) | Fill in L2 and L5 tests; deploy at `test.open-membership.org` |
+| Subscriber portability | `SPEC-PORTABILITY.md` + `reference/om-portability-roundtrip/` | Run the 26-test matrix against real Miniflux and NetNewsWire forks once they exist |
+| Anti-sharing primitive | `SPEC-SHARING-POLICY.md` (v0.1 Provisional) | Hold as Provisional until persona 2 podcaster deploys; errata to 1.0 after |
+| i18n: VAT/tax at `<om:price>` | `SPEC-ERRATA-0.4.1.md` Erratum 1 | Publish 0.4.1 at the canonical URL |
+| Enclosure auth | `SPEC-ERRATA-0.4.1.md` Erratum 2 | Same |
 
 ## The 18-month plan
 
@@ -26,7 +42,7 @@ The goal of Phase 1 is a working end-to-end flow on a test Ghost instance, nothi
 - Serve `.well-known/open-membership` with minimal required fields
 - Integration test: feed validates as well-formed RSS 2.0, discovery document parses as JSON
 
-Owner: one full-time engineer. Budget: €15,000 (1 month at freelance rates).
+Owner: one full-time engineer. Effort: 1 engineer-month.
 
 **Month 2: Stripe integration and entitlements**
 
@@ -36,18 +52,18 @@ Owner: one full-time engineer. Budget: €15,000 (1 month at freelance rates).
 - Issue JWTs carrying `entitlements` claim after successful subscription
 - Integration test: test-mode Stripe purchase flow works end-to-end, entitlement JWT validates
 
-Owner: same engineer. Budget: €15,000.
+Owner: same engineer. Effort: 1 engineer-month.
 
 **Month 3: Reader fork + interop test**
 
-- Fork Miniflux, add `om` feed parsing for Levels 1, 2, and 5
-- Implement bearer auth token storage scoped per feed
-- Implement `<om:offer>` checkout trigger that opens the publisher's checkout URL in system browser
+The Miniflux fork is scaffolded at `reference/om-miniflux/` (fork-prep Go `om/` module, fixture feeds, PATCH-PLAN.md, INTEGRATION.md runbook). Remaining work:
+
+- Apply the patch plan to a live Miniflux checkout, merge the `om/` module into its source tree
 - Integration test: one human subscribes to a test Ghost instance via the forked Miniflux, content unlocks after payment, content locks again after subscription cancellation
 
-Owner: second full-time engineer (overlapping with Month 2). Budget: €30,000 for two months of parallel work.
+Owner: second full-time engineer (overlapping with Month 2).
 
-**Phase 1 total: ~€60,000, 3 engineer-months, one working end-to-end demo.**
+**Phase 1 deliverable:** one working end-to-end demo of Ghost + Miniflux + Stripe test-mode.
 
 ### Phase 2 — First outside publisher (months 4–6)
 
@@ -60,7 +76,7 @@ This is the riskiest phase because it depends on someone outside the project say
 - Add Mollie PSP profile (second PSP required by the spec; EU-friendly)
 - Security review by an external party (a few days of a competent security consultant)
 
-Budget: €10,000 engineering + €3,000 security consultant.
+(Spec deliverables for M4 — `tax_inclusive` and `<om:sharing-policy>` v0 — are shipped; see the interop track table above.)
 
 **Month 5: Publisher outreach and onboarding**
 
@@ -68,21 +84,20 @@ Budget: €10,000 engineering + €3,000 security consultant.
   - Ghost users currently using FeedPress+Outpost for paid RSS (they've already paid for this; offering them the open version is the easiest pitch)
   - Substack refugees who've migrated to Ghost and are looking for paid-RSS support
   - Small investigative journalism publications that need pseudonymous mode
+  - **Publishers on the "Open" column of opensubscriptionplatforms.com** (WooCommerce, Memberful, Memberstack, Memberspace, Podia) — they have already self-selected for open values on the publisher-data axis; `om` extends that to the subscriber axis. See COMPETITIVE-LANDSCAPE.md "Two axes of openness."
 - Write outreach emails, have calls, understand actual needs
 - Pick the best-fit publisher and onboard them with hands-on support
 - Target: one publisher in production by end of month 5
-
-Budget: mostly time rather than money, estimate €5,000 equivalent.
 
 **Month 6: First live paying subscriber**
 
 - First real (non-test) subscription through the `om` checkout flow on the production publisher
 - Document every bug, every confusing UX moment, every webhook race condition
-- Ship a 0.4.1 errata release with whatever the production deployment surfaced
+- Publish the 0.4.1 errata document (`SPEC-ERRATA-0.4.1.md`, already drafted) at the canonical URL
 
-Phase 2 total: ~€18,000 + the biggest single political win of the whole project.
+**Phase 2 deliverable:** first production publisher with real paying subscribers; 0.4.1 errata published.
 
-### Phase 3 — Governance and funding (months 7–9)
+### Phase 3 — Governance and test infrastructure (months 7–9)
 
 Once there's one production deployment, governance conversations get real. Without it, they're speculative.
 
@@ -95,64 +110,64 @@ Order of asks:
 3. **NLnet Foundation** (Netherlands; NGI Zero program is tailor-made for this)
 4. **Software Freedom Conservancy** (safe US-based fallback with institutional credibility)
 
-Draft pitches for all four in parallel; send them in sequence a week apart to avoid looking like a shotgun approach. Budget: just time — a week of writing.
+Draft pitches for all four in parallel; send them in sequence a week apart to avoid looking like a shotgun approach.
 
-**Month 8: Funded engineer**
+**Month 8: Grant applications**
 
-Once a custodian says yes (realistically by month 8), file the first grant application:
+Once a custodian says yes (realistically by month 8), file the grant applications described in [FUNDING.md](FUNDING.md). Applications take 2–4 weeks each to write well; do not rush them, and do not send them simultaneously.
 
-- **Sovereign Tech Fund application** for test suite development (€80,000 over 12 months; matches scale of their ActivityPub grant)
-- **NLnet NGI Zero application** for continued Ghost plugin development (€50,000 over 9 months; within their typical grant size)
+**Month 9: Test suite deployment + format-mapping publication**
 
-These are not mutually exclusive; they fund different things. Applications take 2–4 weeks each to write well.
+Test suite + reader harness are scaffolded at `reference/om-test-suite/` (Level 1 tests live, L2/L5 stubbed). Atom + JSON Feed mappings are published at `SPEC-SYNDICATION-MAPPINGS.md`. Remaining operational work:
 
-**Month 9: Test suite v1**
+- Fill in Level 2 and Level 5 tests in the suite
+- Deploy the suite at `test.open-membership.org` (or equivalent custodian URL)
+- Verify test suite validates feeds in all three syndication formats (RSS, Atom, JSON Feed)
+- Publish the Atom + JSON Feed mappings document at the canonical namespace URL
 
-While funding is in flight, build the test suite v1 covering Levels 1, 2, 5. The suite is a standalone HTTP service that takes a feed URL and produces a pass/fail report. Deploy at `test.open-membership.org` or equivalent.
-
-Budget (pre-grant): ~€15,000 for 1 engineer-month.
-
-Phase 3 total: ~€15,000 + governance commitments + grant applications submitted.
+**Phase 3 deliverable:** custodian commitment, grant applications submitted, test suite deployed, syndication mappings published.
 
 ### Phase 4 — Second reader, WordPress, and replication (months 10–12)
 
 The goal of Phase 4 is diversifying the implementer base. Two reference implementations from the same author is a suspicious spec; five implementations from four authors is a healthy protocol.
 
-**Month 10: WordPress plugin**
+**Month 10: WordPress plugin + Platform Adapter Profile — SHIPPED**
 
-Fork an existing WordPress membership plugin (Paid Memberships Pro is the best candidate — large active user base, clean plugin API, community familiar with subscription mechanics). Add `om` feed emission and discovery document.
+Both deliverables are complete:
+- WordPress plugin: `reference/om-wordpress/` (feature-complete)
+- Platform Adapter Profile: `SPEC-ADAPTER-PROFILE.md` — validated against WooCommerce + Memberful without rework; the "split the Profile" fallback is not triggered
 
-Owner: a WordPress developer, ideally not the same person as the Ghost engineer. The point is to stress-test the spec against a second implementer's instincts.
+**Month 11: Second reader + static-site reference**
 
-Budget: €20,000–€30,000 depending on WordPress plugin complexity.
-
-**Month 11: Second reader**
-
-Options in priority order:
+Second-reader options in priority order:
 
 1. **NetNewsWire fork** (iOS + macOS, native Apple, large user base). Hardest but highest-leverage.
 2. **Reeder support** (closed-source but its developer has historically accepted spec-based PRs). Ask first, then decide.
 3. **Feeder for Android** (open-source, active maintainer, Android reaches audiences NetNewsWire can't).
 
-Budget: €20,000 for either 1 or 3.
+Static-site reference is scaffolded at `reference/om-eleventy/` (Eleventy + Cloudflare Workers; feed, discovery, checkout, entitlements, webhook, token routes; tests). Remaining operational work: identify an Eleventy publisher willing to run the reference in production and migrate them.
 
-**Month 12: Publisher replication**
+Owner: a developer with a CDN-edge background, not the Ghost or WordPress engineer.
+
+**Month 12: Publisher replication + federation co-existence**
 
 By end of Phase 4, target five publishers in production. The outreach pattern from Phase 2 repeats but with faster onboarding — the first publisher's experience becomes a public case study, each subsequent publisher takes less hand-holding.
 
-Phase 4 total: ~€45,000 + five production publishers.
+The ActivityPub co-existence appendix is drafted at `SPEC-ACTIVITYPUB.md`. Remaining operational work: review pass with Ghost ActivityPub and Automattic WordPress AP plugin maintainers; land any feedback as appendix v0.2.
+
+**Phase 4 deliverable:** five production publishers, three publisher references (Ghost, WordPress, Eleventy+edge), second reader, Platform Adapter Profile + ActivityPub co-existence appendices.
 
 ### Phase 5 — IETF submission prep (months 13–15)
 
 The spec is now running in production at multiple sites, with a working test suite and a neutral custodian. It's ready to be submitted as an Independent Submission to the IETF.
 
-**Month 13: Format conversion**
+**Month 13: Format conversion + subscriber portability — SHIPPED**
 
-- Convert the Markdown spec to IETF-standard XML (xml2rfc) or RFC-ready Markdown (kramdown-rfc)
-- Write required sections that are missing: Security Considerations, IANA Considerations, Implementation Status
-- Internal editing pass for IETF editorial voice
+- IETF Internet-Draft: `ietf/draft-om-rss-00.md` (1,926 lines in kramdown-rfc2629; Security / Privacy / IANA / Implementation Status sections written; SPEC §G/§H/Part II deleted per the disposition table)
+- Subscriber portability spec: `SPEC-PORTABILITY.md`
+- Portability round-trip harness: `reference/om-portability-roundtrip/` (6-credential × 2-envelope + 14 edge-case matrix, runnable)
 
-Budget: €8,000 (a few weeks for a technical writer familiar with IETF conventions).
+Remaining operational work: internal editing pass on the IETF draft for final voice; run the round-trip against real Miniflux + NetNewsWire forks once those exist.
 
 **Month 14: External review**
 
@@ -160,15 +175,13 @@ Budget: €8,000 (a few weeks for a technical writer familiar with IETF conventi
 - Solicit reviews from at least three implementers and two non-implementers (one security reviewer, one privacy reviewer)
 - Incorporate feedback, produce revision -01
 
-Budget: mostly volunteer time, estimate €3,000 equivalent for paid reviews.
-
 **Month 15: Submit to IRSG**
 
 - Submit to the IETF Independent Stream Editor (currently Eliot Lear as of 2026)
 - Typical review time: 6–12 months
 - During review, the working group continues implementation and errata work; no spec changes allowed unless IRSG requests them
 
-Phase 5 total: ~€11,000 + an RFC in the queue.
+**Phase 5 deliverable:** RFC submitted to the Independent Stream Editor; subscriber portability format shipped and round-trip-verified.
 
 ### Phase 6 — 1.0 release and event (months 16–18)
 
@@ -177,7 +190,6 @@ Phase 5 total: ~€11,000 + an RFC in the queue.
 - Two-day event, 15–25 people, in person
 - Location: probably Amsterdam or Berlin (European center of gravity for `om` given NLnet and Sovereign Tech Fund connections)
 - Format: morning demos, afternoon hackathon, evening social
-- Budget: €8,000–€15,000 for venue, food, travel subsidies for implementers who can't self-fund
 
 **Month 17: 1.0 errata freeze**
 
@@ -191,17 +203,17 @@ Phase 5 total: ~€11,000 + an RFC in the queue.
 - Press release to IndieWeb community, Ghost forum, Podcast Index, Hacker News
 - Second event scheduled for month 24
 
-Phase 6 total: ~€15,000 + 1.0 released.
+**Phase 6 deliverable:** 1.0 released at the custodian URL; first community event held.
 
-## Total budget
+## Critical path
 
-Approximate totals across all phases: **~€165,000** in direct engineering/event spend, **~€130,000 in matching grants secured** (Sovereign Tech Fund + NLnet), and **some unpaid volunteer time** from the working group.
+The critical path runs through Phase 2 (first outside publisher) and Phase 3 (custodian + test suite). Phases 4, 5, 6 are standard project-management work once those two are done.
 
-The critical path runs through Phase 2 (first outside publisher) and Phase 3 (custodian + funding). Phases 4, 5, 6 are standard project-management work once those two are done.
+The interop-track additions are deliberately off the critical path — each is either spec work that slots alongside implementation, or a small parallel build — so a slip on one does not cascade into Phase 5 or 6.
 
 ## Risk register
 
-Named risks and mitigations.
+Named risks and mitigations. Funding-related risks live in [FUNDING.md](FUNDING.md).
 
 **Risk: Ghost plugin takes longer than 3 months.**
 - Probability: medium-high. Ghost's plugin architecture is not the deepest in the CMS world.
@@ -218,11 +230,6 @@ Named risks and mitigations.
 - Mitigation: if all four decline, the fallback is a lightweight foundation modeled on the Podcast Index — one person, one domain, one public Git repo, no institutional overhead. Less durable but workable for 1.0.
 - Escalation: if no custodian path exists, delay 1.0 until one does. Don't ratify 1.0 under informal governance.
 
-**Risk: Grant applications rejected.**
-- Probability: medium. These grants are competitive; rejection isn't a signal of quality.
-- Mitigation: apply to all three (Sovereign Tech Fund, NLnet, Stripe Open Source). Expect one yes.
-- Escalation: the project can survive on volunteer labor for months 7–15 if needed, but the IETF submission and second reader work become considerably slower.
-
 **Risk: Key crypto suite (`bbs-2023`) doesn't advance to Recommendation on schedule.**
 - Probability: low-medium. W3C timelines slip regularly.
 - Mitigation: OM-VC-SD 1.0 can track the CR version. If major breaking changes happen, release OM-VC-SD 1.1 as an errata and document the migration path.
@@ -238,16 +245,37 @@ Named risks and mitigations.
 - Mitigation: the test suite publishes certification results publicly. The governance process (via the custodian) handles "claims conformance but fails suite" cases by listing the failing implementation on a public page.
 - Escalation: this is a post-1.0 problem but the enforcement machinery should be drafted before 1.0.
 
+**Risk: Static-site reference (Eleventy + edge) gains no outside maintainer.**
+- Probability: medium. A reference implementation with no production user atrophies within a year.
+- Mitigation: pick an existing Eleventy-based indie publisher before starting Phase 4 M11; offer to migrate them in exchange for running the reference. Don't build it green-field in isolation.
+- Escalation: if no publisher commitment by end of month 10, downgrade M11 to a documentation-only "static-site adapter recipe" and defer the working reference to 1.x.
+
+**Risk: ActivityPub co-existence design stalls on Ghost/WP AP team availability.**
+- Probability: medium. Both teams are small and have their own roadmaps; an outside spec's appendix is unlikely to be their priority.
+- Mitigation: scope to a non-normative appendix first, so lack of consensus doesn't block 1.0. Offer to host the co-authored drafting session at the IndieWebCamp event in month 16 if async drafting doesn't converge.
+- Escalation: if no drafting partner materializes by month 12, ship the appendix as "open question, see §G.2" and let 1.x close it.
+
+**Risk: Anti-sharing primitive lands too early and fragments.**
+- Probability: low-medium. If `<om:sharing-policy>` ships in M4 before a real deployment hits the problem, the design will be wrong in the same way pre-deployment specs always are.
+- Mitigation: ship the M4 draft as explicitly provisional, clearly marked "subject to errata once persona 2 (podcaster) is in production." Don't promote it to a stable element until at least one publisher has used it in anger.
+- Escalation: if the first production podcaster needs a shape the M4 draft didn't anticipate, replace it wholesale in a 0.4.x errata rather than extend it.
+
+**Risk: Platform Adapter Profile fails external validation at M10.**
+- Probability: low-medium. Two CMSes (Ghost, WordPress) may have converged on shared assumptions that WooCommerce or Memberful break.
+- Mitigation: the validation is the point of running it against WooCommerce and Memberful before finalizing. Rework is cheaper at draft stage than after publication.
+- Escalation: if the Profile cannot cover all four without becoming a laundry list, split it into "CMS Profile" and "Commerce-plugin Profile" and accept that one more shape exists in the world.
+
 ## What 1.0 ratifies, concretely
 
 By end of month 18, the project owns:
 
 - A frozen spec document at a canonical URL, held by a neutral custodian
 - A published RFC (or one in the final stages of IRSG review)
-- An open-source test suite that any implementer can run
+- An open-source publisher test suite + reader conformance harness, both in one repo, that any implementer can run
 - At least ten publishers in production across the three personas
-- Two reference publisher implementations (Ghost, WordPress)
+- Three reference publisher implementations (Ghost, WordPress, Eleventy + edge)
 - Two reference reader implementations (Miniflux, NetNewsWire or equivalent mobile)
+- Non-normative appendices covering: Atom + JSON Feed mappings, Platform Adapter Profile, ActivityPub co-existence, subscriber portability format, enclosure auth, and a provisional anti-sharing primitive
 - A working group of 5–8 with at least one paid coordinator
 - Two events held (month 16, one tentatively scheduled for month 24)
 - A public record of errata, fixes, and negative results

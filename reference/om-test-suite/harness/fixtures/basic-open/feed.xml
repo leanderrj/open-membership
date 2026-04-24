@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:om="http://purl.org/rss/modules/membership/">
+  <channel>
+    <title>Basic Open Fixture</title>
+    <link>https://basic-open.fixture.invalid/</link>
+    <description>A minimal Level 1 fixture with no paid content. Every item is open; the feed still declares the om namespace and a provider for parse-level tests.</description>
+
+    <om:provider>https://basic-open.fixture.invalid</om:provider>
+    <om:discovery>https://basic-open.fixture.invalid/.well-known/open-membership</om:discovery>
+    <om:authMethod>url-token</om:authMethod>
+
+    <om:tier id="free" price="USD 0.00" period="monthly">Free</om:tier>
+
+    <item>
+      <title>Welcome post</title>
+      <guid isPermaLink="false">basic-open-1</guid>
+      <link>https://basic-open.fixture.invalid/posts/welcome</link>
+      <description>A welcome post, open to all readers.</description>
+      <om:access>open</om:access>
+    </item>
+
+    <item>
+      <title>Second free post</title>
+      <guid isPermaLink="false">basic-open-2</guid>
+      <link>https://basic-open.fixture.invalid/posts/second</link>
+      <description>Another open post, no auth required.</description>
+      <om:access>open</om:access>
+    </item>
+  </channel>
+</rss>

@@ -105,6 +105,32 @@ This is the gap matrix from OPEN-MEMBERSHIP-RSS-0.4.md §H.4, restated as what `
 
 Every row in the right-hand column is a specific publisher pain point documented in public forums, Ghost forum threads, Substack complaints, and Hacker News discussions.
 
+## Two axes of openness
+
+`opensubscriptionplatforms.com` — a Ghost-led campaign reflecting John O'Nolan's framing — splits the subscription-platform market into "Open" and "Closed" on a specific axis: **publisher-side data ownership.** Can the publisher own their Stripe customer list, their content, their email addresses, their payment history? The cut is roughly Stripe Connect/Direct + full exports vs. proprietary payments + partial or missing exports.
+
+`om` measures a different axis: **subscriber-side interoperability.** Can any reader read any publisher's paid content without bespoke integration? Can a subscriber port their memberships between readers? Can a credential survive a publisher switch? These are orthogonal.
+
+All six "Open" platforms on O'Nolan's list — Ghost, Podia, Memberful, WooCommerce, Memberstack, Memberspace — score open on the publisher axis and **all still fail the subscriber axis today**. A Ghost member cannot read their paid newsletter in an arbitrary RSS reader without cookie-juggling. A Memberful-protected post is gated by a proprietary session. By opensubscriptionplatforms.com's lens they are open; by `om`'s lens they are all still silos. `om` is the missing second column.
+
+The framings are aligned rather than competitive: both reject lock-in, just at different layers. The natural pitch to that community is "you solved publisher portability with Stripe Connect + data exports; now solve subscriber portability with `om`."
+
+### The "Open" column is `om`'s adapter pipeline
+
+| Platform | Where it fits `om`'s plan |
+|---|---|
+| Ghost | Already done — `reference/om-ghost` is the first reference |
+| WooCommerce | Natural next WP anchor after `om-wordpress`. Stripe-based; Subscriptions add-on maps cleanly to `<om:tier>` |
+| Memberful | Pure WP membership, directly overlaps `om-wordpress`; the Memberful → om-wordpress migration story writes itself |
+| Podia | SaaS, creator-focused, multi-format (courses + memberships). Good fit for a "Memberstack-shape" drop-in embed |
+| Memberstack / Memberspace | Drop-in embeds — ideal for the static-site reference (ROADMAP Phase 4 M11) |
+
+These six are the cleanest stress test for the **Platform Adapter Profile** (ROADMAP Phase 4 M10). If the profile extracted from Ghost + WordPress does not accommodate WooCommerce and Memberful without rework, the profile is wrong.
+
+### The "Closed" column is the three personas
+
+Substack (persona 1), Patreon (persona 2), plus Beehiiv, Convertkit, Gumroad, Supercast, Medium, Wild Apricot. Every one is an existing `om` target via the "switch to an open host" migration path. Beehiiv is worth flagging: it is measurably *worse* than Substack on data ownership — Substack at least exports email addresses; Beehiiv exports no content, no customers, no payments. Migration pressure on Beehiiv publishers is sharper than on Substack publishers.
+
 ## The strategic narrative
 
 The pitch to publishers: **"What FeedPress + Outpost costs you €20–€50/month, `om` gives you as a self-hostable open standard. And you get features neither offers: cross-reader compatibility, group subscriptions, privacy mode, and no monthly fee to a single vendor."**

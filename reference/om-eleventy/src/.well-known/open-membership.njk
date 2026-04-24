@@ -1,0 +1,45 @@
+---
+permalink: /.well-known/open-membership
+eleventyExcludeFromCollections: true
+---
+{
+  "spec_version": "0.4",
+  "provider": {
+    "url": "https://publisher.example",
+    "name": "Publisher Example"
+  },
+  "auth_methods": ["url-token"],
+  "tiers": [
+    { "id": "free",  "label": "Free",      "features": [] },
+    { "id": "paid",  "label": "Supporter", "features": ["full-text", "archive"] }
+  ],
+  "features": [
+    { "id": "full-text", "label": "Full article text" },
+    { "id": "archive",   "label": "Full archive access" }
+  ],
+  "offers": [
+    {
+      "id": "supporter-monthly",
+      "tier": "paid",
+      "price": { "amount": "8.00", "currency": "USD", "period": "P1M" },
+      "checkout": { "psp": "stripe", "endpoint": "https://publisher.example/api/checkout" }
+    },
+    {
+      "id": "supporter-yearly",
+      "tier": "paid",
+      "price": { "amount": "80.00", "currency": "USD", "period": "P1Y" },
+      "checkout": { "psp": "stripe", "endpoint": "https://publisher.example/api/checkout" }
+    }
+  ],
+  "psps": {
+    "stripe": { "account": "acct_REPLACE_ME", "mode": "subscription-derived" }
+  },
+  "revocation": { "policy": "prospective-only", "grace_hours": 48 },
+  "endpoints": {
+    "checkout":     "https://publisher.example/api/checkout",
+    "entitlements": "https://publisher.example/api/entitlements",
+    "token":        "https://publisher.example/api/token",
+    "webhook":      "https://publisher.example/api/webhook"
+  },
+  "_note": "This static copy is what Eleventy emits at build time. The Worker rewrites the endpoint URLs and psps.account at request time against the live environment; if the Worker is in front of this site, the dynamic copy takes precedence."
+}

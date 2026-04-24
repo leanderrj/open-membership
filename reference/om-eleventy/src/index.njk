@@ -1,0 +1,19 @@
+---
+layout: base.njk
+title: Publisher Example
+---
+<h2>Latest posts</h2>
+<ul>
+{%- for post in collections.posts -%}
+  <li>
+    <a href="{{ post.url }}">{{ post.data.title }}</a>
+    &mdash; <code>{{ post.data.om_access or "open" }}</code>
+  </li>
+{%- endfor -%}
+</ul>
+
+<h2>Subscribe</h2>
+<p>
+  Public feed: <a href="/public.xml">/public.xml</a><br />
+  Discovery: <a href="/.well-known/open-membership">/.well-known/open-membership</a>
+</p>

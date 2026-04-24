@@ -1,0 +1,48 @@
+name = "om-eleventy"
+main = "worker/src/index.ts"
+compatibility_date = "2024-11-12"
+compatibility_flags = ["nodejs_compat"]
+
+# Static site emitted by `npm run build`. Wrangler serves it for requests that
+# do not match a route in the Worker (see index.ts router fall-through).
+[site]
+bucket = "./_site"
+
+# -----------------------------------------------------------------------
+# KV namespace. One namespace holds every piece of per-subscriber state
+# this reference needs. Keyed as:
+#
+#   member:<feed_token>              -> MemberStateJson
+#   sub:<stripe_subscription_id>     -> <feed_token>     (reverse index)
+#   cust:<stripe_customer_id>        -> <feed_token>     (reverse index)
+#   idem:<stripe_event_id>           -> 1 with 7-day TTL
+#
+# Create once: wrangler kv namespace create OM_KV
+# Then paste the id below.
+# -----------------------------------------------------------------------
+
+[[kv_namespaces]]
+binding = "OM_KV"
+id = "REPLACE_ME_OM_KV"
+
+# -----------------------------------------------------------------------
+# Non-secret vars. Secrets are set with `wrangler secret put`:
+#   OM_FEED_TOKEN_KEY     HMAC key for feed-token derivation (>= 32 chars)
+#   OM_JWT_SIGNING_KEY    HS256 key for JWT issuance        (>= 32 chars)
+#   STRIPE_SECRET_KEY     sk_live_... or sk_test_...
+#   STRIPE_WEBHOOK_SECRET whsec_...
+# -----------------------------------------------------------------------
+
+[vars]
+PUBLIC_URL = "https://publisher.example"
+LOG_LEVEL = "info"
+OM_CORS_ORIGINS = ""
+
+[[rules]]
+type = "Text"
+globs = ["**/*.yaml"]
+fallthrough = false
+
+[observability]
+enabled = true
+head_sampling_rate = 1

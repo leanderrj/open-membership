@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:om="http://purl.org/rss/modules/membership/">
+  <channel>
+    <title>Field Notes</title>
+    <link>https://fieldnotes.example/</link>
+    <description>A public feed declaring the om namespace without gating.</description>
+    <om:provider>https://fieldnotes.example</om:provider>
+    <om:discovery>https://fieldnotes.example/.well-known/open-membership</om:discovery>
+    <om:license>https://creativecommons.org/licenses/by/4.0/</om:license>
+    <item>
+      <title>Hello from Field Notes</title>
+      <link>https://fieldnotes.example/hello</link>
+      <guid>https://fieldnotes.example/hello</guid>
+      <description>Plain free post.</description>
+      <om:access>open</om:access>
+    </item>
+    <item>
+      <title>Another free post</title>
+      <link>https://fieldnotes.example/second</link>
+      <guid>https://fieldnotes.example/second</guid>
+      <description>Still free.</description>
+    </item>
+  </channel>
+</rss>

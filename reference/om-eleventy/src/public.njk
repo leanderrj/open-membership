@@ -1,0 +1,46 @@
+---
+permalink: /public.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:om="http://purl.org/rss/modules/membership/">
+  <channel>
+    <title>Publisher Example &mdash; public feed</title>
+    <link>https://publisher.example/</link>
+    <description>Open items only. For members-only items, see the per-subscriber feed advertised at /.well-known/open-membership.</description>
+    <language>en</language>
+    <atom:link href="https://publisher.example/public.xml" rel="self" type="application/rss+xml" />
+
+    <om:provider>https://publisher.example</om:provider>
+    <om:discovery>https://publisher.example/.well-known/open-membership</om:discovery>
+    <om:authMethod>url-token</om:authMethod>
+    <om:tier id="paid" price="USD 8.00" period="P1M">Supporter</om:tier>
+    {% if revocation %}<om:revocation policy="{{ revocation.policy }}" grace_hours="{{ revocation.grace_hours }}" />{% endif %}
+
+    {%- for post in collections.posts -%}
+      {%- set access = post.data.om_access or "open" -%}
+      <item>
+        <title>{{ post.data.title }}</title>
+        <link>https://publisher.example{{ post.url }}</link>
+        <guid isPermaLink="false">https://publisher.example{{ post.url }}</guid>
+        <pubDate>{{ post.date | rfc822Date }}</pubDate>
+        <om:access>{{ access }}</om:access>
+        {%- if access != "open" -%}
+        <om:unlock>https://publisher.example/.well-known/open-membership</om:unlock>
+        {%- endif -%}
+        {%- if access == "open" -%}
+        <description><![CDATA[{{ post.templateContent | safe }}]]></description>
+        <content:encoded><![CDATA[{{ post.templateContent | safe }}]]></content:encoded>
+        {%- elif post.data.om_preview -%}
+        <description><![CDATA[{{ post.data.om_preview }}]]></description>
+        <om:preview><![CDATA[{{ post.data.om_preview }}]]></om:preview>
+        {%- else -%}
+        <description>Members-only item. Unlock via your subscriber feed.</description>
+        {%- endif -%}
+      </item>
+    {%- endfor -%}
+  </channel>
+</rss>

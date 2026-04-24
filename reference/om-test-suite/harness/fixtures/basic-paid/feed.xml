@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:om="http://purl.org/rss/modules/membership/">
+  <channel>
+    <title>Basic Paid Fixture</title>
+    <link>https://basic-paid.fixture.invalid/</link>
+    <description>A Level 2 + Level 5 fixture: url-token auth, one paid tier, one offer against a mock Stripe checkout. Mirrors the Indie Reader profile from FEATURESET.md.</description>
+
+    <om:provider>https://basic-paid.fixture.invalid</om:provider>
+    <om:discovery>https://basic-paid.fixture.invalid/.well-known/open-membership</om:discovery>
+    <om:authMethod>url-token</om:authMethod>
+    <om:revocation policy="prospective-only" grace_hours="48" />
+
+    <om:tier id="free" price="USD 0.00" period="monthly">Free</om:tier>
+    <om:tier id="paid" price="USD 8.00" period="monthly">Paid</om:tier>
+
+    <om:offer id="paid-monthly" tier="paid" />
+
+    <item>
+      <title>Public update</title>
+      <guid isPermaLink="false">basic-paid-1</guid>
+      <link>https://basic-paid.fixture.invalid/posts/public</link>
+      <description>An open post that both free and paid readers see.</description>
+      <om:access>open</om:access>
+    </item>
+
+    <item>
+      <title>Subscriber-only analysis</title>
+      <guid isPermaLink="false">basic-paid-2</guid>
+      <link>https://basic-paid.fixture.invalid/posts/subscribers</link>
+      <description>Preview text only in the free feed.</description>
+      <om:access>locked</om:access>
+      <om:preview>Paid subscribers read the full analysis; this is the preview shown to everyone else.</om:preview>
+      <om:unlock>https://basic-paid.fixture.invalid/unlock/basic-paid-2</om:unlock>
+    </item>
+  </channel>
+</rss>
