@@ -7,7 +7,7 @@ emits `StatusSkip` with a TODO rationale until a maintainer fills it in.
 
 Test names follow `snake_case`. Every test carries a `spec_ref` string in the
 JSON report so a failure always links back to an authoritative sentence in
-`SPEC.md`, `FEATURESET.md`, or `plans/PHASE-3-4.md`.
+`SPEC.md`, `../../../docs/FEATURESET.md`, or `plans/PHASE-3-4.md`.
 
 ---
 
@@ -25,7 +25,7 @@ Foundational`.
 
 The feed's root element (or `<channel>`) carries an `xmlns:*` declaration
 that resolves to `http://purl.org/rss/modules/membership/`. Prefix is
-irrelevant; namespace URI is load-bearing. Spec: `FEATURESET.md §"Conformance
+irrelevant; namespace URI is load-bearing. Spec: `../../../docs/FEATURESET.md §"Conformance
 levels" / Level 1`.
 
 ### `parse/provider_present`
@@ -42,7 +42,7 @@ Spec: `SPEC.md §Appendix A`.
 ### `parse/at_least_one_tier`
 
 At least one `<om:tier>` is declared and every declared tier has a non-empty
-`id` attribute. Spec: `FEATURESET.md §Level 1`.
+`id` attribute. Spec: `../../../docs/FEATURESET.md §Level 1`.
 
 ### `parse/access_values_valid`
 
@@ -95,7 +95,7 @@ block is not a failure at Level 1 — the spec's default is
 ## Level 2 — Auth (stubs)
 
 URL token auth + unlock endpoint. Every check below is a stub emitting Skip
-with a TODO. Spec: `FEATURESET.md §Level 2`; `SPEC.md §Featureset Summary /
+with a TODO. Spec: `../../../docs/FEATURESET.md §Level 2`; `SPEC.md §Featureset Summary /
 0.1 Foundational (URL token auth)`.
 
 - `auth/url_token_gating` (stub) — feed with a valid token returns content

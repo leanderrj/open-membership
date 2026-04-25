@@ -45,7 +45,7 @@ Format 1.0 import/export.
 | 8 | Bundles | Out of scope |
 
 This matches the **Indie Reader profile** from SPEC.md §7.1 and
-reader-ARCHITECTURE.md §Scope.
+../../docs/reader-ARCHITECTURE.md §Scope.
 
 ## Directory layout
 
@@ -110,7 +110,7 @@ flag. Work through them in the order listed; the order is dependency-safe.
 ```
 
 The migration adds two tables, `om_feed_auth` and `om_offers`, both keyed by
-`(feed_id, user_id)` per reader-ARCHITECTURE.md §"Per-user vs per-instance
+`(feed_id, user_id)` per ../../docs/reader-ARCHITECTURE.md §"Per-user vs per-instance
 auth". Neither table is touched when a feed doesn't use `om`; non-`om` feeds
 are unaffected.
 
@@ -131,7 +131,7 @@ See [`INTEGRATION.md`](INTEGRATION.md) for the end-to-end runbook against
 Miniflux separates the feed poller (a goroutine that fetches feeds), the
 storage layer (PostgreSQL), and the web UI (server-rendered HTML with
 minimal JS). The `om` additions fit cleanly into each, following
-reader-ARCHITECTURE.md.
+../../docs/reader-ARCHITECTURE.md.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -354,7 +354,7 @@ plans/PHASE-1-2.md and the roadmap:
   the returned bearer may carry group-scope claims, but Miniflux's UI
   doesn't distinguish group from individual entitlements. Phase 3.
 - **No Mollie.** Stripe only in v0.1. Mollie reader-side requires no change
-  per reader-ARCHITECTURE.md §"Scope discipline" — the publisher returns a
+  per ../../docs/reader-ARCHITECTURE.md §"Scope discipline" — the publisher returns a
   redirect URL whether it's Stripe or Mollie — but live-mode Mollie
   plumbing is Phase 2 M4 Track C.
 - **No live-mode Stripe.** The fork runs against Stripe test-mode only in

@@ -7,9 +7,9 @@ Because `reference/om-ghost` and `reference/om-wordpress` are already feature-co
 ## Shipped this session (agent-produced artifacts)
 
 - [x] **Miniflux fork scaffolding** → `reference/om-miniflux/` — fork-prep package: Go `om/` module (namespace, parser, auth, checkout, entitlements, preview, discovery + tests), fixture feeds, README (369 lines), PATCH-PLAN (168 lines), INTEGRATION runbook (256 lines). Status: scaffolded; a human engineer still needs to apply as a Miniflux downstream patch and run the live interop test.
-- [x] **Anti-sharing primitive v0** → `SPEC-SHARING-POLICY.md` (0.1, marked Provisional per ROADMAP risk register)
-- [x] **i18n: `tax_inclusive` + `tax_jurisdiction`** → `SPEC-ERRATA-0.4.1.md` Erratum 1
-- [x] **Enclosure auth passthrough** → `SPEC-ERRATA-0.4.1.md` Erratum 2 (shipped unconditionally rather than conditional-on-podcaster; codifies existing behavior)
+- [x] **Anti-sharing primitive v0** → `../spec/SPEC-SHARING-POLICY.md` (0.1, marked Provisional per ROADMAP risk register)
+- [x] **i18n: `tax_inclusive` + `tax_jurisdiction`** → `../spec/SPEC-ERRATA-0.4.1.md` Erratum 1
+- [x] **Enclosure auth passthrough** → `../spec/SPEC-ERRATA-0.4.1.md` Erratum 2 (shipped unconditionally rather than conditional-on-podcaster; codifies existing behavior)
 
 Remaining Phase 1–2 work is external/operational and cannot be agent-shipped: Stripe live-mode cutover, webhook idempotency verification, Mollie PSP profile, external security review, publisher outreach, first paying subscriber, errata publication on the canonical URL.
 
@@ -65,7 +65,7 @@ Engineer count assumed below: one Miniflux engineer (the "reader eng"), plus up 
 | 1  | Fork Miniflux at a pinned commit, rename module path, CI green on fork | Verify `charge.dispute.created` wiring in `om-ghost`; patch if missing | Branch `miniflux-om/wip/bootstrap`; pinned upstream SHA documented; issue filed if dispute webhook missing |
 | 2  | Add `internal/om/` package skeleton (`parser.go`, `discovery.go`, `types.go`); parser stubs with tests on hand-written fixture feeds | Export a set of canonical Level 1/2/5 fixture feeds from `om-ghost` test harness for reader-side consumption | Fixture pack `fixtures/phase1/` in the spec repo; parser stub PR on fork |
 | 3  | Level 1 parsing: `<om:provider>`, `<om:authMethod>`, `<om:tier>`, `<om:access>`, `<om:preview>`. Feed discovery doc fetch | — | Parser passes Level 1 fixtures; unit tests green |
-| 4  | DB migration: `om_feed_auth` + `om_offers` with `(feed_id, user_id)` keying per reader-ARCHITECTURE.md §"Per-user vs per-instance"; auth-aware fetcher | — | Migration `002_add_om_tables.sql`; fetcher honors bearer + url-token |
+| 4  | DB migration: `om_feed_auth` + `om_offers` with `(feed_id, user_id)` keying per ../docs/reader-ARCHITECTURE.md §"Per-user vs per-instance"; auth-aware fetcher | — | Migration `002_add_om_tables.sql`; fetcher honors bearer + url-token |
 | 5  | Level 2: accept a pre-tokenized feed URL via the existing "add feed" flow; persist token; retry-on-401 path | Stand up a public `demo.om-ghost.example` test site with test-mode Stripe | Level 2 end-to-end: tokenized Ghost feed renders in Miniflux |
 | 6  | UI: "This feed offers paid subscriptions" banner; offers list; preview-then-button item rendering | Test Stripe Checkout Session returns proper `success_url` / `cancel_url` for cross-tab flow | Offers visible in Miniflux; preview-only render matches fixture expectations |
 | 7  | Level 5 part 1: `POST /om/subscribe` → proxy to publisher `/api/om/checkout`, open browser tab | — | Subscribe button triggers real Stripe Checkout in browser |
@@ -73,7 +73,7 @@ Engineer count assumed below: one Miniflux engineer (the "reader eng"), plus up 
 | 9  | Token refresh path (401 → `/api/om/token` → retry); encrypted-at-rest bearer storage using Miniflux admin secret | Cancellation behavior: verify `customer.subscription.deleted` flips the cache within `grace_hours` | Encrypted tokens in DB; cancellation scenario passes |
 | 10 | `/om/subscriptions` management view; manual-poll fallback button; error UI for revoked/expired tokens | Dry-run `charge.dispute.created` with Stripe CLI trigger | Subscription management view live; revocation scenario passes |
 | 11 | Interop-test harness scripted: all four scenarios in §2.3 run from a single `make interop` target. Screencast recording | Publish test-feed URL + credentials for working-group review | Green `make interop` run; screencast v1; public test-feed URL |
-| 12 | Bug fix, documentation, reader-side README, upstream-PR readiness check per reader-ARCHITECTURE.md §"Upstream strategy". Tag `miniflux-om v0.1.0` | Tag `om-ghost v0.1.0-interop` matching the pinned interop commit | `miniflux-om v0.1.0` release; Phase 1 closeout report |
+| 12 | Bug fix, documentation, reader-side README, upstream-PR readiness check per ../docs/reader-ARCHITECTURE.md §"Upstream strategy". Tag `miniflux-om v0.1.0` | Tag `om-ghost v0.1.0-interop` matching the pinned interop commit | `miniflux-om v0.1.0` release; Phase 1 closeout report |
 
 Risk one-liners embedded where they matter:
 
@@ -83,7 +83,7 @@ Risk one-liners embedded where they matter:
 
 ### 2.1.1 Parsing levels — what "Levels 1, 2, 5" means in code
 
-Mapped from SPEC.md featureset and reader-ARCHITECTURE.md §"Scope" into concrete Miniflux deliverables.
+Mapped from SPEC.md featureset and ../docs/reader-ARCHITECTURE.md §"Scope" into concrete Miniflux deliverables.
 
 | Level | Reader requirement | `miniflux-om` deliverable | Weeks |
 |---|---|---|---|
@@ -95,7 +95,7 @@ Levels 3 (HTTP Basic), 4 (bearer with VC), 6 (OM-VC), 7 (OM-VC-SD), 8 (bundle ve
 
 ### 2.2 Miniflux fork: PR strategy
 
-Everything lands as a series of small PRs on the fork first. The upstream-PR decision is deferred to month 9 per reader-ARCHITECTURE.md.
+Everything lands as a series of small PRs on the fork first. The upstream-PR decision is deferred to month 9 per ../docs/reader-ARCHITECTURE.md.
 
 | Change | Fork-only vs upstream-eventual | Reason |
 |---|---|---|
@@ -391,7 +391,7 @@ Phase 3 M7 custodian conversations become credible only if Phase 2 closed with o
 
 ### Grant-application inheritances
 
-Per FUNDING.md (not re-read here; content deferred to that document), Phase 3 M8 grant applications depend on:
+Per ../docs/FUNDING.md (not re-read here; content deferred to that document), Phase 3 M8 grant applications depend on:
 
 - A named custodian or custodian-in-progress (Phase 3 M7 output, but reliant on Phase 2 evidence).
 - A named first outside publisher (Phase 2 M5 output).

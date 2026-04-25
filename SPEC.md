@@ -823,7 +823,7 @@ These three personas should appear by name in every implementation conversation 
 
 The main spec keeps its scope narrow: what a publisher puts in a feed and what a reader does with it. Two companion documents extend the model to the parts of a deployment that happen off-feed:
 
-- **[Subscriber Portability Format 1.0](SPEC-PORTABILITY.md)** (`http://purl.org/rss/modules/membership/portability/1.0`) — cross-reader export/import shape for a user's stored tokens, credentials, receipts, bundle memberships, and pending gifts. JSON-LD body, age or JWE encryption, passphrase-based. Answers "how does a subscriber switch from Miniflux to NetNewsWire without re-subscribing everywhere?" without introducing a portable cross-publisher identity. Required reading-round-trip for Level 5+ reader conformance at 1.0.
+- **[Subscriber Portability Format 1.0](spec/SPEC-PORTABILITY.md)** (`http://purl.org/rss/modules/membership/portability/1.0`) — cross-reader export/import shape for a user's stored tokens, credentials, receipts, bundle memberships, and pending gifts. JSON-LD body, age or JWE encryption, passphrase-based. Answers "how does a subscriber switch from Miniflux to NetNewsWire without re-subscribing everywhere?" without introducing a portable cross-publisher identity. Required reading-round-trip for Level 5+ reader conformance at 1.0.
 
 Companion specs follow the same versioning as the parent: a 1.0 reader consuming a 1.0 companion artifact is guaranteed to interoperate with any other 1.0-conformant reader that produces one.
 

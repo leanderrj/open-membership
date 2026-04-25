@@ -2,7 +2,7 @@
 
 This is the reference Ghost plugin/sidecar for the Open Membership RSS
 specification, as described in
-[`/om-ghost-ARCHITECTURE.md`](../../om-ghost-ARCHITECTURE.md).
+[`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 `om-ghost` makes an unmodified Ghost instance emit feeds, discovery
 documents, and checkout flows that conform to Open Membership RSS. It
@@ -63,7 +63,7 @@ under [`service/`](service/), or into a Cloudflare Worker under
 
 `om-ghost` targets Open Membership RSS **conformance Level 5**
 (Commerce) on the publisher side. See
-[`/FEATURESET.md`](../../FEATURESET.md) for what each level requires.
+[`/docs/FEATURESET.md`](../../docs/FEATURESET.md) for what each level requires.
 The formal conformance tests run against `om-test-suite` once that
 suite exists; current tests cover unit-level invariants.
 

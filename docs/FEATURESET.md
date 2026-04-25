@@ -111,7 +111,7 @@ Adds:
 - Entitlement polling and token refresh
 - Feature-based access checks (`<om:feature>` IDs in JWT claims)
 - Proration policy display
-- Subscriber Portability Format 1.0 export + import — see [SPEC-PORTABILITY.md](SPEC-PORTABILITY.md); round-trip required at 1.0
+- Subscriber Portability Format 1.0 export + import — see [../spec/SPEC-PORTABILITY.md](../spec/SPEC-PORTABILITY.md); round-trip required at 1.0
 
 **Implementer effort:** ~2–4 weeks (commerce) + ~1 week (portability).
 

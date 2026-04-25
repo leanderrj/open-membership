@@ -6,7 +6,7 @@
 - **Release date:** 2026-04-24
 - **Canonical URI:** `http://purl.org/rss/modules/membership/errata/0.4.1`
 - **Parent spec:** [SPEC.md](SPEC.md)
-- **Feature matrix:** [FEATURESET.md](FEATURESET.md)
+- **Feature matrix:** [../docs/FEATURESET.md](../docs/FEATURESET.md)
 
 ## Summary
 
@@ -221,7 +221,7 @@ No new element is introduced. No attribute is introduced. This erratum is pure c
 
 ## Errata process note
 
-Errata are shipped as minor-dot versions of the parent spec (0.4.1, 0.4.2, …) and are strictly additive: every errata release preserves the conformance surface of its parent. A 0.4 implementation that does not adopt 0.4.1 remains 0.4-conformant. A 0.4.1-aware implementation advertises its errata support by listing the level in the `errata` array of its discovery document (§1.6). No conformance level from FEATURESET.md is changed by an errata release; levels are reserved for spec-minor revisions (0.5, 0.6, …) and spec-major revisions (1.0). Errata do not add new elements; they clarify existing ones. This rule is the load-bearing discipline: if a clarification requires a new element, it is not an erratum — it is 0.5 work.
+Errata are shipped as minor-dot versions of the parent spec (0.4.1, 0.4.2, …) and are strictly additive: every errata release preserves the conformance surface of its parent. A 0.4 implementation that does not adopt 0.4.1 remains 0.4-conformant. A 0.4.1-aware implementation advertises its errata support by listing the level in the `errata` array of its discovery document (§1.6). No conformance level from ../docs/FEATURESET.md is changed by an errata release; levels are reserved for spec-minor revisions (0.5, 0.6, …) and spec-major revisions (1.0). Errata do not add new elements; they clarify existing ones. This rule is the load-bearing discipline: if a clarification requires a new element, it is not an erratum — it is 0.5 work.
 
 ---
 
@@ -238,9 +238,9 @@ Considered and explicitly deferred:
 
 ---
 
-## Updates to FEATURESET.md
+## Updates to ../docs/FEATURESET.md
 
-The feature matrix in FEATURESET.md would gain two rows on adoption of this errata. No existing row changes. No conformance level changes. These rows are informational — they describe clarifications, not new features — and are noted here so implementers can spot them at a glance:
+The feature matrix in ../docs/FEATURESET.md would gain two rows on adoption of this errata. No existing row changes. No conformance level changes. These rows are informational — they describe clarifications, not new features — and are noted here so implementers can spot them at a glance:
 
 | Proposed feature-matrix row | Category | Introduced | Conformance level | Element(s) |
 |---|---|---|---|---|
@@ -259,4 +259,4 @@ This errata was produced during Phase 2 of the ROADMAP execution plan, driven by
 - Podcast-publisher persona work (SPEC §H.5 persona 2) surfacing the enclosure-auth question during the first outside-publisher onboarding.
 - `miniflux-om` Phase 1 interop testing, which exercised the enclosure-fetch path against both `om-ghost` and `om-wordpress` and validated the behavior codified in §2.
 
-No changes to SPEC.md or FEATURESET.md accompany this errata; the parent spec remains at 0.4 until 0.5, per the discipline named in SPEC §E ("no new tags"). This errata exists so implementers building against 0.4 today can do so without ambiguity.
+No changes to SPEC.md or ../docs/FEATURESET.md accompany this errata; the parent spec remains at 0.4 until 0.5, per the discipline named in SPEC §E ("no new tags"). This errata exists so implementers building against 0.4 today can do so without ambiguity.

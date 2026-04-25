@@ -1,14 +1,14 @@
 # Phases 3 and 4 — Execution Plan (Months 7–12)
 
-Turns ROADMAP.md Phase 3 (governance + test infrastructure) and Phase 4 (diversifying the implementer base) into week-granular work. Budget and grant content is deferred to FUNDING.md; this file tracks engineer-weeks, ownership, and decision gates only. 0.4 is feature-frozen; every artifact below is either non-normative (appendices, Profile) or tooling around the existing spec.
+Turns ROADMAP.md Phase 3 (governance + test infrastructure) and Phase 4 (diversifying the implementer base) into week-granular work. Budget and grant content is deferred to ../docs/FUNDING.md; this file tracks engineer-weeks, ownership, and decision gates only. 0.4 is feature-frozen; every artifact below is either non-normative (appendices, Profile) or tooling around the existing spec.
 
 ## Shipped this session (agent-produced artifacts)
 
-- [x] **Atom + JSON Feed mappings** → `SPEC-SYNDICATION-MAPPINGS.md` (382 lines, non-normative companion)
+- [x] **Atom + JSON Feed mappings** → `../spec/SPEC-SYNDICATION-MAPPINGS.md` (382 lines, non-normative companion)
 - [x] **Publisher test suite + reader conformance harness skeleton** → `reference/om-test-suite/` — Go scaffold with Level 1 parsing/discovery tests implemented and Levels 2/5 stubbed; two entrypoints (`cmd/om-test-publisher`, `cmd/om-test-harness`); shared fixtures; Dockerfile + Makefile
-- [x] **Platform Adapter Profile** → `SPEC-ADAPTER-PROFILE.md` (377 lines) — validated against WooCommerce + Memberful without rework; the ROADMAP "split the Profile" fallback is NOT triggered
+- [x] **Platform Adapter Profile** → `../spec/SPEC-ADAPTER-PROFILE.md` (377 lines) — validated against WooCommerce + Memberful without rework; the ROADMAP "split the Profile" fallback is NOT triggered
 - [x] **Static-site reference scaffolding** → `reference/om-eleventy/` — Eleventy 3.x + Cloudflare Workers skeleton with TypeScript worker routes (feed, discovery, checkout, entitlements, webhook, token), lib (token HMAC, JWT, Stripe, KV, config), sample posts, Vitest suite
-- [x] **ActivityPub co-existence appendix** → `SPEC-ACTIVITYPUB.md` (341 lines) — three federation patterns specced, decision table per auth method, Ghost + WordPress implementation guidance
+- [x] **ActivityPub co-existence appendix** → `../spec/SPEC-ACTIVITYPUB.md` (341 lines) — three federation patterns specced, decision table per auth method, Ghost + WordPress implementation guidance
 
 Remaining Phase 3–4 work is external/operational and cannot be agent-shipped: custodian outreach, grant applications, test-suite deployment to `test.open-membership.org`, second-reader fork (NetNewsWire/Feeder), Eleventy-publisher onboarding, publisher replication to five, Ghost-AP / WP-AP team engagement for the ActivityPub appendix review pass.
 
@@ -21,8 +21,8 @@ Remaining Phase 3–4 work is external/operational and cannot be agent-shipped: 
 | Area | State | File |
 |---|---|---|
 | Spec 0.4 draft | Feature-frozen; minor errata only through 1.0 | `SPEC.md` |
-| Featureset matrix | Authoritative; Levels 1–8 defined | `FEATURESET.md` |
-| Governance model | Drafted; custodian/working-group shape defined | `GOVERNANCE.md` |
+| Featureset matrix | Authoritative; Levels 1–8 defined | `../docs/FEATURESET.md` |
+| Governance model | Drafted; custodian/working-group shape defined | `../docs/GOVERNANCE.md` |
 | Ghost publisher reference | Production; Level 5 on publisher side; Node + Cloudflare Worker dual runtime | `reference/om-ghost/` |
 | WordPress publisher reference | Production; Level 5; Stripe only in v0.1 | `reference/om-wordpress/` |
 | Miniflux reader fork | Shipped in Phase 1 M3 (assumed present as Phase-1 deliverable) | external fork |
@@ -45,13 +45,13 @@ ROADMAP.md Phase 4 M10 originally listed two line items: **WordPress plugin** an
 
 ### 2.1 Month 7 — Custodian outreach
 
-Four candidates, asked one per week, with the pitch adapted from each previous response. Order matches ROADMAP.md Phase 3 M7 and GOVERNANCE.md §"Shortlist and order of asks". Drafts for all four are written in week 1 in parallel so the sequence can run without drafting delays.
+Four candidates, asked one per week, with the pitch adapted from each previous response. Order matches ROADMAP.md Phase 3 M7 and ../docs/GOVERNANCE.md §"Shortlist and order of asks". Drafts for all four are written in week 1 in parallel so the sequence can run without drafting delays.
 
 **Global drafting checklist (applied to every pitch, tailored per custodian):**
 
-- One-page cover: problem (paid-RSS is solved only inside walled gardens), `om`'s position (open namespace, feature-frozen at 0.4, two reference implementations in production), specific ask (hold canonical URL + serve as legal entity of last resort, per GOVERNANCE.md §"What the custodian actually does")
-- Attachments: `SPEC.md`, `GOVERNANCE.md` (custodian section), `ROADMAP.md` (risk register + 1.0 deliverables), link to `reference/om-ghost/` and `reference/om-wordpress/`
-- Minimum agreement proposal as an appendix — the five-clause one-pager from GOVERNANCE.md §"The minimum custodian agreement"
+- One-page cover: problem (paid-RSS is solved only inside walled gardens), `om`'s position (open namespace, feature-frozen at 0.4, two reference implementations in production), specific ask (hold canonical URL + serve as legal entity of last resort, per ../docs/GOVERNANCE.md §"What the custodian actually does")
+- Attachments: `SPEC.md`, `../docs/GOVERNANCE.md` (custodian section), `ROADMAP.md` (risk register + 1.0 deliverables), link to `reference/om-ghost/` and `reference/om-wordpress/`
+- Minimum agreement proposal as an appendix — the five-clause one-pager from ../docs/GOVERNANCE.md §"The minimum custodian agreement"
 - Named primary contact and backup contact in the working group
 
 **Week 1 — draft all four; send to Internet Archive (IA)**
@@ -67,10 +67,10 @@ Four candidates, asked one per week, with the pitch adapted from each previous r
 
 | Element | Content |
 |---|---|
-| What goes in the pitch | STF already funded ActivityPub test infrastructure; `om` is the paid-content complement to that work; dual role (custodian + potential M8 funder, see FUNDING.md) is natural for them |
+| What goes in the pitch | STF already funded ActivityPub test infrastructure; `om` is the paid-content complement to that work; dual role (custodian + potential M8 funder, see ../docs/FUNDING.md) is natural for them |
 | What STF gets | A second federated-content protocol under their stewardship; a clear mapping to the EU's public-digital-infrastructure thesis; deliverables they can point to at year-end |
-| Likely concerns | Scope of the custodial role vs. their mission as funder (A: scope it to the five GOVERNANCE.md clauses only); whether the spec needs EU-legal review before they host it (A: not at custodian layer; at most a data-protection note) |
-| Decision criterion | Answer expected 2 weeks after grant approval per GOVERNANCE.md. If no grant decision yet, send the custodian pitch separately and flag it as orthogonal |
+| Likely concerns | Scope of the custodial role vs. their mission as funder (A: scope it to the five ../docs/GOVERNANCE.md clauses only); whether the spec needs EU-legal review before they host it (A: not at custodian layer; at most a data-protection note) |
+| Decision criterion | Answer expected 2 weeks after grant approval per ../docs/GOVERNANCE.md. If no grant decision yet, send the custodian pitch separately and flag it as orthogonal |
 
 **Week 3 — NLnet Foundation**
 
@@ -79,7 +79,7 @@ Four candidates, asked one per week, with the pitch adapted from each previous r
 | What goes in the pitch | NGI Zero fit; their existing role as NGI coordinator means stewardship is not a new capability; board-level decision expected |
 | What NLnet gets | Alignment with NGI's subscriber-data-portability thesis; a project already in production with two reference implementations; a clean hand-off into their existing stewardship infrastructure |
 | Likely concerns | Formal board process adds ~4–6 weeks; they may prefer to see a fiscal-sponsor arrangement first; they may prefer a Dutch-hosted URL (A: we can live at `nlnet.nl/projects/open-membership-rss` or similar) |
-| Decision criterion | Answer at 4–6 weeks per GOVERNANCE.md. If we get a yes here before IA responds, hold — IA is still preferred on procedural overhead |
+| Decision criterion | Answer at 4–6 weeks per ../docs/GOVERNANCE.md. If we get a yes here before IA responds, hold — IA is still preferred on procedural overhead |
 
 **Week 4 — Software Freedom Conservancy (SFC)**
 
@@ -87,8 +87,8 @@ Four candidates, asked one per week, with the pitch adapted from each previous r
 |---|---|
 | What goes in the pitch | Safe US institutional fallback; SFC's project-membership model is the clearest legal wrapper; cite precedent projects they steward |
 | What SFC gets | A project with production adopters, two reference implementations, and a ratified spec within 12 months; working-group governance already designed to their standards |
-| Likely concerns | Project-membership application is heavy; their intake cadence is quarterly; they may ask for a 501(c)(3)-compatible governance statement (A: GOVERNANCE.md covers this) |
-| Decision criterion | Answer at 2–3 months per GOVERNANCE.md. Only reached if all three earlier candidates decline |
+| Likely concerns | Project-membership application is heavy; their intake cadence is quarterly; they may ask for a 501(c)(3)-compatible governance statement (A: ../docs/GOVERNANCE.md covers this) |
+| Decision criterion | Answer at 2–3 months per ../docs/GOVERNANCE.md. Only reached if all three earlier candidates decline |
 
 **Follow-up cadence (per candidate):**
 
@@ -98,17 +98,17 @@ Four candidates, asked one per week, with the pitch adapted from each previous r
 - Day 21: no response → move on; continue sequence but keep the thread open
 - Explicit decline: ask for referral, then close
 
-**Fallback if all four decline:** GOVERNANCE.md risk register and ROADMAP.md risk register already converge: spin up a lightweight Podcast-Index-shaped foundation — one person, one domain, one public Git repo. Documented as the M7 escalation in the working-group log; does not delay M8 grant work.
+**Fallback if all four decline:** ../docs/GOVERNANCE.md risk register and ROADMAP.md risk register already converge: spin up a lightweight Podcast-Index-shaped foundation — one person, one domain, one public Git repo. Documented as the M7 escalation in the working-group log; does not delay M8 grant work.
 
 **M7 exit criteria:**
 
 - At least one custodian candidate in active dialogue by end of week 4
-- Minimum agreement draft reviewed by GOVERNANCE.md editor
+- Minimum agreement draft reviewed by ../docs/GOVERNANCE.md editor
 - Named backup custodian (second in active dialogue) in case primary stalls
 
 ### 2.2 Month 8 — Grant applications
 
-Grant content, amounts, and detailed narratives live in FUNDING.md. This section covers only the drafting and submission logistics.
+Grant content, amounts, and detailed narratives live in ../docs/FUNDING.md. This section covers only the drafting and submission logistics.
 
 **Submission order and cadence:**
 
@@ -121,8 +121,8 @@ Grant content, amounts, and detailed narratives live in FUNDING.md. This section
 **Internal review bar before submission:**
 
 - Each grant application is reviewed by at least one working-group member not on the drafting team
-- Pitches must match the four audience-framings in COMPETITIVE-LANDSCAPE.md §"The strategic narrative" — no frankenstein mixes of them
-- Every application must link to: `SPEC.md`, `FEATURESET.md`, `reference/om-ghost/`, `reference/om-wordpress/`, a production publisher case study from Phase 2 M6
+- Pitches must match the four audience-framings in ../docs/COMPETITIVE-LANDSCAPE.md §"The strategic narrative" — no frankenstein mixes of them
+- Every application must link to: `SPEC.md`, `../docs/FEATURESET.md`, `reference/om-ghost/`, `reference/om-wordpress/`, a production publisher case study from Phase 2 M6
 - The review reviewer writes a one-paragraph "what this application is asking for" summary; if the drafter disagrees with the summary, the pitch is unclear and needs a rewrite before submission
 - No two applications submitted in the same week; a 7-day gap between submissions minimum, so the first response can inform the second
 
@@ -162,9 +162,9 @@ One repo because the fixtures are shared; separate entrypoints so a publisher do
 
 #### 2.3.1 Publisher test suite v1
 
-**Scope:** Levels 1, 2, 5 only. Levels 3, 4, 6, 7, 8 are post-1.0 test-suite work; they are not part of v1. This matches the "Indie Reader" profile in FEATURESET.md §"Conformance profiles" and the ROADMAP.md M9 scope.
+**Scope:** Levels 1, 2, 5 only. Levels 3, 4, 6, 7, 8 are post-1.0 test-suite work; they are not part of v1. This matches the "Indie Reader" profile in ../docs/FEATURESET.md §"Conformance profiles" and the ROADMAP.md M9 scope.
 
-**Architecture:** standalone HTTP service. Accepts a feed URL + discovery document URL in a form submission; runs the fixture pipeline in a worker; renders a pass/fail report with per-check rationale and a link to the relevant SPEC.md / FEATURESET.md section.
+**Architecture:** standalone HTTP service. Accepts a feed URL + discovery document URL in a form submission; runs the fixture pipeline in a worker; renders a pass/fail report with per-check rationale and a link to the relevant SPEC.md / ../docs/FEATURESET.md section.
 
 **Deployment target:** `test.open-membership.org` (subdomain of the custodian-held canonical domain once available; provisional deployment on Cloudflare Pages or Fly.io during M9 while custodian onboarding completes).
 
@@ -210,7 +210,7 @@ A publisher-emulator. Serves deterministic fixtures (canonical feeds, canonical 
 1. Add `om-emulator` as a CI service
 2. Point the reader build at `http://localhost:8080/feed/om/TEST_TOKEN`
 3. Reader's test suite runs its own user-flow assertions against known-good feed content
-4. Harness provides a "conformance claim" generator: reader runs a script, uploads results, gets a pass/fail badge for registry listing (GOVERNANCE.md §"Self-certification")
+4. Harness provides a "conformance claim" generator: reader runs a script, uploads results, gets a pass/fail badge for registry listing (../docs/GOVERNANCE.md §"Self-certification")
 
 **Shared-repo split with publisher suite:** fixtures are the dependency. Both entrypoints import from `fixtures/`. Changes to fixtures require bumping the suite version because they retroactively affect conformance claims.
 
@@ -264,12 +264,12 @@ This is the only month of Phase 3 with real technical build. Effort: ~5 engineer
 
 - Where does `test.open-membership.org` live? (Cloudflare Pages if custodian not yet onboarded; move to custodian-controlled DNS within one quarter of custodian onboarding)
 - Is the reader harness fixture set versioned independently of the publisher suite? (Recommend yes; v1 → v1.x additions in either direction should not retroactively invalidate conformance claims)
-- What is the policy for registering a failing run in the public registry? (Per GOVERNANCE.md §"Self-certification": claim + result are both listed; the implementer owns the narrative of "we fail test X because of Y, fix in vZ")
+- What is the policy for registering a failing run in the public registry? (Per ../docs/GOVERNANCE.md §"Self-certification": claim + result are both listed; the implementer owns the narrative of "we fail test X because of Y, fix in vZ")
 
 #### 2.3.5 Phase 3 exit criteria
 
 - Custodian commitment (signed agreement OR warm verbal commitment with signed draft in circulation)
-- At least two grant applications submitted through FUNDING.md-described channels; internal-review bar held
+- At least two grant applications submitted through ../docs/FUNDING.md-described channels; internal-review bar held
 - `om-test-suite` repo public, with publisher suite v1, reader harness, and Atom/JSON Feed mapping drafts
 - At least `om-ghost` + `om-wordpress` passing Level 1/2/5 against the suite (otherwise the suite is wrong OR the references are wrong — either way, blocker)
 - At least one external reader (the Phase 1 Miniflux fork) able to run CI against the harness
@@ -327,7 +327,7 @@ The Profile document has these sections. Content is not written here.
 
 #### 3.1.3 Validation pass against WooCommerce and Memberful
 
-Per COMPETITIVE-LANDSCAPE.md §"The 'Open' column is `om`'s adapter pipeline" — these two are the cleanest external stress test of the Profile. The validation is the point; it is what turns the Profile from speculative into shipped.
+Per ../docs/COMPETITIVE-LANDSCAPE.md §"The 'Open' column is `om`'s adapter pipeline" — these two are the cleanest external stress test of the Profile. The validation is the point; it is what turns the Profile from speculative into shipped.
 
 **Integration points to probe (per platform):**
 
@@ -350,7 +350,7 @@ Per COMPETITIVE-LANDSCAPE.md §"The 'Open' column is `om`'s adapter pipeline" �
 **Who runs the validation pass:**
 
 - The Profile author (spec editor) does not do the WooCommerce or Memberful pass — the point is external eyes
-- One week of a WooCommerce-experienced WP engineer's time (contracted, see FUNDING.md)
+- One week of a WooCommerce-experienced WP engineer's time (contracted, see ../docs/FUNDING.md)
 - One week of a Memberful-experienced WP engineer's time (contracted)
 - Each produces a written "fit report" — either "fits as-is" or "these three things broke"
 
@@ -361,7 +361,7 @@ Per COMPETITIVE-LANDSCAPE.md §"The 'Open' column is `om`'s adapter pipeline" �
 | Draft owner | Spec editor | Writes sections 0–3 and 6–8 of the Profile; owns extraction |
 | Validation owners | Two external CMS engineers (WooCommerce + Memberful) | Each writes section 4 or 5 as a fit report; flags contract gaps |
 | Reviewers | Two working-group members not on drafting team | Review Profile against `SPEC.md` to confirm non-normative status holds |
-| Release gate | Working group lazy consensus | Per GOVERNANCE.md §"Decision-making" |
+| Release gate | Working group lazy consensus | Per ../docs/GOVERNANCE.md §"Decision-making" |
 
 #### 3.1.5 Month 10 week-by-week
 
@@ -434,7 +434,7 @@ Candidates and order from ROADMAP.md Phase 4 M11.
 | 4 | No | OM-VC deferred to static-site v1 |
 | 6, 7, 8 | No | Out of scope for any publisher reference in v0 |
 
-This mirrors the "Indie Reader" profile in FEATURESET.md §"Conformance profiles" — the Eleventy reference is the publisher-side twin of that profile.
+This mirrors the "Indie Reader" profile in ../docs/FEATURESET.md §"Conformance profiles" — the Eleventy reference is the publisher-side twin of that profile.
 
 **Finding an Eleventy publisher to onboard:**
 
@@ -442,7 +442,7 @@ Per ROADMAP.md risk register: "pick an existing Eleventy-based indie publisher b
 
 | Step | Action | Timing |
 |---|---|---|
-| 1 | Compile shortlist of 8–12 Eleventy-based indie publishers with paid content ambitions. Source: 11ty.dev showcase + Ghost-migration forum posts + COMPETITIVE-LANDSCAPE.md §"Closed column" migrants | M10 week 3 (overlaps with Profile work) |
+| 1 | Compile shortlist of 8–12 Eleventy-based indie publishers with paid content ambitions. Source: 11ty.dev showcase + Ghost-migration forum posts + ../docs/COMPETITIVE-LANDSCAPE.md §"Closed column" migrants | M10 week 3 (overlaps with Profile work) |
 | 2 | Outreach: "we'll build you paid-RSS infrastructure for free; you run the reference; we write a case study" | M10 week 4 |
 | 3 | Target one commitment by end of M10 (otherwise M11 downgrade per risk register) | M10 week 4 hard deadline |
 | 4 | M11 W1: kickoff with committed publisher; architecture handoff | M11 W1 |
@@ -479,7 +479,7 @@ Baseline going into M12: 1 publisher from Phase 2 M6 + the Eleventy publisher fr
 |---|---|---|
 | 1 | Second outside publisher (net new) | Likely a Ghost publisher from the Phase 2 M5 shortlist of 10 who was a "maybe" the first time. Onboarding now takes 3–5 days because the infra is proven |
 | 2 | Third outside publisher (net new) | Targeting a WordPress publisher using `om-wordpress` directly |
-| 3 | Fourth outside publisher (net new) | From COMPETITIVE-LANDSCAPE.md "Open column": Memberful or WooCommerce publisher, using the Profile-validated adapter |
+| 3 | Fourth outside publisher (net new) | From ../docs/COMPETITIVE-LANDSCAPE.md "Open column": Memberful or WooCommerce publisher, using the Profile-validated adapter |
 | 4 | Catch-up + case study writeup | Buffer for slippage; write three short case studies (not one long one) |
 
 **What "in production" means:**
@@ -544,7 +544,7 @@ Per ROADMAP.md interop track + Phase 2 M6: "if the onboarded publisher is a podc
 
 #### 3.3.4 Phase 4 decision log entries
 
-Recorded at M12 close. Each is a single paragraph plus a pointer to the motivating issue/PR (per GOVERNANCE.md §"Transparency commitments").
+Recorded at M12 close. Each is a single paragraph plus a pointer to the motivating issue/PR (per ../docs/GOVERNANCE.md §"Transparency commitments").
 
 - Final second-reader choice + why (NetNewsWire / Reeder / Feeder)
 - Static-site reference: live publisher adopted (yes/no); if no, recipe-only fallback published
@@ -571,17 +571,17 @@ Phase 5 (M13–M15 — IETF submission prep; see ROADMAP.md Phase 5) inherits:
 | From | What Phase 5 gets | Phase-5 dependency |
 |---|---|---|
 | M7 | Custodian committed; canonical URL in custodian's control | Phase 5 M13 format-conversion work needs a canonical URL pinned in the RFC draft |
-| M8 | Grant applications submitted; some decisions expected by M13 | Phase 5 work is grant-funded per FUNDING.md — a no-money runway is possible but tight |
+| M8 | Grant applications submitted; some decisions expected by M13 | Phase 5 work is grant-funded per ../docs/FUNDING.md — a no-money runway is possible but tight |
 | M9 | Publisher test suite v1 + reader harness + Atom/JSON Feed mapping drafts | Phase 5 M13 "Implementation Status" section of the RFC cites the suite's public registry; M14 external review cites mapping work |
 | M10 | Platform Adapter Profile (+ fit reports) | Phase 5 references the Profile as part of non-normative appendix inventory in the RFC |
-| M11 | Second reader + static-site reference | **Hard dependency:** Phase 5 M13's subscriber portability format (see `SPEC-PORTABILITY.md`) requires working readers at both ends of the round-trip. Miniflux (from Phase 1) + second reader (from M11) must both exist as functioning endpoints. If M11 second-reader slips, M13 portability round-trip slips with it |
+| M11 | Second reader + static-site reference | **Hard dependency:** Phase 5 M13's subscriber portability format (see `../spec/SPEC-PORTABILITY.md`) requires working readers at both ends of the round-trip. Miniflux (from Phase 1) + second reader (from M11) must both exist as functioning endpoints. If M11 second-reader slips, M13 portability round-trip slips with it |
 | M12 | 5 publishers in production; ActivityPub co-existence appendix draft; enclosure-auth state | Phase 5 references publisher count as evidence of "running in production at multiple sites" (ROADMAP.md §"Critical path"); appendix becomes part of the RFC non-normative appendix set |
 
 **Specific Phase-5-critical artifacts Phase 4 must deliver:**
 
 1. A working second reader that can import and export the portability JSON-LD shape — without this, M13's "Miniflux → NetNewsWire round-trip" cannot be demonstrated, and the RFC submission's "Implementation Status" section is weakened
 2. Publisher test suite with stable fixture versions — the RFC's IANA considerations and Implementation Status sections both cite the suite; fixture drift post-Phase-3 would mean rewriting those sections in Phase 5
-3. Custodian agreement signed — the RFC is submitted "under the stewardship of [custodian]" per GOVERNANCE.md §"What the custodian actually does"; without custody, submission waits
+3. Custodian agreement signed — the RFC is submitted "under the stewardship of [custodian]" per ../docs/GOVERNANCE.md §"What the custodian actually does"; without custody, submission waits
 4. Public conformance registry populated with at least `om-ghost`, `om-wordpress`, Miniflux fork, second reader, and the static-site reference — the registry *is* the Implementation Status section
 
 **What does NOT cross the Phase-4/Phase-5 boundary:**
@@ -594,7 +594,7 @@ Phase 5 (M13–M15 — IETF submission prep; see ROADMAP.md Phase 5) inherits:
 
 ## 5. Summary of engineer-week estimates
 
-Indicative only — FUNDING.md has costs; this table has effort.
+Indicative only — ../docs/FUNDING.md has costs; this table has effort.
 
 | Month | Deliverable | Effort (engineer-weeks) |
 |---|---|---|
@@ -610,4 +610,4 @@ Indicative only — FUNDING.md has costs; this table has effort.
 | M12 | ActivityPub co-existence appendix | ~1 |
 | M12 | Enclosure-auth errata (conditional) | ~0.2 |
 
-Total across Phase 3 + Phase 4: ~22 engineer-weeks of engineering + ~3 weeks of coordination/editorial time. Fits within a 6-month window with the contributor shape in GOVERNANCE.md §"Composition" (two publisher-side, two reader-side, one editor, one community lead, one paid coordinator) — no single role is on the critical path for more than two consecutive months.
+Total across Phase 3 + Phase 4: ~22 engineer-weeks of engineering + ~3 weeks of coordination/editorial time. Fits within a 6-month window with the contributor shape in ../docs/GOVERNANCE.md §"Composition" (two publisher-side, two reader-side, one editor, one community lead, one paid coordinator) — no single role is on the critical path for more than two consecutive months.

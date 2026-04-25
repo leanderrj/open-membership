@@ -3,7 +3,7 @@
 - **Profile URI:** `http://purl.org/rss/modules/membership/adapter-profile/1.0`
 - **This version:** 1.0 (draft, 2026-04-24)
 - **Status:** Non-normative. Companion to [`SPEC.md`](SPEC.md) 0.4 (and anticipated 1.0).
-- **Relationship to the spec:** This profile does not change, extend, or reinterpret `SPEC.md`. It is an implementer's guide. "Profile-compliant" is an informative label, not a conformance claim. Conformance is defined in `SPEC.md` §7, §8 and `FEATURESET.md`.
+- **Relationship to the spec:** This profile does not change, extend, or reinterpret `SPEC.md`. It is an implementer's guide. "Profile-compliant" is an informative label, not a conformance claim. Conformance is defined in `SPEC.md` §7, §8 and `../docs/FEATURESET.md`.
 
 ---
 
@@ -306,7 +306,7 @@ This list is not exhaustive. It exists to prevent a reading of the Profile that 
 
 Each Profile capability maps to one or more `SPEC.md` sections. Adapters satisfy `SPEC.md`; the Profile is a lens for identifying what host-side primitives a `SPEC.md`-conformant adapter depends on.
 
-| Profile capability | Satisfies `SPEC.md` section(s) | Satisfies `FEATURESET.md` Level |
+| Profile capability | Satisfies `SPEC.md` section(s) | Satisfies `../docs/FEATURESET.md` Level |
 |---|---|---|
 | 1.1 Subscriber identity | §1 Foundational (`<om:provider>`, per-subscriber feed); §4 (pseudonymous identity layer, 0.4) | 1 (Foundational), baseline for all higher levels |
 | 1.2 Tier model | §1 (`<om:tier>`, `<om:feature>`); §6 (Payments: `<om:offer>` binding to tiers) | 1, 5 |
@@ -332,7 +332,7 @@ Profile-versus-SPEC is a deliberate asymmetry: the Profile covers what the refer
 
 This document is non-normative. It does not define a conformance level, does not produce certifiable claims, and cannot be cited as a compliance basis.
 
-An implementer who follows the Profile's contract may use the informative label **"Profile-compliant"** in documentation and marketing. That label means "this adapter implements the eight capabilities described in §1 in a way the Profile authors would recognize." It is not audited. The audited claim for an adapter is the SPEC.md conformance level its output satisfies, measured against `om-test-suite` per ROADMAP Phase 3 M9. See `FEATURESET.md` for the conformance levels.
+An implementer who follows the Profile's contract may use the informative label **"Profile-compliant"** in documentation and marketing. That label means "this adapter implements the eight capabilities described in §1 in a way the Profile authors would recognize." It is not audited. The audited claim for an adapter is the SPEC.md conformance level its output satisfies, measured against `om-test-suite` per ROADMAP Phase 3 M9. See `../docs/FEATURESET.md` for the conformance levels.
 
 **What the Profile does not do:**
 

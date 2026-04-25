@@ -39,7 +39,7 @@ Drop-in, no conflict with upstream.
 | A8 | `internal/om/discovery.go` | new | +90 / 0 | Fetch and parse `.well-known/open-membership`. Copy. | yes |
 | A9 | `internal/om/testdata/*` | new | +200 / 0 | Fixture feeds (`basic.xml`, `url-token.xml`, `bearer-paid.xml`) and discovery JSON. Copy. | yes |
 | A10 | `internal/om/*_test.go` | new | +350 / 0 | Unit tests for each file. Copy. | yes |
-| A11 | `database/sql/schema_<N>.sql` or equivalent | new | +40 / 0 | Adds `om_feed_auth` and `om_offers` tables keyed by `(feed_id, user_id)` per reader-ARCHITECTURE.md §"Per-user vs per-instance auth". | yes |
+| A11 | `database/sql/schema_<N>.sql` or equivalent | new | +40 / 0 | Adds `om_feed_auth` and `om_offers` tables keyed by `(feed_id, user_id)` per ../../docs/reader-ARCHITECTURE.md §"Per-user vs per-instance auth". | yes |
 | A12 | `database/migrations.go` | modify | +5 / 0 | Register the new migration in the migration table. | yes |
 | A13 | `internal/storage/om_auth.go` | new | +120 / 0 | Storage layer that satisfies `om.AuthStore`. PostgreSQL-backed; encrypt bearer on write via Miniflux admin secret. | discuss (encryption shape) |
 | A14 | `internal/storage/om_offers.go` | new | +80 / 0 | Persist parsed offers from the feed; read-only from the UI. | yes |
@@ -116,7 +116,7 @@ accept without proof of demand.
 | **Total** | **22** | **15** | **~2,700** | **~4** |
 
 This matches the "~2,000 lines, one new optional database table, and an
-optional UI surface" estimate in reader-ARCHITECTURE.md §"Upstream strategy",
+optional UI surface" estimate in ../../docs/reader-ARCHITECTURE.md §"Upstream strategy",
 within the margin expected once UI, templates, and interop CI are counted.
 
 ## Order of application
