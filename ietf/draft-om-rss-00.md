@@ -16,10 +16,11 @@ keyword:
 
 author:
   -
-    ins: "TBD. TBD"
-    name: "TBD TBD"
+    ins: "Editor"
+    name: "Open Membership Working Group Editor"
     organization: "Open Membership Working Group"
-    email: "TBD@example.org"
+    email: "editor@open-membership.org"
+    role: editor
 
 normative:
   RFC2119:

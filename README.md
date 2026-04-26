@@ -1,26 +1,90 @@
 # Open Membership RSS
 
-`om` is an open-spec extension to RSS for paid, tiered, time-gated, group-shared, value-for-value, and privacy-preserving content. It is to subscription content what RSS itself was to syndication: a small, namespaced contract that any publisher can emit and any reader can consume, with no platform in the middle and no permission required to participate.
+**An open standard for paid, tiered, time-gated, group-shared, value-for-value, and privacy-preserving subscription content — over the same RSS feeds the web has been running on for twenty years.**
 
-This repository holds the specification, the supporting design and governance documents, and the reference implementations.
+`om` is to subscription content what RSS itself was to syndication: a small, namespaced contract that any publisher can emit and any reader can consume, with no platform in the middle and no permission required to participate.
+
+---
+
+## What it looks like
+
+A publisher who adopts `om` adds a handful of elements to their existing RSS feed. That is the whole protocol surface a reader has to recognise to unlock paid content:
+
+```xml
+<rss version="2.0" xmlns:om="http://purl.org/rss/modules/membership/">
+  <channel>
+    <title>Field Notes</title>
+    <om:provider>https://fieldnotes.example</om:provider>
+    <om:discovery>https://fieldnotes.example/.well-known/open-membership</om:discovery>
+
+    <om:psp id="stripe" account="acct_..." />
+    <om:tier id="paid" price="USD 8.00" period="monthly">Supporter</om:tier>
+
+    <om:offer id="supporter-monthly" tier="paid">
+      <om:price amount="8.00" currency="USD" period="P1M" />
+      <om:checkout psp="stripe" price_id="price_supporter_..." />
+    </om:offer>
+
+    <item>
+      <title>Members-only investigation: the warehouse fire</title>
+      <om:access>locked</om:access>
+      <om:preview>The fire investigators&apos; report was filed two weeks before…</om:preview>
+      <om:unlock>https://fieldnotes.example/unlock/2026-04-fire</om:unlock>
+    </item>
+  </channel>
+</rss>
+```
+
+A discovery document at `/.well-known/open-membership` ties the rest together — where to check out, how to authenticate, where the entitlement-token endpoint lives. None of this requires the reader to know anything about the publisher's platform, billing system, or subscriber database. The contract is in the feed.
+
+---
 
 ## The problem
 
-Paid subscriptions on the open web are stuck. The publishers who want to charge their readers — newsletters, podcasts, investigative outlets, indie authors — have two real options today, and both involve renting a relationship with their audience from a closed platform. Substack and Patreon work, but they own the subscriber list, the payment rails, the reader UX, and ultimately the leverage. When a writer or podcaster wants to leave, they discover how much of "their business" was actually the platform's. Even the "open" tier of this market — Ghost, WordPress with Memberful, WooCommerce, Memberstack, Memberspace, Podia — solves the publisher's data-ownership problem but does nothing for the *subscriber*: every paid feed is a snowflake, every reader app has to special-case every CMS, and there is no portable shape for "I am a paying member" that travels between apps the way RSS itself does.
+Paid subscriptions on the open web are stuck. Publishers who want to charge their readers — newsletters, podcasts, investigative outlets, indie authors — have two real options today, and both involve renting a relationship with their audience from a closed platform.
 
-The proprietary version of what `om` describes already exists and already sells. FeedPress and Outpost run paid RSS for Ghost publishers — 404 Media, Aftermath, and others are live paying customers — and the underlying mechanics work fine. What the market lacks is interoperability: a feed shape, a discovery document, a token contract, and a payment-binding model that any publisher can implement and any reader can read without negotiating with a vendor. That gap is the exact gap an open standard fills, and it changes the pitch to publishers from "help us prove this can work" to "here is the open version of what you are already paying for."
+Substack and Patreon work, but they own the subscriber list, the payment rails, the reader UX, and ultimately the leverage. When a writer or podcaster wants to leave, they discover how much of "their business" was actually the platform's.
 
-## What `om` actually is
+Even the "open" tier of this market — Ghost, WordPress with Memberful, WooCommerce, Memberstack, Memberspace, Podia — solves the publisher's data-ownership problem but does nothing for the *subscriber*: every paid feed is a snowflake, every reader app has to special-case every CMS, and there is no portable shape for "I am a paying member" that travels between apps the way RSS itself does.
 
-`om` is an RSS namespace (`http://purl.org/rss/modules/membership/`, suggested prefix `om`) plus a discovery document at `.well-known/open-membership` plus a small set of conventions for how readers obtain and present credentials. The spec is feature-frozen at 0.4. The path to 1.0 is not new features; it is shipping working implementations, getting them independently adopted, establishing neutral governance, and securing an RFC number.
+**The proprietary version of `om` already exists and already sells.** FeedPress and Outpost run paid RSS for Ghost publishers — 404 Media, Aftermath, and others are live paying customers — and the underlying mechanics work fine. What the market lacks is interoperability: a feed shape, a discovery document, a token contract, and a payment-binding model that any publisher can implement and any reader can read without negotiating with a vendor.
 
-A publisher who adopts `om` adds a few elements to their existing RSS feed — `<om:provider>` to declare who is in charge, `<om:tier>` to describe the price points and periods, `<om:access>` per item to say whether it is open, preview, locked, or members-only, `<om:unlock>` to point at the endpoint that turns a credential into the full content, and `<om:psp>` to declare which payment service providers they support. A discovery document at `/.well-known/open-membership` ties the rest together: where to check out, how to authenticate, where the entitlement token endpoint lives. None of this requires the reader to know anything about the publisher's platform; the contract is in the feed.
+That gap is the gap an open standard fills. It also changes the pitch to publishers from "help us prove this can work" to "here is the open version of what you are already paying for."
 
-A reader that adopts `om` parses the namespace, displays previews for items the user does not yet have access to, hands the user off to the publisher's own checkout flow when they want to subscribe, stores the resulting credential, and presents the unlocked content the next time the feed is fetched. The simplest level of conformance — Level 1, parsing — is "one afternoon" of work. The fullest — Levels 5 through 8, covering commerce, value-for-value, pseudonymous credentials, and bundle aggregation — is multi-month work but cleanly cumulative: an implementer commits to a level, the test suite verifies the level, and the level is what they advertise.
+---
 
-The spec's most distinctive technical bet is **identity unlinkability**. Without it, every publisher in the ecosystem accumulates a profile of every cross-publisher subscriber, which both recreates the surveillance problem an open standard is meant to avoid and makes the spec a non-starter for the publishers who would benefit from it most: investigative journalism, medical and mental-health publications, legal-research services, and any publication whose subscriber list is itself sensitive intelligence. `om` solves this through a Verifiable Credential profile (OM-VC and OM-VC-SD, the latter using BBS+ selective disclosure) that lets a subscriber prove "I am a paid member of this tier" without revealing a stable identifier the publisher can correlate against any other publisher's data.
+## How it works
 
-## Who it is for
+Three moving parts. Each one is small enough to implement in isolation, and each composes cleanly with the next:
+
+1. **The feed.** A publisher's existing RSS feed gains a few namespaced elements: who the provider is, which payment processors are accepted, what tiers exist at what prices, and per-item access state (`open`, `preview`, `locked`, `members-only`). Nothing about the rest of the feed has to change. A reader that does not understand `om` keeps working unchanged; a reader that does, presents previews and unlock prompts.
+2. **The discovery document.** A JSON document at `.well-known/open-membership` (composing with RFC 9728) is the single place a reader looks up everything the feed did not inline: token endpoints, accepted authentication methods, supported credential profiles, revocation policy, privacy posture. One fetch, no negotiation.
+3. **The credential.** When a subscriber pays, the publisher issues a credential — a URL token, an OAuth bearer, or a Verifiable Credential, depending on the publisher's conformance level. The reader stores it, presents it on the next fetch, and the locked items unlock. The credential is portable across reader apps; the spec defines an export shape so a subscriber moving from Miniflux to NetNewsWire does not have to re-subscribe everywhere.
+
+The technically distinctive bet is **identity unlinkability**. Without it, every publisher in the ecosystem accumulates a profile of every cross-publisher subscriber, which both recreates the surveillance problem an open standard is meant to avoid and makes the spec a non-starter for the publishers who would benefit from it most: investigative journalism, medical and mental-health publications, legal-research services. `om` solves this through a Verifiable Credential profile (OM-VC and OM-VC-SD, the latter using BBS+ selective disclosure) that lets a subscriber prove "I am a paid member of this tier" without revealing a stable identifier any publisher can correlate against any other publisher's data.
+
+---
+
+## Conformance levels
+
+Implementers commit to a level, the test suite verifies the level, and the level is what they advertise. Levels are cumulative — Level *N* implies Levels 1 through *N*-1.
+
+| Level | What it covers | Implementer effort |
+|---|---|---|
+| **1** | Parsing the namespace; previews; signup-URL display | one afternoon |
+| **2** | URL token auth; unlock endpoints; publisher-managed groups | one to two weeks |
+| **3** | OAuth bearer + DPoP; time-windowed access; SCIM groups | two to four weeks |
+| **4** | OM-VC (Verifiable Credentials) presentation auth | three to six weeks |
+| **5** | Commerce: PSP declarations, offers, checkout, entitlements, gifts, portability round-trip | two to four weeks (commerce) + one week (portability) |
+| **6** | Value-for-value: time-split recipients, Lightning composition | two to four weeks |
+| **7** | OM-VC-SD pseudonymous mode (BBS+ selective disclosure) | four to eight weeks |
+| **8** | Bundle aggregation across publishers | two to four weeks |
+
+Most publishers and reader apps will live at Level 1, 2, or 5. Levels 6–8 are for the implementers who need them.
+
+---
+
+## Who it's for
 
 Three publisher personas drive every design decision. They are not market segments; they are the test of whether a feature is actually pulling its weight.
 
@@ -32,32 +96,84 @@ Three publisher personas drive every design decision. They are not market segmen
 
 These three names should appear in every implementation conversation. They are the test of whether a feature, an erratum, or a process change is actually serving the spec's purpose.
 
-## Where the work is
+---
 
-The spec is feature-complete at 0.4. The repository carries that spec, two production-quality reference publisher implementations, scaffolded reference reader and harness work, six non-normative companion appendices covering the parts of a deployment that happen off-feed, an authoritative feature inventory, a governance and custodian shortlist, a competitive landscape analysis, three phase-by-phase execution plans, an IETF Internet-Draft of the spec in kramdown-rfc2629 format, and verbatim copies of every upstream specification the design depends on (RSS 1.0, RSS 2.0, Atom, ActivityPub, Verifiable Credentials, Bitstring Status List, RFC 7643/7644 for SCIM, RFC 9728 for the discovery model, the BBS cryptosuite, and the Podcasting 2.0 namespace).
+## Status
 
-Two reference publisher implementations are feature-complete: a Ghost plugin and Node sidecar with a Cloudflare Worker variant (`reference/om-ghost/`, targeting conformance Level 5, TypeScript and Hono and Stripe), and a WordPress plugin (`reference/om-wordpress/`, also Level 5, PHP 8.1+, Stripe SDK, firebase/php-jwt, custom rewrite for `/feed/om/:token` and `/.well-known/open-membership`, REST endpoints under `/wp-json/om/v1/*`). A static-site reference (`reference/om-eleventy/`, Eleventy plus Cloudflare Workers) is scaffolded and awaiting a real Eleventy publisher to migrate. A reader fork (`reference/om-miniflux/`) is fork-prepared with a Go `om/` module, fixture feeds, a patch plan, and an integration runbook; the merge into a live Miniflux checkout is Phase 1 month 3 work. A reader conformance harness and publisher test suite (`reference/om-test-suite/`) is scaffolded with Level 1 tests live and Levels 2 and 5 stubbed. A subscriber-portability round-trip harness (`reference/om-portability-roundtrip/`) implements the 26-test matrix that proves a Reader A → Reader B → Reader A export is byte-equivalent across the credential and envelope shapes the spec defines.
+- **Spec:** feature-frozen at 0.4 (draft). The next two revisions (0.5, 1.0) are scheduled to focus on conformance, interop, and governance, **not** new features.
+- **Reference publishers:** Ghost plugin and WordPress plugin, both targeting Level 5 (Commerce). Feature-complete; production-validated work in progress.
+- **Reference reader:** Miniflux fork scaffolded with a Go `om/` module, fixture feeds, and an integration runbook.
+- **Test suite:** scaffolded with Level 1 tests live; Levels 2 and 5 stubbed.
+- **Subscriber portability:** spec drafted, round-trip harness implements the 26-test matrix (six credential shapes × two encryption envelopes + edge cases).
+- **IETF draft:** [`ietf/draft-om-rss-00.md`](ietf/draft-om-rss-00.md), 1,926 lines in kramdown-rfc2629 format, ready for the Independent Submission stream once the custodian is in place.
+- **Custodian:** four candidates in priority order (Internet Archive, Sovereign Tech Fund, NLnet Foundation, Software Freedom Conservancy). Outreach scheduled for Phase 3.
 
-## The path to 1.0
+The path to 1.0 is not new features. It is shipping working implementations, getting them independently adopted, establishing neutral governance, and securing an RFC number. Eighteen months from spec draft to ratified open standard with multiple production deployments — see [`ROADMAP.md`](ROADMAP.md) for the technical phasing and [`ROADSHOW.md`](ROADSHOW.md) for the principles, risk register, and 1.0 vision.
 
-Eighteen months from spec draft to ratified open standard with multiple production deployments. The phases are sequenced around the riskiest unknowns, not the hardest engineering: Phase 1 is a working end-to-end demo on a test Ghost instance; Phase 2 is a real outside publisher saying yes and a real subscriber paying through the open flow; Phase 3 is governance under a neutral custodian and a deployed test suite at a custodian-hosted URL; Phase 4 is the second reader, the WordPress plugin, the static-site reference, and five publishers in production; Phase 5 is the IETF Independent Submission and the subscriber portability format being round-trip-verified; Phase 6 is an in-person event, a 30-day public comment period, and the 1.0 release at the custodian's canonical URL.
+---
 
-The critical path runs through Phase 2 (first outside publisher) and Phase 3 (custodian plus test suite). Everything after that is project-management work once those two are done.
+## Get involved
 
-The strategic update since 0.4 was drafted is that the proprietary version of `om` already exists in the market in the form of FeedPress and Outpost. This is not a threat; it is the strongest evidence the design is correct. It also means the publisher pitch is no longer hypothetical — the easiest first publisher is a Ghost site already paying FeedPress for paid RSS, who can switch to the open version at no functional cost and gain reader-app portability they did not have before.
+**You publish content** and want to take it off a closed platform without losing the paid-RSS mechanism: read [`SPEC.md`](SPEC.md), look at [`reference/om-ghost/`](reference/om-ghost/) or [`reference/om-wordpress/`](reference/om-wordpress/) for a working starting point, and open an issue describing your setup if you want help onboarding. The first ten production publishers across the three personas are the most important users `om` will ever have.
 
-A realistic minimum to hit the 18-month plan is roughly €180,000–€250,000 across all sources, split across three funding tracks: the Sovereign Tech Fund infrastructure grant, an NLnet NGI Zero development grant, and a Stripe Open Source sponsorship. A bootstrapped path with unpaid maintainers can reach month 6 but probably not month 18.
+**You write a reader app** (RSS reader, podcast app, indie web client) and want to support paid feeds without negotiating one-off deals with each publisher: start with the Level 1 parsing tests in [`reference/om-test-suite/`](reference/om-test-suite/) and the Miniflux patch plan in [`reference/om-miniflux/`](reference/om-miniflux/). Level 1 is one afternoon; the conformance harness will tell you exactly what passes.
+
+**You fund or shepherd open infrastructure** (foundation, sovereign-tech body, philanthropy): the governance, custodian, and funding plans are in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) and [`docs/FUNDING.md`](docs/FUNDING.md). The realistic minimum to hit the 18-month plan is roughly €180,000–€250,000, split across three tracks (Sovereign Tech Fund, NLnet NGI Zero, Stripe Open Source).
+
+**You write specs** and want to review the technical bets — the BBS+ selective-disclosure profile, the discovery document composing with RFC 9728, the bundle-aggregation trust model: [`SPEC.md`](SPEC.md) is the canonical document, the appendices in [`spec/`](spec/) cover ActivityPub co-existence, the Platform Adapter Profile, syndication-format mappings (Atom + JSON Feed), the subscriber portability format, and the 0.4.1 errata.
+
+Issues, pull requests, and reviews are welcome on all of the above.
+
+---
+
+## Repository layout
+
+```
+README.md         this document — the landing page
+SPEC.md           the canonical specification (0.4 draft)
+ROADMAP.md        eighteen-month technical phasing to 1.0
+ROADSHOW.md       guiding principles, risk register, 1.0 vision
+LICENSE           MIT — covers all code under reference/
+LICENSE-SPEC      CC-BY-4.0 — covers spec prose and design documents
+
+spec/             non-normative companion specs and errata
+                    SPEC-ERRATA-0.4.1.md           tax inclusivity, enclosure auth
+                    SPEC-SYNDICATION-MAPPINGS.md   Atom + JSON Feed mappings
+                    SPEC-ADAPTER-PROFILE.md        Platform Adapter Profile
+                    SPEC-ACTIVITYPUB.md            federation co-existence
+                    SPEC-PORTABILITY.md            subscriber portability format
+                    SPEC-SHARING-POLICY.md         anti-sharing primitive (provisional)
+
+docs/             design and project documents
+                    FEATURESET.md                  authoritative feature inventory
+                    GOVERNANCE.md                  custodian + working-group charter
+                    FUNDING.md                     grant application packages
+                    COMPETITIVE-LANDSCAPE.md       what exists, what doesn't
+                    reader-ARCHITECTURE.md         reference reader design
+
+reference/        working code
+                    om-ghost/                      Ghost plugin + Node sidecar (Level 5)
+                    om-wordpress/                  WordPress plugin (Level 5)
+                    om-eleventy/                   static-site reference (scaffolded)
+                    om-miniflux/                   Miniflux reader fork (scaffolded)
+                    om-test-suite/                 conformance harness (Level 1 live)
+                    om-portability-roundtrip/      26-test cross-reader matrix
+
+references/       verbatim copies of upstream specs (RSS, Atom, ActivityPub, VC, BBS, …)
+plans/            phase-by-phase execution detail
+ietf/             Internet-Draft in kramdown-rfc2629 format
+```
+
+---
+
+## Licensing
+
+The specification prose and design documents are CC-BY-4.0 (`LICENSE-SPEC`). All code, including everything under `reference/`, is MIT (`LICENSE`). The `om` namespace itself is not subject to copyright.
+
+---
 
 ## What this is not
 
 Not a business plan. Not a startup. Not a product. The work product is an open protocol under a perpetual permissive grant, held by a neutral custodian. The funding pays for maintenance and reference implementations, not equity. The reference implementations are open source. The goal is that the protocol outlives every individual maintainer and funder, the way RSS has now outlived its creators.
 
 `om` does not court Substack, Patreon, Spotify, or Apple. They will adopt, fork, or ignore; none of those outcomes is a precondition for 1.0. The audience is the indie ecosystem of publishers and reader-app authors who want paid content to work the way RSS itself works — open, federated, portable, and unowned.
-
-## Repository layout
-
-The canonical spec is `SPEC.md` at the root. The roadmap and the roadshow (the technical-spec sequencing and the principles-plus-risks narrative, respectively) sit beside it as `ROADMAP.md` and `ROADSHOW.md`. Everything else groups by purpose: `spec/` for the non-normative appendices (errata, syndication mappings, adapter profile, ActivityPub co-existence, subscriber portability, sharing policy); `docs/` for the design and project documents (featureset reference, funding plan, governance and custodian shortlist, competitive landscape, reader architecture); `reference/` for the working code; `references/` (with a trailing s) for the verbatim upstream specifications; `plans/` for the phase-by-phase execution detail; `ietf/` for the Internet-Draft.
-
-## Licensing
-
-The specification prose and design documents are CC-BY-4.0 (`LICENSE-SPEC`). All code, including everything under `reference/`, is MIT (`LICENSE`). The `om` namespace itself is not subject to copyright.

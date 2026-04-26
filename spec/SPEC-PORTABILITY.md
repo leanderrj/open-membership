@@ -4,7 +4,9 @@
 
 - **Companion to:** Open Membership RSS 0.4 / 1.0 (`http://purl.org/rss/modules/membership/`)
 - **Profile URI:** `http://purl.org/rss/modules/membership/portability/1.0`
-- **Status:** Draft, 2026-04-24
+- **This version:** 1.0 (2026-04-25)
+- **Previous version:** 1.0-draft (2026-04-24)
+- **Status:** Stable. Round-trip verified by `reference/om-portability-roundtrip/` against the 26-test matrix (six credential shapes × two encryption envelopes + fourteen edge cases). Errata, if any, will ship as 1.0.x patch releases at the canonical URL.
 - **Format:** JSON-LD envelope, optionally encrypted with age or JWE
 - **Media types:**
   - `application/vnd.om-membership-export+json` (plaintext)
