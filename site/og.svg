@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" font-family="Inter, 'Helvetica Neue', system-ui, sans-serif">
+  <!-- background: warm cream, with a darker band on the right showing code -->
+  <rect width="1200" height="630" fill="#fbfaf6"/>
+  <rect x="720" y="0" width="480" height="630" fill="#1c1b18"/>
+
+  <!-- top kicker -->
+  <text x="80" y="120" font-size="20" font-weight="600" letter-spacing="2.5" fill="#b1480f">OPEN STANDARD · DRAFT 0.4 · IETF-BOUND</text>
+
+  <!-- main headline -->
+  <text x="80" y="220" font-size="68" font-weight="700" fill="#161513" letter-spacing="-2">Open Membership</text>
+
+  <!-- subhead -->
+  <text x="80" y="296" font-size="32" font-weight="500" fill="#4a4844" letter-spacing="-0.5">Paid subscriptions on the web</text>
+  <text x="80" y="340" font-size="32" font-weight="500" fill="#4a4844" letter-spacing="-0.5">that belong to the web.</text>
+
+  <!-- domain pill -->
+  <rect x="80" y="500" width="380" height="56" rx="6" fill="#161513"/>
+  <text x="100" y="538" font-size="24" font-weight="500" fill="#fbfaf6">open-membership.org</text>
+
+  <!-- license note -->
+  <text x="80" y="585" font-size="18" font-weight="500" fill="#7a7770">Spec CC-BY-4.0 · Reference code MIT</text>
+
+  <!-- code panel on the right -->
+  <g font-family="'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, monospace" font-size="20">
+    <text x="760" y="120" fill="#7a7770">&lt;rss xmlns:om="..."&gt;</text>
+    <text x="760" y="160" fill="#7a7770">  &lt;channel&gt;</text>
+    <text x="760" y="220" fill="#fbfaf6">    &lt;om:tier id="paid"</text>
+    <text x="760" y="248" fill="#fbfaf6">      price="USD 8/mo"&gt;</text>
+    <text x="760" y="280" fill="#fbfaf6">    &lt;/om:tier&gt;</text>
+    <text x="760" y="340" fill="#7a7770">    &lt;item&gt;</text>
+    <text x="760" y="380" fill="#b1480f">      &lt;om:access&gt;</text>
+    <text x="780" y="408" fill="#f6c69b">        locked</text>
+    <text x="760" y="436" fill="#b1480f">      &lt;/om:access&gt;</text>
+    <text x="760" y="476" fill="#fbfaf6">      &lt;om:preview&gt;...</text>
+    <text x="760" y="504" fill="#fbfaf6">      &lt;om:unlock&gt;...</text>
+    <text x="760" y="544" fill="#7a7770">    &lt;/item&gt;</text>
+    <text x="760" y="584" fill="#7a7770">  &lt;/channel&gt;</text>
+  </g>
+
+  <!-- the RSS-arc + lock motif from the favicon, top right -->
+  <g transform="translate(1080, 32)" fill="none" stroke="#b1480f" stroke-width="6" stroke-linecap="round">
+    <circle cx="14" cy="62" r="6" fill="#b1480f" stroke="none"/>
+    <path d="M 4 42 a 24 24 0 0 1 24 24"/>
+    <path d="M 4 22 a 44 44 0 0 1 44 44"/>
+  </g>
+</svg>

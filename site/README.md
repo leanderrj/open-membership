@@ -92,16 +92,26 @@ GitHub Pages does not have a redirect mechanism. Two options to keep these slugs
 1. **Cloudflare Single Redirects on the canonical zone.** Add a redirect rule per slug. Highest-fidelity (real 302), no detour through HTML. Recommended.
 2. **Static HTML stub files.** Drop `site/spec.html`, `site/roadmap.html`, etc., each with a `<meta http-equiv="refresh" content="0; url=...">`. Lower-fidelity but works without touching Cloudflare.
 
-Option 1, in **Rules → Redirect Rules** on the `open-membership.org` zone, looks like:
+Option 1, in **Rules → Redirect Rules** on the `open-membership.org` zone, paste-ready table — six rules, each `URI Path` `equals` `/<slug>` → static redirect:
+
+| Rule name | When `URI Path equals` | Then redirect to (status `302`) |
+|---|---|---|
+| `slug-spec` | `/spec` | `https://github.com/leanderrj/open-membership/blob/master/SPEC.md` |
+| `slug-roadmap` | `/roadmap` | `https://github.com/leanderrj/open-membership/blob/master/ROADMAP.md` |
+| `slug-funding` | `/funding` | `https://github.com/leanderrj/open-membership/tree/master/funding` |
+| `slug-repo` | `/repo` | `https://github.com/leanderrj/open-membership` |
+| `slug-issues` | `/issues` | `https://github.com/leanderrj/open-membership/issues` |
+| `slug-site` | `/site` | `https://github.com/leanderrj/open-membership/tree/master/site` |
+
+If you'd rather paste a Cloudflare expression directly, the equivalent for the first row is:
 
 ```
-When:  http.request.uri.path eq "/spec"
-Then:  302 to "https://github.com/leanderrj/open-membership/blob/main/SPEC.md"
+When:  (http.request.uri.path eq "/spec")
+Then:  Static redirect → https://github.com/leanderrj/open-membership/blob/master/SPEC.md
+       Status: 302 · Preserve query string: off
 ```
 
-…repeated for `/roadmap`, `/funding`, `/repo`, `/issues`.
-
-If you don't want to maintain redirect rules in two places, skip the slugs entirely and link to `github.com/...` directly from the site copy. The current `index.html` already does this.
+If you don't want to maintain redirect rules in two places, skip the slugs entirely and link to `github.com/...` directly from the site copy — `index.html` already does this.
 
 ## Local preview
 
@@ -112,13 +122,37 @@ python3 -m http.server 4321
 
 Then open `http://localhost:4321/`. No watch mode, no hot reload — just the file system. Edit and refresh. The `CNAME` and `.nojekyll` files don't affect local serving.
 
+## Icon assets
+
+The site ships with a complete icon set:
+
+```
+favicon.svg              SVG source — modern browsers use this directly
+favicon.ico              multi-resolution fallback (16/32/48/64) for older browsers
+icon.svg                 256×256 SVG (used by the manifest, regen source for PNG sizes)
+icon-192.png             PWA manifest icon
+icon-512.png             PWA manifest icon, large
+apple-touch-icon.png     180×180 for iOS home-screen pin
+og.svg                   1200×630 SVG source for the social preview card
+og.png                   1200×630 PNG, the actual og:image referenced from <head>
+manifest.webmanifest     PWA app manifest
+```
+
+To regenerate the PNG/ICO outputs after editing the SVG sources:
+
+```
+./build-icons.sh
+```
+
+Requires `librsvg` and `imagemagick` (`brew install librsvg imagemagick` on macOS).
+
 ## Things to update before going live
 
-The HTML has placeholders that should resolve to real things before the site is shared widely:
+The setup is complete; before sharing widely, double-check:
 
-- **GitHub repository URL.** Currently every link points to `https://github.com/leanderrj/open-membership`. If the org/repo path is different, do a find-and-replace in `index.html`.
-- **`og.png`.** A 1200×630 social-preview image referenced from `<head>`. Until it exists, social previews fall back to a generic card. Not breaking but worth fixing before sharing.
-- **Favicon.** No favicon currently. Browsers request `/favicon.ico` and 404; harmless but ugly. Add `favicon.ico` (and optionally `apple-touch-icon.png` 180×180) to this directory.
+- **GitHub repository URL.** All links point to `github.com/leanderrj/open-membership`. If the canonical home moves (e.g. an `open-membership` org is created later), find-and-replace in `index.html`, `404.html`, and the friendly-slug Redirect Rules.
+- **Pages source.** GitHub: **Settings → Pages → Source: GitHub Actions** must be set, or the workflow fails.
+- **DNS propagation.** Wait until `dig open-membership.org` returns the GitHub IPs before adding the custom domain in GitHub Pages settings, or the DNS-check step fails and you have to re-trigger.
 
 ## Switching back to Cloudflare Pages later
 
