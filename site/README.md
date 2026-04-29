@@ -1,6 +1,6 @@
 # site/
 
-The static site for `open-membership.org`. Single page, no framework, no build step. Deployed via **GitHub Pages**, with **Cloudflare** providing DNS and edge redirects for the secondary domains.
+The static site for `openmembership.org`. Single page, no framework, no build step. Deployed via **GitHub Pages**, with **Cloudflare** providing DNS and edge redirects for the secondary domains.
 
 ## Files
 
@@ -22,17 +22,17 @@ The first time, you need to flip Pages on in the repository settings:
 
 1. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
 2. Push the workflow (it's already in this repo). The first run picks up the workflow and runs it.
-3. Once it finishes, the site is live at `https://leanderrj.github.io/open-membership/`. The CNAME file then routes the canonical domain (`open-membership.org`) to it.
+3. Once it finishes, the site is live at `https://leanderrj.github.io/open-membership/`. The CNAME file then routes the canonical domain (`openmembership.org`) to it.
 
 ## DNS — Cloudflare
 
 All three domains live in Cloudflare. Their roles:
 
-- **`open-membership.org`** — canonical. Apex points at GitHub Pages.
-- **`openmembership.org`** — redirect-only. 301 to canonical via a Cloudflare Single Redirect rule.
+- **`openmembership.org`** — canonical. Apex points at GitHub Pages.
+- **`open-membership.org`** — redirect-only. 301 to canonical via a Cloudflare Single Redirect rule.
 - **`open-membership.com`** — redirect-only. Same.
 
-### `open-membership.org` (canonical)
+### `openmembership.org` (canonical)
 
 DNS records on this zone:
 
@@ -50,9 +50,9 @@ DNS records on this zone:
 
 Set proxy to **DNS only** (grey cloud) for the apex records. GitHub Pages issues its own Let's Encrypt certificate for the apex; an orange-cloud proxy interferes with the certificate provisioning process unless you configure Cloudflare's SSL mode carefully (Full strict + an origin cert). The grey-cloud setup is simpler and just works.
 
-After the records propagate (a few minutes), in the GitHub repo: **Settings → Pages → Custom domain** → enter `open-membership.org`. Wait for the DNS check to pass and the cert to issue. Then tick **Enforce HTTPS**.
+After the records propagate (a few minutes), in the GitHub repo: **Settings → Pages → Custom domain** → enter `openmembership.org`. Wait for the DNS check to pass and the cert to issue. Then tick **Enforce HTTPS**.
 
-### `openmembership.org` and `open-membership.com` (redirect-only)
+### `open-membership.org` and `open-membership.com` (redirect-only)
 
 These zones get a single placeholder DNS record so Cloudflare knows the zone is active:
 
@@ -65,11 +65,11 @@ These zones get a single placeholder DNS record so Cloudflare knows the zone is 
 
 In **Rules → Redirect Rules** on each redirect-only zone, add:
 
-- **Rule name:** `Canonicalise to open-membership.org`
-- **When incoming requests match:** `(http.host eq "openmembership.org" or http.host eq "www.openmembership.org")` *(adjust for the .com zone)*
+- **Rule name:** `Canonicalise to openmembership.org`
+- **When incoming requests match:** `(http.host eq "open-membership.org" or http.host eq "www.open-membership.org")` *(adjust for the .com zone)*
 - **Then:**
   - **Type:** Dynamic
-  - **Expression:** `concat("https://open-membership.org", http.request.uri.path)`
+  - **Expression:** `concat("https://openmembership.org", http.request.uri.path)`
   - **Status code:** `301`
   - **Preserve query string:** on
 
@@ -92,7 +92,7 @@ GitHub Pages does not have a redirect mechanism. Two options to keep these slugs
 1. **Cloudflare Single Redirects on the canonical zone.** Add a redirect rule per slug. Highest-fidelity (real 302), no detour through HTML. Recommended.
 2. **Static HTML stub files.** Drop `site/spec.html`, `site/roadmap.html`, etc., each with a `<meta http-equiv="refresh" content="0; url=...">`. Lower-fidelity but works without touching Cloudflare.
 
-Option 1, in **Rules → Redirect Rules** on the `open-membership.org` zone, paste-ready table — six rules, each `URI Path` `equals` `/<slug>` → static redirect:
+Option 1, in **Rules → Redirect Rules** on the `openmembership.org` zone, paste-ready table — six rules, each `URI Path` `equals` `/<slug>` → static redirect:
 
 | Rule name | When `URI Path equals` | Then redirect to (status `302`) |
 |---|---|---|
@@ -152,7 +152,7 @@ The setup is complete; before sharing widely, double-check:
 
 - **GitHub repository URL.** All links point to `github.com/leanderrj/open-membership`. If the canonical home moves (e.g. an `open-membership` org is created later), find-and-replace in `index.html`, `404.html`, and the friendly-slug Redirect Rules.
 - **Pages source.** GitHub: **Settings → Pages → Source: GitHub Actions** must be set, or the workflow fails.
-- **DNS propagation.** Wait until `dig open-membership.org` returns the GitHub IPs before adding the custom domain in GitHub Pages settings, or the DNS-check step fails and you have to re-trigger.
+- **DNS propagation.** Wait until `dig openmembership.org` returns the GitHub IPs before adding the custom domain in GitHub Pages settings, or the DNS-check step fails and you have to re-trigger.
 
 ## Switching back to Cloudflare Pages later
 

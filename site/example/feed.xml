@@ -4,10 +4,10 @@
      xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Field Notes — Open Membership example feed</title>
-    <link>https://open-membership.org/</link>
+    <link>https://openmembership.org/</link>
     <description>A non-functional example feed shaped for the Open Membership 0.4 namespace. The publisher domain is fictional; the protocol surface is real.</description>
     <language>en</language>
-    <atom:link href="https://open-membership.org/example/feed.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://openmembership.org/example/feed.xml" rel="self" type="application/rss+xml"/>
 
     <om:provider>https://fieldnotes.example</om:provider>
     <om:discovery>https://fieldnotes.example/.well-known/open-membership</om:discovery>

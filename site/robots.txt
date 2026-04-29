@@ -4,4 +4,4 @@ Allow: /
 # Don't crawl example fixtures; they're for human inspection, not search results.
 Disallow: /example/
 
-Sitemap: https://open-membership.org/sitemap.xml
+Sitemap: https://openmembership.org/sitemap.xml

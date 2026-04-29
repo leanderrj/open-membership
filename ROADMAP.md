@@ -12,7 +12,7 @@ All nine gaps surfaced in review after Ghost and WordPress shipped are now deliv
 | Platform Adapter Profile | `spec/SPEC-ADAPTER-PROFILE.md` | Validated against WooCommerce + Memberful without rework; no further work pre-1.0 |
 | Static-site reference | `reference/om-eleventy/` (scaffolded) | Onboard a real Eleventy publisher; production deploy |
 | ActivityPub co-existence | `spec/SPEC-ACTIVITYPUB.md` | Review pass with Ghost-AP / WP-AP maintainers |
-| Reader conformance harness | `reference/om-test-suite/` (scaffolded, Level 1 live, L2/L5 stubbed) | Fill in L2 and L5 tests; deploy at `test.open-membership.org` |
+| Reader conformance harness | `reference/om-test-suite/` (scaffolded, Level 1 live, L2/L5 stubbed) | Fill in L2 and L5 tests; deploy at `test.openmembership.org` |
 | Subscriber portability | `spec/SPEC-PORTABILITY.md` + `reference/om-portability-roundtrip/` | Run the 26-test matrix against real Miniflux and NetNewsWire forks once they exist |
 | Anti-sharing primitive | `spec/SPEC-SHARING-POLICY.md` (v0.1 Provisional) | Hold as Provisional until persona 2 podcaster deploys; errata to 1.0 after |
 | i18n: VAT/tax at `<om:price>` | `spec/SPEC-ERRATA-0.4.1.md` Erratum 1 | Publish 0.4.1 at the canonical URL |
@@ -110,7 +110,7 @@ Once a custodian says yes (realistically by month 8), file the grant application
 Test suite + reader harness are scaffolded at `reference/om-test-suite/` (Level 1 tests live, L2/L5 stubbed). Atom + JSON Feed mappings are published at `spec/SPEC-SYNDICATION-MAPPINGS.md`. Remaining operational work:
 
 - Fill in Level 2 and Level 5 tests in the suite
-- Deploy the suite at `test.open-membership.org` (or equivalent custodian URL)
+- Deploy the suite at `test.openmembership.org` (or equivalent custodian URL)
 - Verify test suite validates feeds in all three syndication formats (RSS, Atom, JSON Feed)
 - Publish the Atom + JSON Feed mappings document at the canonical namespace URL
 

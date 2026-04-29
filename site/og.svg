@@ -15,7 +15,7 @@
 
   <!-- domain pill -->
   <rect x="80" y="500" width="380" height="56" rx="6" fill="#161513"/>
-  <text x="100" y="538" font-size="24" font-weight="500" fill="#fbfaf6">open-membership.org</text>
+  <text x="100" y="538" font-size="24" font-weight="500" fill="#fbfaf6">openmembership.org</text>
 
   <!-- license note -->
   <text x="80" y="585" font-size="18" font-weight="500" fill="#7a7770">Spec CC-BY-4.0 · Reference code MIT</text>

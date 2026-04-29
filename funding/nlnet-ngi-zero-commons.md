@@ -16,7 +16,7 @@ Open Membership RSS
 
 ## Project website
 
-https://open-membership.org
+https://openmembership.org
 
 Repository: https://github.com/leanderrj/open-membership
 

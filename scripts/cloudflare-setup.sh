@@ -24,8 +24,8 @@ set -euo pipefail
 
 # --- configuration ------------------------------------------------------------
 
-CANONICAL_DOMAIN="open-membership.org"
-REDIRECT_DOMAINS=("openmembership.org" "open-membership.com")
+CANONICAL_DOMAIN="openmembership.org"
+REDIRECT_DOMAINS=("open-membership.org" "open-membership.com")
 GH_USER="leanderrj"
 
 GH_PAGES_IPV4=(
@@ -147,7 +147,7 @@ set_canonical_redirect() {
           }
         },
         expression: $expr,
-        description: "Canonicalise to open-membership.org",
+        description: "Canonicalise to openmembership.org",
         enabled: true
       }]
     }')

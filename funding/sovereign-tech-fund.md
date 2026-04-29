@@ -36,7 +36,7 @@ The role we are asking STF to fund is the same role socialweb.coop plays for Act
 
 **WI-1 — Test suite infrastructure: €30,000**
 
-A hosted test service at `test.open-membership.org` that any publisher or reader implementation can submit a feed URL or implementation report to and receive a public conformance pass/fail per level. Built in Go (matching the reference Miniflux fork's language). Test fixtures published as a separate repository so other test runners can consume them.
+A hosted test service at `test.openmembership.org` that any publisher or reader implementation can submit a feed URL or implementation report to and receive a public conformance pass/fail per level. Built in Go (matching the reference Miniflux fork's language). Test fixtures published as a separate repository so other test runners can consume them.
 
 Deliverables: hosted service live, fixture repository with at least 200 test cases across Levels 1–5, public dashboard of certified implementations.
 
@@ -60,7 +60,7 @@ Funds for reactive work: spec errata that surface during testing, security findi
 
 After this contract ends, the test suite runs on:
 
-- The hosted service at `test.open-membership.org` is paid for by the working group's general operating budget (currently €500/month for hosting; covered by individual donations and publisher contributions).
+- The hosted service at `test.openmembership.org` is paid for by the working group's general operating budget (currently €500/month for hosting; covered by individual donations and publisher contributions).
 - The fixture repository is community-maintained. Errata and new fixtures land via pull request from implementers as new edge cases are discovered.
 - The certification report is generated automatically every quarter from the test results; a working-group volunteer reviews and publishes.
 

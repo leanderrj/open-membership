@@ -169,7 +169,7 @@ reference/        working code
 references/       verbatim copies of upstream specs (RSS, Atom, ActivityPub, VC, BBS, …)
 plans/            phase-by-phase execution detail
 ietf/             Internet-Draft in kramdown-rfc2629 format
-site/             open-membership.org static site (deploys to Cloudflare Pages)
+site/             openmembership.org static site (deploys to GitHub Pages)
 ```
 
 ---
