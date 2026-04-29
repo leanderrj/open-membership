@@ -1,6 +1,6 @@
 # Open Membership RSS — Roadshow
 
-The pitch deck in prose form. This document carries the case for `om` as an open standard: the principles the work is built on, the risks named honestly, what shipping 1.0 actually ratifies, and what comes after. For dates, deliverables, and phases, see [ROADMAP.md](ROADMAP.md). For budget, see [docs/FUNDING.md](docs/FUNDING.md).
+The pitch deck in prose form. This document carries the case for `om` as an open standard: the principles the work is built on, the risks named honestly, what shipping 1.0 actually ratifies, and what comes after. For dates, deliverables, and phases, see [ROADMAP.md](ROADMAP.md). For budget, see [funding/](funding/).
 
 ## Guiding principles
 
@@ -15,7 +15,7 @@ These are the rules the project is built on. When a decision comes up that isn't
 
 ## Risk register
 
-Named risks and mitigations. Funding-related risks live in [docs/FUNDING.md](docs/FUNDING.md).
+Named risks and mitigations. Funding-related risks live in [funding/](funding/).
 
 **Risk: Ghost plugin takes longer than 3 months.**
 - Probability: medium-high. Ghost's plugin architecture is not the deepest in the CMS world.

@@ -391,7 +391,7 @@ Phase 3 M7 custodian conversations become credible only if Phase 2 closed with o
 
 ### Grant-application inheritances
 
-Per ../docs/FUNDING.md (not re-read here; content deferred to that document), Phase 3 M8 grant applications depend on:
+Per ../funding/README.md (not re-read here; content deferred to that document), Phase 3 M8 grant applications depend on:
 
 - A named custodian or custodian-in-progress (Phase 3 M7 output, but reliant on Phase 2 evidence).
 - A named first outside publisher (Phase 2 M5 output).

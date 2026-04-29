@@ -244,7 +244,7 @@ Comments that miss the M14 Week 3 Friday cutoff are not silently lost — they a
 
 ## 6. Reviewer compensation
 
-Per `../docs/FUNDING.md` Phase 5 line ("External review (security + privacy reviewers): €3,000"), the budget covers paid reviewer time at roughly one engineer-week each for the two non-implementer reviewers. The three implementer reviewers are paid in the same Phase 5 line (rolled in) when the working group can fund them; in practice, implementer reviewers are sometimes already employed by organizations that consider this work part of their open-source contribution time, in which case they decline payment and the residual budget rolls forward into 1.x errata work.
+Per `../funding/BUDGET.md` Phase 5 line ("External review (security + privacy reviewers): €3,000"), the budget covers paid reviewer time at roughly one engineer-week each for the two non-implementer reviewers. The three implementer reviewers are paid in the same Phase 5 line (rolled in) when the working group can fund them; in practice, implementer reviewers are sometimes already employed by organizations that consider this work part of their open-source contribution time, in which case they decline payment and the residual budget rolls forward into 1.x errata work.
 
 The compensation arrangement is documented per reviewer in their sign-off attestation (§4.4) so the IRSG submission package is honest about what was paid.
 

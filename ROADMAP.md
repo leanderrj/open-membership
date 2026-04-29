@@ -1,6 +1,6 @@
 # Open Membership RSS — Roadmap to 1.0
 
-Eighteen months from spec draft to ratified open standard with multiple production deployments. This document covers spec and technical milestones only. For principles, risks, and what 1.0 ratifies, see [ROADSHOW.md](ROADSHOW.md). For budget and funding, see [docs/FUNDING.md](docs/FUNDING.md).
+Eighteen months from spec draft to ratified open standard with multiple production deployments. This document covers spec and technical milestones only. For principles, risks, and what 1.0 ratifies, see [ROADSHOW.md](ROADSHOW.md). For budget and funding, see [funding/](funding/).
 
 ## Interop & platform-surface track — SHIPPED
 
@@ -103,7 +103,7 @@ Draft pitches for all four in parallel; send them in sequence a week apart to av
 
 **Month 8: Grant applications**
 
-Once a custodian says yes (realistically by month 8), file the grant applications described in [docs/FUNDING.md](docs/FUNDING.md). Applications take 2–4 weeks each to write well; do not rush them, and do not send them simultaneously.
+Once a custodian says yes (realistically by month 8), file the grant applications in [funding/](funding/). Applications take 2–4 weeks each to write well; do not rush them, and do not send them simultaneously.
 
 **Month 9: Test suite deployment + format-mapping publication**
 

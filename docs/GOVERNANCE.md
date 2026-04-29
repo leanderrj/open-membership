@@ -26,7 +26,7 @@ Four candidates, in the order to ask. Don't simultaneous-ask; one at a time, a w
 - Estimated answer time: 2–4 weeks if a warm intro; 6–8 weeks cold
 
 **2. Sovereign Tech Fund / Sovereign Tech Agency** — both funder and custodian candidate
-- If the Sovereign Tech Fund grant is approved (see [FUNDING.md](FUNDING.md)), asking them to also hold the spec custodianship is natural
+- If the Sovereign Tech Fund grant is approved (see [../funding/sovereign-tech-fund.md](../funding/sovereign-tech-fund.md)), asking them to also hold the spec custodianship is natural
 - They already do this for other infrastructure they fund
 - Estimated answer: 2 weeks after grant approval
 

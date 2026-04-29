@@ -1,6 +1,6 @@
 # Phases 3 and 4 — Execution Plan (Months 7–12)
 
-Turns ROADMAP.md Phase 3 (governance + test infrastructure) and Phase 4 (diversifying the implementer base) into week-granular work. Budget and grant content is deferred to ../docs/FUNDING.md; this file tracks engineer-weeks, ownership, and decision gates only. 0.4 is feature-frozen; every artifact below is either non-normative (appendices, Profile) or tooling around the existing spec.
+Turns ROADMAP.md Phase 3 (governance + test infrastructure) and Phase 4 (diversifying the implementer base) into week-granular work. Budget and grant content is deferred to ../funding/README.md; this file tracks engineer-weeks, ownership, and decision gates only. 0.4 is feature-frozen; every artifact below is either non-normative (appendices, Profile) or tooling around the existing spec.
 
 ## Shipped this session (agent-produced artifacts)
 
@@ -67,7 +67,7 @@ Four candidates, asked one per week, with the pitch adapted from each previous r
 
 | Element | Content |
 |---|---|
-| What goes in the pitch | STF already funded ActivityPub test infrastructure; `om` is the paid-content complement to that work; dual role (custodian + potential M8 funder, see ../docs/FUNDING.md) is natural for them |
+| What goes in the pitch | STF already funded ActivityPub test infrastructure; `om` is the paid-content complement to that work; dual role (custodian + potential M8 funder, see ../funding/README.md) is natural for them |
 | What STF gets | A second federated-content protocol under their stewardship; a clear mapping to the EU's public-digital-infrastructure thesis; deliverables they can point to at year-end |
 | Likely concerns | Scope of the custodial role vs. their mission as funder (A: scope it to the five ../docs/GOVERNANCE.md clauses only); whether the spec needs EU-legal review before they host it (A: not at custodian layer; at most a data-protection note) |
 | Decision criterion | Answer expected 2 weeks after grant approval per ../docs/GOVERNANCE.md. If no grant decision yet, send the custodian pitch separately and flag it as orthogonal |
@@ -108,7 +108,7 @@ Four candidates, asked one per week, with the pitch adapted from each previous r
 
 ### 2.2 Month 8 — Grant applications
 
-Grant content, amounts, and detailed narratives live in ../docs/FUNDING.md. This section covers only the drafting and submission logistics.
+Grant content, amounts, and detailed narratives live in ../funding/README.md. This section covers only the drafting and submission logistics.
 
 **Submission order and cadence:**
 
@@ -269,7 +269,7 @@ This is the only month of Phase 3 with real technical build. Effort: ~5 engineer
 #### 2.3.5 Phase 3 exit criteria
 
 - Custodian commitment (signed agreement OR warm verbal commitment with signed draft in circulation)
-- At least two grant applications submitted through ../docs/FUNDING.md-described channels; internal-review bar held
+- At least two grant applications submitted through ../funding/README.md-described channels; internal-review bar held
 - `om-test-suite` repo public, with publisher suite v1, reader harness, and Atom/JSON Feed mapping drafts
 - At least `om-ghost` + `om-wordpress` passing Level 1/2/5 against the suite (otherwise the suite is wrong OR the references are wrong — either way, blocker)
 - At least one external reader (the Phase 1 Miniflux fork) able to run CI against the harness
@@ -350,7 +350,7 @@ Per ../docs/COMPETITIVE-LANDSCAPE.md §"The 'Open' column is `om`'s adapter pipe
 **Who runs the validation pass:**
 
 - The Profile author (spec editor) does not do the WooCommerce or Memberful pass — the point is external eyes
-- One week of a WooCommerce-experienced WP engineer's time (contracted, see ../docs/FUNDING.md)
+- One week of a WooCommerce-experienced WP engineer's time (contracted, see ../funding/README.md)
 - One week of a Memberful-experienced WP engineer's time (contracted)
 - Each produces a written "fit report" — either "fits as-is" or "these three things broke"
 
@@ -571,7 +571,7 @@ Phase 5 (M13–M15 — IETF submission prep; see ROADMAP.md Phase 5) inherits:
 | From | What Phase 5 gets | Phase-5 dependency |
 |---|---|---|
 | M7 | Custodian committed; canonical URL in custodian's control | Phase 5 M13 format-conversion work needs a canonical URL pinned in the RFC draft |
-| M8 | Grant applications submitted; some decisions expected by M13 | Phase 5 work is grant-funded per ../docs/FUNDING.md — a no-money runway is possible but tight |
+| M8 | Grant applications submitted; some decisions expected by M13 | Phase 5 work is grant-funded per ../funding/README.md — a no-money runway is possible but tight |
 | M9 | Publisher test suite v1 + reader harness + Atom/JSON Feed mapping drafts | Phase 5 M13 "Implementation Status" section of the RFC cites the suite's public registry; M14 external review cites mapping work |
 | M10 | Platform Adapter Profile (+ fit reports) | Phase 5 references the Profile as part of non-normative appendix inventory in the RFC |
 | M11 | Second reader + static-site reference | **Hard dependency:** Phase 5 M13's subscriber portability format (see `../spec/SPEC-PORTABILITY.md`) requires working readers at both ends of the round-trip. Miniflux (from Phase 1) + second reader (from M11) must both exist as functioning endpoints. If M11 second-reader slips, M13 portability round-trip slips with it |
@@ -594,7 +594,7 @@ Phase 5 (M13–M15 — IETF submission prep; see ROADMAP.md Phase 5) inherits:
 
 ## 5. Summary of engineer-week estimates
 
-Indicative only — ../docs/FUNDING.md has costs; this table has effort.
+Indicative only — ../funding/README.md has costs; this table has effort.
 
 | Month | Deliverable | Effort (engineer-weeks) |
 |---|---|---|

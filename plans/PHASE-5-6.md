@@ -219,7 +219,7 @@ At least **three implementers and two non-implementers** (ROADMAP.md Phase 5 M14
 
 **Implementer 3.** A PSP integration engineer. Target profile: someone who has shipped a Stripe or Mollie integration in production (not necessarily on `om`). They review §§2, 6 (revocation, proration) and the PSP binding profiles for operational realism.
 
-**Non-implementer 1 — security reviewer.** Target profile: a named security researcher with IETF history or published work on OAuth 2.0 / DPoP / token replay. The Sovereign Tech Agency's ActivityPub test-suite security reviewers are a natural pool (SPEC.md §G.2 establishes that connection). Budget: paid reviewer work through the custodian's fiscal sponsor (see ../docs/GOVERNANCE.md §"Contributor compensation"; the funding for this comes from the grants in ../docs/FUNDING.md, not from the spec-work budget).
+**Non-implementer 1 — security reviewer.** Target profile: a named security researcher with IETF history or published work on OAuth 2.0 / DPoP / token replay. The Sovereign Tech Agency's ActivityPub test-suite security reviewers are a natural pool (SPEC.md §G.2 establishes that connection). Budget: paid reviewer work through the custodian's fiscal sponsor (see ../docs/GOVERNANCE.md §"Contributor compensation"; the funding for this comes from the grants in ../funding/README.md, not from the spec-work budget).
 
 **Non-implementer 2 — privacy reviewer.** Target profile: a W3C VC WG member or a published privacy researcher who has written on selective disclosure or pseudonymous credentials. The W3C VC WG liaison (optional working group seat per ../docs/GOVERNANCE.md §"Composition") may be able to recommend candidates if they're on-board by M13.
 
@@ -383,7 +383,7 @@ Three parallel tracks. Attendees self-select.
 
 **Saturday evening — social (19:30 onward).**
 
-A dinner at walking distance from the venue. Attendance optional; no agenda. Paid by the coordinator's grant-budget line for the event (../docs/FUNDING.md, not this document).
+A dinner at walking distance from the venue. Attendance optional; no agenda. Paid by the coordinator's grant-budget line for the event (../funding/README.md, not this document).
 
 **Sunday morning — design discussions (09:30–12:30).**
 
@@ -516,7 +516,7 @@ Announcement goes out simultaneously across channels on M18 W4 Monday. Single re
 - **Ghost forum.** "Announcements" category, from the `om-ghost` maintainer's account.
 - **Podcast Index community.** Post on their forum with specific framing: "paid RSS, co-exists with `podcast:value`, ships today" (SPEC.md §8 Podcasting 2.0 co-existence is the hook).
 - **Hacker News.** A single submission, neutral title, from a working group member. No coordinated upvoting; HN is either interested or not.
-- **NLnet announcement.** If NLnet funded any part of the work per ../docs/FUNDING.md, the grant report doubles as an announcement via their project page and NGI newsletter (../docs/GOVERNANCE.md §"What the custodian actually does" if NLnet is the custodian).
+- **NLnet announcement.** If NLnet funded any part of the work per ../funding/README.md, the grant report doubles as an announcement via their project page and NGI newsletter (../docs/GOVERNANCE.md §"What the custodian actually does" if NLnet is the custodian).
 - **Sovereign Tech Fund report.** If STF funded any part, the 1.0 release is the reporting milestone that closes that grant's deliverable. STF publishes their own announcement.
 - **Mailing list (if one exists under custodian hosting).** Formal announcement with the spec URL, portability URL, test suite URL, and registry URL.
 

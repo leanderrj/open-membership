@@ -118,7 +118,7 @@ The path to 1.0 is not new features. It is shipping working implementations, get
 
 **You write a reader app** (RSS reader, podcast app, indie web client) and want to support paid feeds without negotiating one-off deals with each publisher: start with the Level 1 parsing tests in [`reference/om-test-suite/`](reference/om-test-suite/) and the Miniflux patch plan in [`reference/om-miniflux/`](reference/om-miniflux/). Level 1 is one afternoon; the conformance harness will tell you exactly what passes.
 
-**You fund or shepherd open infrastructure** (foundation, sovereign-tech body, philanthropy): the governance, custodian, and funding plans are in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md) and [`docs/FUNDING.md`](docs/FUNDING.md). The realistic minimum to hit the 18-month plan is roughly €180,000–€250,000, split across three tracks (Sovereign Tech Fund, NLnet NGI Zero, Stripe Open Source).
+**You fund or shepherd open infrastructure** (foundation, sovereign-tech body, philanthropy): the governance and custodian plan is in [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md); the funding plan, with sendable applications per funder, is in [`funding/`](funding/). The 18-month plan needs ~€205,000 in direct spend, of which ~€130,000 is targeted from grants (NLnet NGI Zero Commons, SIDN Fonds, Sovereign Tech Fund) and ~€75,000 from publisher contributions and individual donations.
 
 **You write specs** and want to review the technical bets — the BBS+ selective-disclosure profile, the discovery document composing with RFC 9728, the bundle-aggregation trust model: [`SPEC.md`](SPEC.md) is the canonical document, the appendices in [`spec/`](spec/) cover ActivityPub co-existence, the Platform Adapter Profile, syndication-format mappings (Atom + JSON Feed), the subscriber portability format, and the 0.4.1 errata.
 
@@ -147,9 +147,16 @@ spec/             non-normative companion specs and errata
 docs/             design and project documents
                     FEATURESET.md                  authoritative feature inventory
                     GOVERNANCE.md                  custodian + working-group charter
-                    FUNDING.md                     grant application packages
                     COMPETITIVE-LANDSCAPE.md       what exists, what doesn't
                     reader-ARCHITECTURE.md         reference reader design
+
+funding/          funding plan and sendable applications
+                    README.md                      strategy + sequence
+                    BUDGET.md                      phase-by-phase spend
+                    nlnet-ngi-zero-commons.md      primary application (NLnet)
+                    sidn-fonds.md                  Dutch backup (SIDN Fonds)
+                    sovereign-tech-fund.md         stretch (STF Contract Work)
+                    stripe-open-source.md          informal email to Stripe DevRel
 
 reference/        working code
                     om-ghost/                      Ghost plugin + Node sidecar (Level 5)
@@ -162,6 +169,7 @@ reference/        working code
 references/       verbatim copies of upstream specs (RSS, Atom, ActivityPub, VC, BBS, …)
 plans/            phase-by-phase execution detail
 ietf/             Internet-Draft in kramdown-rfc2629 format
+site/             open-membership.org static site (deploys to Cloudflare Pages)
 ```
 
 ---
