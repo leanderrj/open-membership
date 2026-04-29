@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Open Membership RSS">
+  <main>
+    <section class="border-b border-ink-line">
+      <div class="mx-auto max-w-container px-6 py-20 md:py-28">
+        <h1 class="font-sans text-4xl md:text-5xl font-semibold tracking-tight text-ink leading-tight mb-5">
+          Paid subscriptions over RSS.
+        </h1>
+        <p class="text-lg md:text-xl text-ink-soft max-w-2xl mb-8">
+          An RSS namespace that lets any publisher charge for content and any reader unlock it. Three moving parts. MIT and CC-BY-4.0.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="/spec/" class="inline-block bg-accent text-white px-5 py-2.5 rounded font-medium no-underline hover:bg-accent-ink">Read the spec</a>
+          <a href="https://github.com/leanderrj/open-membership" class="inline-block border border-ink-line px-5 py-2.5 rounded font-medium text-ink no-underline hover:border-accent hover:text-accent">Source on GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="protocol" class="border-b border-ink-line">
+      <div class="mx-auto max-w-container px-6 py-16 md:py-20">
+        <h2 class="font-sans text-2xl md:text-3xl font-semibold tracking-tight text-ink mb-4">How it works</h2>
+        <p class="text-ink-soft max-w-2xl mb-6">
+          A publisher adds a handful of <code class="font-mono text-sm bg-paperAlt px-1.5 py-0.5 rounded">om:</code> elements to their existing RSS feed. That is the whole surface a reader has to recognise to unlock paid content.
+        </p>
+
+<pre class="bg-codebg text-codefg rounded p-5 overflow-x-auto text-sm leading-relaxed mb-6"><code>&lt;rss version="2.0" xmlns:om="http://purl.org/rss/modules/membership/"&gt;
+  &lt;channel&gt;
+    &lt;title&gt;Field Notes&lt;/title&gt;
+    &lt;om:provider&gt;https://fieldnotes.example&lt;/om:provider&gt;
+    &lt;om:discovery&gt;https://fieldnotes.example/.well-known/open-membership&lt;/om:discovery&gt;
+
+    &lt;om:psp id="stripe" account="acct_..." /&gt;
+    &lt;om:tier id="paid" price="USD 8.00" period="monthly"&gt;Supporter&lt;/om:tier&gt;
+
+    &lt;om:offer id="supporter-monthly" tier="paid"&gt;
+      &lt;om:price amount="8.00" currency="USD" period="P1M" /&gt;
+      &lt;om:checkout psp="stripe" price_id="price_supporter_..." /&gt;
+    &lt;/om:offer&gt;
+
+    &lt;item&gt;
+      &lt;title&gt;Members-only investigation: the warehouse fire&lt;/title&gt;
+      &lt;om:access&gt;locked&lt;/om:access&gt;
+      &lt;om:preview&gt;The fire investigators&apos; report was filed two weeks before...&lt;/om:preview&gt;
+      &lt;om:unlock&gt;https://fieldnotes.example/unlock/2026-04-fire&lt;/om:unlock&gt;
+    &lt;/item&gt;
+  &lt;/channel&gt;
+&lt;/rss&gt;</code></pre>
+
+        <p class="text-ink-soft max-w-2xl mb-10">
+          A reader that doesn't understand <code class="font-mono text-sm bg-paperAlt px-1.5 py-0.5 rounded">om</code> keeps working as before. A reader that does shows previews and unlock prompts.
+        </p>
+
+        <div class="grid gap-6 md:grid-cols-3">
+          <article class="border border-ink-line rounded p-5">
+            <h3 class="font-semibold text-ink mb-2">1. The feed</h3>
+            <p class="text-ink-soft text-sm m-0">A few <code class="font-mono text-xs bg-paperAlt px-1 py-0.5 rounded">om:</code> elements: provider, payment processors, tiers, per-item access state.</p>
+          </article>
+          <article class="border border-ink-line rounded p-5">
+            <h3 class="font-semibold text-ink mb-2">2. The discovery document</h3>
+            <p class="text-ink-soft text-sm m-0">One JSON document at <code class="font-mono text-xs bg-paperAlt px-1 py-0.5 rounded">.well-known/open-membership</code> (composes with RFC 9728). Token endpoints, auth methods, revocation policy.</p>
+          </article>
+          <article class="border border-ink-line rounded p-5">
+            <h3 class="font-semibold text-ink mb-2">3. The credential</h3>
+            <p class="text-ink-soft text-sm m-0">A URL token, an OAuth bearer, or a W3C Verifiable Credential. Portable across reader apps.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy" class="bg-paperAlt border-b border-ink-line">
+      <div class="mx-auto max-w-container px-6 py-16 md:py-20">
+        <h2 class="font-sans text-2xl md:text-3xl font-semibold tracking-tight text-ink mb-4">Identity unlinkability</h2>
+        <p class="text-ink-soft max-w-2xl mb-3">
+          A Verifiable Credential profile (OM-VC, with OM-VC-SD for BBS+ selective disclosure) lets a subscriber prove "I am a paid member of this tier" without revealing a stable identifier that publishers could correlate.
+        </p>
+        <p class="text-ink-mute text-sm max-w-2xl">
+          Built for cases where a subscriber list could be subpoenaed: investigative journalism, medical publications, legal research.
+        </p>
+      </div>
+    </section>
+
+    <section id="involved">
+      <div class="mx-auto max-w-container px-6 py-16 md:py-20">
+        <h2 class="font-sans text-2xl md:text-3xl font-semibold tracking-tight text-ink mb-8">Get involved</h2>
+        <div class="grid gap-6 md:grid-cols-3">
+          <article>
+            <h3 class="font-semibold text-ink mb-2">Publishers</h3>
+            <p class="text-ink-soft text-sm mb-3">Read the spec and the Ghost or WordPress reference plugin. Open an issue if you want help onboarding.</p>
+            <a href="https://github.com/leanderrj/open-membership/tree/master/reference" class="text-accent text-sm font-medium no-underline hover:underline">Reference plugins →</a>
+          </article>
+          <article>
+            <h3 class="font-semibold text-ink mb-2">Reader apps</h3>
+            <p class="text-ink-soft text-sm mb-3">Start with the parsing tests and the Miniflux patch plan. First integration is an afternoon of work.</p>
+            <a href="https://github.com/leanderrj/open-membership/tree/master/reference/om-test-suite" class="text-accent text-sm font-medium no-underline hover:underline">Test suite →</a>
+          </article>
+          <article>
+            <h3 class="font-semibold text-ink mb-2">Spec reviewers</h3>
+            <p class="text-ink-soft text-sm mb-3">Companion specs cover ActivityPub coexistence, the Adapter Profile, syndication mappings, and portability.</p>
+            <a href="/spec/" class="text-accent text-sm font-medium no-underline hover:underline">Browse the spec →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

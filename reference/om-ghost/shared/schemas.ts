@@ -36,7 +36,7 @@ export const FeedParams = z.object({
 
 /**
  * A lightweight schema for the Stripe webhook body. We don't validate
- * the whole event — Stripe's SDK does that in signature verification —
+ * the whole event; Stripe's SDK does that in signature verification -
  * but we do pluck a couple of fields the handler needs.
  */
 export const WebhookEventEnvelope = z.object({

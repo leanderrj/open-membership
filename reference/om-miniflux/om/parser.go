@@ -1,4 +1,4 @@
-// Package om — parser.go
+// Package om; parser.go
 //
 // Parses the om 0.4 elements out of an RSS 2.0 or RSS 1.0/RDF feed using
 // only Go's stdlib encoding/xml. The parser is tolerant: missing optional
@@ -31,7 +31,7 @@ type ParseResult struct {
 // declares the namespace but uses no om elements; callers can detect that
 // case via len(Result.Channel.AuthMethods)==0 && Result.Channel.Provider=="".
 //
-// SPEC.md §Featureset Summary (Foundational 0.1) — namespace declaration,
+// SPEC.md §Featureset Summary (Foundational 0.1); namespace declaration,
 // provider identification, auth method declaration, tiers, per-item access
 // policy, preview, unlock.
 func Parse(r io.Reader) (*ParseResult, error) {

@@ -12,8 +12,8 @@ import pluginRss from "@11ty/eleventy-plugin-rss";
  *     om-config.yaml                  (non-secret publisher config, bundled)
  *
  * The Worker intercepts /feed/om/:token/, /api/*, and
- * /.well-known/open-membership dynamically. Everything else — including
- * the public HTML pages and public.xml — is served as a static asset by
+ * /.well-known/open-membership dynamically. Everything else; including
+ * the public HTML pages and public.xml; is served as a static asset by
  * Cloudflare Workers Sites from the _site/ bucket.
  */
 export default function (eleventyConfig) {

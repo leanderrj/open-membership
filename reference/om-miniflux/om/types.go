@@ -1,4 +1,4 @@
-// Package om — types.go
+// Package om; types.go
 //
 // Typed Go representation of every om 0.4 element the Indie Reader profile
 // (Levels 1, 2, 5) consumes. XML struct tags use the full namespace URI so

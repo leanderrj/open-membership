@@ -10,7 +10,7 @@ import { DEFAULT_BUCKETS } from "../shared/rate-limit.js";
  *
  * Window key shape: `rl:<bucket>:<ip>:<window_start_epoch>`
  *
- * KV is eventually consistent — so under heavy parallel load the
+ * KV is eventually consistent; so under heavy parallel load the
  * counter can under-count and allow a small burst above the nominal
  * capacity. For strict limits, use a Durable Object (one per bucket).
  *

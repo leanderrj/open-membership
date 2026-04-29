@@ -2,8 +2,8 @@
  * Runtime-agnostic cryptography helpers.
  *
  * Node 20+ exposes `globalThis.crypto.subtle` (the Web Crypto API),
- * as do Cloudflare Workers and Bun. Using Web Crypto — rather than
- * `node:crypto` — keeps `shared/` free of Node-only imports.
+ * as do Cloudflare Workers and Bun. Using Web Crypto; rather than
+ * `node:crypto`; keeps `shared/` free of Node-only imports.
  */
 
 const encoder = new TextEncoder();

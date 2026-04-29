@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * One-time plugin activation tasks.
  *
- * Runs on plugin activation only. Idempotent — safe to call on upgrade
+ * Runs on plugin activation only. Idempotent; safe to call on upgrade
  * because dbDelta() handles column additions and indexes correctly.
  */
 final class Activator {

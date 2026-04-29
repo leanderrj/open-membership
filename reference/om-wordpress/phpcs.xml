@@ -15,7 +15,7 @@
 	<arg value="ps"/>
 
 	<rule ref="WordPress-Core">
-		<!-- Allow PSR-4 file naming (ClassName.php) — PSR-4 conflicts with
+		<!-- Allow PSR-4 file naming (ClassName.php). PSR-4 conflicts with
 		     WordPress's filename-dash convention, and PSR-4 is required
 		     for autoloading. -->
 		<exclude name="WordPress.Files.FileName"/>

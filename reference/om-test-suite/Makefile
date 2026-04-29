@@ -1,4 +1,4 @@
-# om-test-suite — publisher conformance runner + reader harness
+# om-test-suite; publisher conformance runner + reader harness
 #
 # Common targets. All targets are stdlib-only; no external tooling required
 # beyond a recent Go.

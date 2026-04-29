@@ -1,0 +1,74 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+export interface SpecCrumb {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  title: string;
+  pageTitle?: string;
+  description?: string;
+  summary: string;
+  meta?: string;
+  crumbs?: SpecCrumb[];
+  toc?: Array<{ depth: number; slug: string; text: string }>;
+}
+
+const {
+  title,
+  pageTitle,
+  description,
+  summary,
+  meta,
+  crumbs = [],
+  toc = [],
+} = Astro.props;
+
+const seoTitle = pageTitle ?? `${title} · Open Membership RSS`;
+const stripAnchor = (s: string) => s.replace(/[¶#]+\s*$/, '').trim();
+---
+<BaseLayout title={seoTitle} description={description ?? summary}>
+  <main class="bg-paper">
+    <article class="mx-auto max-w-prose px-6 pt-12 pb-20">
+      {crumbs.length > 0 && (
+        <nav class="text-xs uppercase tracking-wider text-ink-mute mb-6 flex flex-wrap gap-x-2">
+          {crumbs.map((c, i) => (
+            <span>
+              {i > 0 && <span class="px-1">/</span>}
+              <a href={c.href} class="hover:text-accent no-underline">{c.label}</a>
+            </span>
+          ))}
+        </nav>
+      )}
+
+      <h1 class="font-sans text-3xl md:text-4xl font-semibold tracking-tight text-ink mb-4">{title}</h1>
+
+      <div class="border-l-2 border-accent bg-accent-soft/30 pl-4 py-2 text-ink-soft text-[0.95rem] mb-2 rounded-sm">
+        <p class="m-0">{summary}</p>
+      </div>
+
+      {meta && (
+        <p class="text-xs uppercase tracking-wider text-ink-mute mt-3 mb-6">{meta}</p>
+      )}
+
+      {toc.length > 0 && (
+        <nav class="bg-paperAlt rounded p-5 my-8 text-sm">
+          <h2 class="text-xs uppercase tracking-wider text-ink-mute m-0 mb-3">Contents</h2>
+          <ul class="m-0 p-0 list-none space-y-1">
+            {toc.map((h) => (
+              <li class={h.depth === 3 ? 'pl-4' : h.depth === 4 ? 'pl-8' : ''}>
+                <a href={`#${h.slug}`} class="text-ink-soft no-underline hover:text-accent hover:underline">{stripAnchor(h.text)}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+
+      <div class="prose prose-spec max-w-none">
+        <slot />
+      </div>
+    </article>
+  </main>
+</BaseLayout>

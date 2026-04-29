@@ -2,7 +2,7 @@
  * Shared type definitions for om-ghost.
  *
  * These mirror the shapes described in SPEC.md (Part I §9 for the
- * discovery document; §2–§6 for the om: XML elements).
+ * discovery document; §2-§6 for the om: XML elements).
  */
 
 export type OmAuthMethod =

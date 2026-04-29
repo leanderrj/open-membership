@@ -1,4 +1,4 @@
-// Package om — entitlements.go
+// Package om; entitlements.go
 //
 // Polls the publisher's /api/om/entitlements endpoint after a checkout
 // session is created and writes the resulting bearer token back into the
@@ -36,7 +36,7 @@ func NewEntitlementClient(h *http.Client) *EntitlementClient {
 // Active=false indicates the session has not yet completed (or the user
 // cancelled); callers poll until Active=true or a timeout.
 //
-// SPEC.md §Level 5 — "Entitlement polling and token refresh".
+// SPEC.md §Level 5; "Entitlement polling and token refresh".
 func (c *EntitlementClient) Status(ctx context.Context, endpoint, sessionID string) (*Entitlement, error) {
 	url := endpoint + "?session_id=" + sessionID
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)

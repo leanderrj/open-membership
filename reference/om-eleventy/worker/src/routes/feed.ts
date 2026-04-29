@@ -10,7 +10,7 @@ import type { Logger } from "../lib/logger.js";
  * The token is looked up in KV. If it resolves to a member record with
  * `status in {active, trialing}`, the handler builds the entitlement
  * view and renders a full per-subscriber feed. Otherwise it returns 404
- * (not 401/403 — unguessability of the token is the whole auth story
+ * (not 401/403; unguessability of the token is the whole auth story
  * for Level 2 URL-token).
  *
  * Item metadata + bodies for this v0.1 scaffold come from a built-in

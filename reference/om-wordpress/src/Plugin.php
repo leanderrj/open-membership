@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  * Top-level plugin container.
  *
  * Holds singletons, wires WordPress hooks, and gates everything on the
- * plugin being fully configured — i.e. keys are present. Until then the
+ * plugin being fully configured; i.e. keys are present. Until then the
  * admin screens show a notice and the REST routes return 503.
  */
 final class Plugin {
@@ -106,7 +106,7 @@ final class Plugin {
 
 	/**
 	 * Build a Stripe client on demand. Returns null if the site isn't
-	 * configured yet — callers should then return a 503 with a clear
+	 * configured yet; callers should then return a 503 with a clear
 	 * reason so operators know to configure the plugin.
 	 */
 	public function stripe(): ?StripeClient {

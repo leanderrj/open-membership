@@ -1,0 +1,97 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+}
+
+const {
+  title,
+  description = 'An RSS namespace for paid subscription content. Any publisher can emit it, any reader can consume it.',
+  canonical,
+} = Astro.props;
+
+const url = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={url} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content="https://openmembership.org/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<meta name="theme-color" content="#16181c" />
+<link rel="alternate" type="application/rss+xml" title="Open Membership example feed" href="/example/feed.xml" />
+</head>
+<body class="bg-paper text-ink font-sans antialiased">
+
+<header class="border-b border-ink-line">
+  <div class="mx-auto max-w-container px-6 py-4 flex items-center justify-between gap-6">
+    <a href="/" class="font-semibold text-ink no-underline tracking-tight">
+      Open Membership <span class="text-ink-mute font-normal">RSS</span>
+    </a>
+    <nav class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ink-soft">
+      <a href="/#protocol" class="hover:text-accent">Protocol</a>
+      <a href="/spec/" class="hover:text-accent">Spec</a>
+      <a href="/docs/" class="hover:text-accent">Docs</a>
+      <a href="/#involved" class="hover:text-accent">Contribute</a>
+      <a href="https://github.com/leanderrj/open-membership" class="hover:text-accent">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<slot />
+
+<footer class="mt-24 border-t border-ink-line">
+  <div class="mx-auto max-w-container px-6 py-12 grid gap-10 md:grid-cols-4 text-sm">
+    <div>
+      <p class="font-semibold text-ink mb-1">Open Membership <span class="font-normal text-ink-mute">RSS</span></p>
+      <p class="text-ink-soft">An open standard. Spec under CC-BY-4.0, reference code under MIT.</p>
+    </div>
+    <div>
+      <h4 class="text-xs uppercase tracking-wider text-ink-mute mb-2">Spec</h4>
+      <ul class="space-y-1.5 text-ink-soft">
+        <li><a href="/spec/" class="hover:text-accent">Open Membership 0.4</a></li>
+        <li><a href="/spec/portability/" class="hover:text-accent">Portability</a></li>
+        <li><a href="/spec/activitypub/" class="hover:text-accent">ActivityPub coexistence</a></li>
+        <li><a href="/spec/adapter-profile/" class="hover:text-accent">Adapter Profile</a></li>
+        <li><a href="/spec/syndication-mappings/" class="hover:text-accent">Syndication mappings</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-xs uppercase tracking-wider text-ink-mute mb-2">Repository</h4>
+      <ul class="space-y-1.5 text-ink-soft">
+        <li><a href="https://github.com/leanderrj/open-membership/blob/master/SPEC.md" class="hover:text-accent">SPEC.md</a></li>
+        <li><a href="https://github.com/leanderrj/open-membership/tree/master/spec" class="hover:text-accent">Companion specs</a></li>
+        <li><a href="https://github.com/leanderrj/open-membership/tree/master/reference" class="hover:text-accent">Reference code</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-xs uppercase tracking-wider text-ink-mute mb-2">Contact</h4>
+      <ul class="space-y-1.5 text-ink-soft">
+        <li><a href="mailto:leander@leme.nl" class="hover:text-accent">leander@leme.nl</a></li>
+        <li><a href="https://github.com/leanderrj/open-membership/issues" class="hover:text-accent">Open an issue</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-ink-line">
+    <div class="mx-auto max-w-container px-6 py-4 text-xs text-ink-mute flex flex-wrap gap-x-4">
+      <span>Specification CC-BY-4.0; site MIT.</span>
+      <span>Namespace: <code class="font-mono">purl.org/rss/modules/membership/</code></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

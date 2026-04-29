@@ -99,7 +99,7 @@ offers:
 
 # Revocation declaration surfaced in both the feed and discovery doc.
 revocation:
-  policy: prospective-only      # or "retroactive" — see SPEC §2
+  policy: prospective-only      # or "retroactive"; see SPEC §2
   grace_hours: 48
 
 # Optional: proration policy shown with offers and included in discovery.
@@ -107,7 +107,7 @@ proration:
   default: credit-unused         # or "charge-difference" | "none"
 
 # Optional: privacy declaration. Only set if the publisher actually supports
-# pseudonymous mode end-to-end (requires OM-VC-SD — out of scope for v0.1).
+# pseudonymous mode end-to-end (requires OM-VC-SD; out of scope for v0.1).
 # privacy:
 #   level: pseudonymous
 #   supported_presentations: [full, selective-disclosure]

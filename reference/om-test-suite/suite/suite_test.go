@@ -47,7 +47,7 @@ func TestRunAgainstFixture(t *testing.T) {
 			level1.Pass, level1.Fail, level1.Warn, level1.Skip, level1.Error)
 		for _, r := range rep.Results {
 			if r.Level == report.Level1 && (r.Status == report.StatusFail || r.Status == report.StatusError) {
-				t.Logf("  %s/%s: %s — %s", r.Category, r.Name, r.Status, r.Message)
+				t.Logf("  %s/%s: %s; %s", r.Category, r.Name, r.Status, r.Message)
 			}
 		}
 	}

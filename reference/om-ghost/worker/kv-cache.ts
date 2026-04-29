@@ -11,7 +11,7 @@ import type { MemberState, OmConfig } from "../shared/types.js";
  *   mem:<member_id>   → feed_token (so we can evict on member delete)
  *
  * Unlike the Node in-memory cache, we do NOT eagerly warm from Ghost at
- * startup — Workers have a strict CPU budget and can't iterate tens of
+ * startup; Workers have a strict CPU budget and can't iterate tens of
  * thousands of members. Instead:
  *   - Cold lookups miss and trigger an on-demand Ghost probe in the
  *     feed handler (see OnDemandFeedCache below).

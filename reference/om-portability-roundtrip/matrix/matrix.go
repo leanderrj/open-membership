@@ -15,7 +15,7 @@ type Run struct {
 	Direction      string
 	ExpectedPass   bool
 	// ExpectedSkipReason, when non-empty, means the Run is intentionally
-	// not executed — e.g. plaintext envelope against a non-url-token fixture.
+	// not executed; e.g. plaintext envelope against a non-url-token fixture.
 	ExpectedSkipReason string
 	// EdgeCase flags runs that exist to exercise specific failure modes or
 	// boundary conditions from the 26-run matrix beyond the 12 core runs.

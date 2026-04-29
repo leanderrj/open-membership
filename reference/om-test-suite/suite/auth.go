@@ -6,7 +6,7 @@ import (
 	"github.com/open-membership-rss/om-test-suite/report"
 )
 
-// Level 2 — URL token auth + unlocks.
+// Level 2; URL token auth + unlocks.
 //
 // TODO(level-2): These tests are stubs. A maintainer filling them in needs to:
 //   1. Accept a --token flag on the publisher CLI that carries a real feed

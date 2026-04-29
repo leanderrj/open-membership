@@ -16,8 +16,8 @@ defined( 'ABSPATH' ) || exit;
  *
  * Wired through WP's rewrite system: a custom query var `om_feed_token`
  * is populated by the rule registered in Activator. On parse_request we
- * detect the query var and render the feed ourselves — ahead of any
- * theme or WP template loading — because feeds don't want themes.
+ * detect the query var and render the feed ourselves; ahead of any
+ * theme or WP template loading; because feeds don't want themes.
  */
 final class FeedController {
 

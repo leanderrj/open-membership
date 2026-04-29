@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { specs, specHref } from '../../data/spec-meta.ts';
+
+const ordered = [...specs].sort((a, b) => a.order - b.order);
+const core = ordered.filter((s) => s.group === 'Core');
+const companion = ordered.filter((s) => s.group === 'Companion');
+---
+<BaseLayout title="All specs · Open Membership RSS" description="The canonical specification and its companion specs.">
+  <main>
+    <section class="border-b border-ink-line">
+      <div class="mx-auto max-w-prose px-6 py-16">
+        <p class="text-xs uppercase tracking-wider text-ink-mute mb-3">Specifications</p>
+        <h1 class="font-sans text-3xl md:text-4xl font-semibold tracking-tight text-ink mb-4">Open Membership RSS</h1>
+        <p class="text-ink-soft text-lg max-w-2xl">
+          The canonical 0.4 specification plus the companion specs that extend it. Project documents live under <a href="/docs/" class="text-accent">/docs/</a>.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="mx-auto max-w-prose px-6 py-12 space-y-12">
+        <div>
+          <h2 class="text-xs uppercase tracking-wider text-ink-mute mb-3">Core</h2>
+          <ul class="list-none p-0 m-0">
+            {core.map((s) => (
+              <li class="border-t border-ink-line py-5 last:border-b">
+                <a href={specHref(s)} class="font-sans font-semibold text-lg text-ink no-underline hover:text-accent">{s.title}</a>
+                <p class="m-0 mt-1 text-ink-soft text-[0.95rem]">{s.summary}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-xs uppercase tracking-wider text-ink-mute mb-3">Companion</h2>
+          <ul class="list-none p-0 m-0">
+            {companion.map((s) => (
+              <li class="border-t border-ink-line py-5 last:border-b">
+                <a href={specHref(s)} class="font-sans font-semibold text-lg text-ink no-underline hover:text-accent">{s.title}</a>
+                <p class="m-0 mt-1 text-ink-soft text-[0.95rem]">{s.summary}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

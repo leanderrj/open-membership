@@ -6,7 +6,7 @@ import (
 	"github.com/open-membership-rss/om-test-suite/report"
 )
 
-// Level 5 — in-reader checkout flow.
+// Level 5; in-reader checkout flow.
 //
 // TODO(level-5): These tests are stubs. A maintainer filling them in needs to:
 //   1. Discover /api/checkout from the discovery document (checkout.endpoint).
@@ -19,7 +19,7 @@ import (
 //      the real Stripe API; the publisher suite accepts --stripe-mock-url to
 //      override the endpoint the publisher calls internally.
 //
-// The publisher-under-test does not need test-mode keys in its live config —
+// The publisher-under-test does not need test-mode keys in its live config -
 // the suite probes the declared endpoint only. How the publisher wires stripe-
 // mock into its own CI is its concern.
 

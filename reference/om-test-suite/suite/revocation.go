@@ -7,7 +7,7 @@ import (
 	"github.com/open-membership-rss/om-test-suite/report"
 )
 
-// Level 5 — revocation policy declaration + honoring.
+// Level 5; revocation policy declaration + honoring.
 //
 // The declaration half is runnable now: the feed should carry
 // <om:revocation policy="..."> or the discovery doc should carry a revocation
@@ -18,7 +18,7 @@ import (
 //      whose entitlement the suite previously verified.
 //   2. Poll the entitlements endpoint; under chargeback-revocation or
 //      full-revocation, assert the entitlement is revoked within 1 hour per
-//      SPEC §2.3 (shorter in practice for the suite — e.g. 60s with
+//      SPEC §2.3 (shorter in practice for the suite; e.g. 60s with
 //      webhook-delivery-time bounds documented).
 //   3. Under prospective-only, assert the entitlement is NOT revoked.
 

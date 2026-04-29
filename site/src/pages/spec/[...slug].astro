@@ -1,0 +1,47 @@
+---
+import { getCollection, render } from 'astro:content';
+import SpecLayout from '../../layouts/SpecLayout.astro';
+import { specs } from '../../data/spec-meta.ts';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('spec');
+  const byId = new Map(entries.map((e) => [e.id, e]));
+
+  return specs
+    .filter((s) => s.slug !== '' && s.collection === 'spec')
+    .map((s) => {
+      const entry = byId.get(s.entryId);
+      if (!entry) {
+        const ids = entries.map((e) => e.id).join(', ');
+        throw new Error(`spec collection has no entry with id "${s.entryId}". Known ids: ${ids}`);
+      }
+      return {
+        params: { slug: s.slug },
+        props: { meta: s, entry },
+      };
+    });
+}
+
+const { meta, entry } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const toc = headings
+  .filter((h) => h.depth >= 2 && h.depth <= 4)
+  .map((h) => ({ depth: h.depth, slug: h.slug, text: h.text }));
+
+const crumbs = [
+  { href: '/', label: 'Home' },
+  { href: '/spec/all/', label: 'Specs' },
+  { href: '#', label: meta.shortTitle },
+];
+---
+<SpecLayout
+  title={meta.title}
+  pageTitle={`${meta.title} · Open Membership RSS`}
+  summary={meta.summary}
+  meta={meta.meta}
+  crumbs={crumbs}
+  toc={toc}
+>
+  <Content />
+</SpecLayout>

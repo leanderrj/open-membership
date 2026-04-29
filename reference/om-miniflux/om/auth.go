@@ -1,4 +1,4 @@
-// Package om — auth.go
+// Package om; auth.go
 //
 // Auth-state abstraction for the Indie Reader profile. Two methods are
 // implemented: url-token (SPEC.md §0.1 Foundational, Level 2) which appends

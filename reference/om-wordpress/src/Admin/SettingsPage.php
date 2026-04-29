@@ -231,7 +231,7 @@ final class SettingsPage {
 						self::OPTION,
 						"om_wp_{$k}_invalid_json",
 						/* translators: %s: key name */
-						sprintf( __( 'Invalid JSON for %s — previous value kept.', 'om-wordpress' ), $k )
+						sprintf( __( 'Invalid JSON for %s; previous value kept.', 'om-wordpress' ), $k )
 					);
 				}
 			}

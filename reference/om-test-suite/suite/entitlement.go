@@ -6,7 +6,7 @@ import (
 	"github.com/open-membership-rss/om-test-suite/report"
 )
 
-// Level 5 — entitlements polling and lifecycle.
+// Level 5; entitlements polling and lifecycle.
 //
 // TODO(level-5): These tests are stubs. A maintainer filling them in needs to:
 //   1. GET discovery.entitlements.endpoint?session_id=... before a simulated

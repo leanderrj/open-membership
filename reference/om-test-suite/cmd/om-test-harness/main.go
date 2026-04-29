@@ -14,7 +14,7 @@
 //  4. POSTs a ReaderReport JSON blob to /report summarising those claims.
 //
 // Step 4 is optional but is how a reader fork earns a listing in the
-// conformance registry — see docs/harness-integration.md.
+// conformance registry; see docs/harness-integration.md.
 package main
 
 import (

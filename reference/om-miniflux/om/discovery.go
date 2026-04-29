@@ -1,4 +1,4 @@
-// Package om — discovery.go
+// Package om; discovery.go
 //
 // Fetches and parses the .well-known/open-membership JSON document. The
 // reader consults this document to resolve endpoint URLs (checkout,

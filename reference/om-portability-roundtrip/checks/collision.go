@@ -42,7 +42,7 @@ func Collision(older, newer *shared.Export) Result {
 // DiscoveryReverify simulates §11's MUST: before honoring an imported
 // membership, the destination reader re-fetches .well-known/open-membership.
 // For the harness, "re-fetch" is a no-op that confirms a discovery URL is
-// present in the imported record — the hook real readers will replace.
+// present in the imported record; the hook real readers will replace.
 func DiscoveryReverify(e *shared.Export) Result {
 	for _, m := range e.Memberships {
 		if m.Discovery == "" {

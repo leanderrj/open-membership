@@ -10,7 +10,7 @@ import (
 // Pseudonym verifies §8 P2: OM-VC-SD per-publisher pseudonyms are byte-equal
 // between the starting and ending exports. A difference here means the round
 // trip silently reset the pseudonym, which presents the user as a new visitor
-// to the publisher — the failure the spec exists to prevent.
+// to the publisher; the failure the spec exists to prevent.
 func Pseudonym(start, end *shared.Export) Result {
 	startMap := collectPseudonyms(start)
 	endMap := collectPseudonyms(end)

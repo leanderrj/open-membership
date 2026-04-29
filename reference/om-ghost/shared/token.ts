@@ -14,7 +14,7 @@ import {
  *   1. Deterministic for a given (member, plan), so the feed URL is stable.
  *   2. Unguessable without the signing key.
  *   3. Revocation is done at request time by checking the member's current
- *      subscription status — the token itself is never "revoked".
+ *      subscription status; the token itself is never "revoked".
  *
  * Web Crypto is used so the function runs in Node, Workers, and Bun
  * without a runtime-specific import. All crypto calls are async.

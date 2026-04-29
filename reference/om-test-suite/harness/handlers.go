@@ -70,14 +70,14 @@ func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "om-test-suite reader harness")
 	fmt.Fprintln(w, "")
 	fmt.Fprintln(w, "Endpoints:")
-	fmt.Fprintln(w, "  GET  /fixtures                              — list available fixtures")
-	fmt.Fprintln(w, "  GET  /fixture/:name/feed                    — fixture RSS feed")
-	fmt.Fprintln(w, "  GET  /fixture/:name/.well-known/open-membership — fixture discovery")
-	fmt.Fprintln(w, "  POST /fixture/:name/api/checkout            — mock checkout session")
-	fmt.Fprintln(w, "  GET  /fixture/:name/api/entitlements        — mock entitlements")
-	fmt.Fprintln(w, "  POST /report                                — reader posts conformance claim")
-	fmt.Fprintln(w, "  GET  /reports                               — recent reader reports (debug)")
-	fmt.Fprintln(w, "  GET  /healthz                               — liveness")
+	fmt.Fprintln(w, "  GET  /fixtures                             ; list available fixtures")
+	fmt.Fprintln(w, "  GET  /fixture/:name/feed                   ; fixture RSS feed")
+	fmt.Fprintln(w, "  GET  /fixture/:name/.well-known/open-membership; fixture discovery")
+	fmt.Fprintln(w, "  POST /fixture/:name/api/checkout           ; mock checkout session")
+	fmt.Fprintln(w, "  GET  /fixture/:name/api/entitlements       ; mock entitlements")
+	fmt.Fprintln(w, "  POST /report                               ; reader posts conformance claim")
+	fmt.Fprintln(w, "  GET  /reports                              ; recent reader reports (debug)")
+	fmt.Fprintln(w, "  GET  /healthz                              ; liveness")
 }
 
 func (s *Server) handleListFixtures(w http.ResponseWriter, r *http.Request) {
@@ -90,7 +90,7 @@ func (s *Server) handleListFixtures(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleFixture dispatches /fixture/<name>/<rest...> to the right per-fixture
-// resource. Split out here so the routing stays a single net/http ServeMux —
+// resource. Split out here so the routing stays a single net/http ServeMux -
 // no third-party router dependency.
 func (s *Server) handleFixture(w http.ResponseWriter, r *http.Request) {
 	path := strings.TrimPrefix(r.URL.Path, "/fixture/")
@@ -218,7 +218,7 @@ func (s *Server) handleListReports(w http.ResponseWriter, r *http.Request) {
 }
 
 // validateReport cross-checks each claim against what the harness actually
-// served. For v0 the check is structural — the reader claims are recorded
+// served. For v0 the check is structural; the reader claims are recorded
 // verbatim and tagged with "harness_agrees": true/false per claim.
 //
 // TODO(harness): fill in per-claim validators as Level 2 and Level 5 tests

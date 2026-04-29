@@ -13,11 +13,11 @@
 #   - Zone : Zone : Read
 #   - Zone : DNS : Edit
 #   - Zone : Zone Settings : Edit
-#   - Zone : Page Rules : Edit          (legacy — leave on if available)
+#   - Zone : Page Rules : Edit          (legacy, leave on if available)
 #   - Zone : Config Rules : Edit        (the new ruleset endpoints)
 #
 # Create one at: https://dash.cloudflare.com/profile/api-tokens
-# (Use the "Custom token" template, not the "Edit zone DNS" template — we need
+# (Use the "Custom token" template, not the "Edit zone DNS" template; we need
 #  more than just DNS.)
 
 set -euo pipefail
@@ -71,7 +71,7 @@ zone_id_of() {
 # Ensure a DNS record with the given (type, name, content) exists with the
 # desired proxied flag. If a record with the same (type, name, content) exists,
 # update its proxied flag if needed; otherwise create it. Records of the same
-# (type, name) but different content are left alone — we don't delete here, to
+# (type, name) but different content are left alone; we don't delete here, to
 # avoid clobbering anything the user added by hand.
 ensure_dns() {
   local zone_id="$1" type="$2" name="$3" content="$4" proxied="$5"
@@ -127,7 +127,7 @@ set_always_use_https() {
 
 # Replace the dynamic-redirect ruleset entrypoint with a single canonicalising
 # rule. Cloudflare exposes one entrypoint per phase per zone; PUT replaces the
-# rule list, which is what we want — it makes the script idempotent and
+# rule list, which is what we want: it makes the script idempotent and
 # trivially undoes any earlier wrong rule (e.g. the http://...com loop).
 set_canonical_redirect() {
   local zone_id="$1" zone_name="$2"
@@ -177,7 +177,7 @@ for d in "${REDIRECT_DOMAINS[@]}"; do
 done
 
 echo
-log "[$CANONICAL_DOMAIN] DNS — apex A/AAAA to GitHub Pages, www CNAME"
+log "[$CANONICAL_DOMAIN] DNS: apex A/AAAA to GitHub Pages, www CNAME"
 for ip in "${GH_PAGES_IPV4[@]}"; do
   ensure_dns "$canonical_zid" "A" "$CANONICAL_DOMAIN" "$ip" false
 done
@@ -191,7 +191,7 @@ ensure_dns "$canonical_zid" "CNAME" "www.$CANONICAL_DOMAIN" "$GH_USER.github.io"
 for d in "${REDIRECT_DOMAINS[@]}"; do
   zid="${redirect_zids[$d]}"
   echo
-  log "[$d] DNS — proxied placeholder + www"
+  log "[$d] DNS: proxied placeholder + www"
   ensure_dns "$zid" "A" "$d" "$PLACEHOLDER_IPV4" true
   ensure_dns "$zid" "CNAME" "www.$d" "$d" true
 
@@ -206,7 +206,7 @@ done
 
 echo
 if $DRY_RUN; then
-  log "Dry run complete — re-run without --dry-run to apply."
+  log "Dry run complete. Re-run without --dry-run to apply."
 else
   log "Done. Verifying from a public resolver:"
   for d in "$CANONICAL_DOMAIN" "${REDIRECT_DOMAINS[@]}"; do
@@ -216,7 +216,7 @@ else
   echo
   cat <<EOF
 Next:
-  1. Wait 1–5 minutes for DNS to propagate.
+  1. Wait 1-5 minutes for DNS to propagate.
   2. GitHub → Settings → Pages → Custom domain → $CANONICAL_DOMAIN
      (after the green check, tick "Enforce HTTPS").
   3. Sanity check:

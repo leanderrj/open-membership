@@ -56,12 +56,12 @@ func NoCrossPublisherID(e *shared.Export) Result {
 }
 
 // filterCredential returns the keys within this membership's credential that
-// should NOT count toward the cross-publisher identifier check — they are
+// should NOT count toward the cross-publisher identifier check; they are
 // either intentionally stable per the spec or cannot leak cross-publisher
 // state by their nature.
 func filterCredential(m shared.Membership) map[string]bool {
 	// Pseudonym maps are listed per-publisher and MUST differ per publisher
-	// (§8 P1 "individually per publisher and MUST NOT share values") —
+	// (§8 P1 "individually per publisher and MUST NOT share values") -
 	// verified by Pseudonym() and covered here by not indexing the map keys.
 	return map[string]bool{
 		"per_publisher_pseudonyms": true,

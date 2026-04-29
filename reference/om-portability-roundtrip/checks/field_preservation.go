@@ -14,7 +14,7 @@ import (
 //   - exported_at (timestamped at each hop)
 //   - exported_by (each reader identifies itself)
 //   - memberships[].updated_at (importer SHOULD NOT bump it, but publisher
-//     rotation is out of the harness's control — we check it separately)
+//     rotation is out of the harness's control; we check it separately)
 //   - bearer access_token (spec calls out publisher rotation explicitly)
 func FieldPreservation(start, end *shared.Export) Result {
 	startC := stripDriftFields(start)

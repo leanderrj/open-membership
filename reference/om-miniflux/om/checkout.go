@@ -1,4 +1,4 @@
-// Package om — checkout.go
+// Package om; checkout.go
 //
 // Drives the in-reader checkout flow defined in SPEC.md §Level 5. The reader
 // POSTs an offer selection to the publisher's /api/om/checkout endpoint,

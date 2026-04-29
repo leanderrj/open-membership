@@ -100,7 +100,7 @@ func extractRootNamespaces(body []byte) []string {
 }
 
 // init registers Level 1 parsing tests. Every check here probes "is the feed
-// structurally well-formed by the SPEC's Foundational rules" — no network
+// structurally well-formed by the SPEC's Foundational rules"; no network
 // beyond the initial fetch, no interpretation of access policy.
 func init() {
 	Register(Test{

@@ -12,7 +12,7 @@
 // The JSON report is written to stdout so the tool composes with shell
 // pipelines (`om-test-publisher ... | jq '.summary'`). Non-zero exit is
 // reserved for transport-level errors when the report could not be produced.
-// A publisher that fails conformance still exits 0 — the failure is in the
+// A publisher that fails conformance still exits 0; the failure is in the
 // report, not in the tool's own result.
 package main
 

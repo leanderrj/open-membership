@@ -4,7 +4,7 @@ import { ConfigError } from "../shared/errors.js";
 /**
  * Parse and validate Worker environment bindings.
  *
- * Workers don't have process.env — bindings arrive on the per-request
+ * Workers don't have process.env; bindings arrive on the per-request
  * `env` argument. We validate them per request rather than at startup,
  * because Workers don't have a startup moment.
  */

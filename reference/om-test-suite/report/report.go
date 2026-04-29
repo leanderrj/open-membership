@@ -15,26 +15,26 @@ import (
 type Status string
 
 const (
-	// StatusPass — the test ran and output matched expectation.
+	// StatusPass; the test ran and output matched expectation.
 	StatusPass Status = "pass"
-	// StatusFail — the test ran and output did not match. A human-readable diff
+	// StatusFail; the test ran and output did not match. A human-readable diff
 	// SHOULD appear in Artifact so failures can be triaged without re-running.
 	StatusFail Status = "fail"
-	// StatusWarn — output was correct but a non-normative SHOULD was violated.
+	// StatusWarn; output was correct but a non-normative SHOULD was violated.
 	// A Warn never fails overall-level conformance; it surfaces in the report
 	// so publishers can tighten voluntarily.
 	StatusWarn Status = "warn"
-	// StatusSkip — the test does not apply to this subject (e.g. Level 5 tests
+	// StatusSkip; the test does not apply to this subject (e.g. Level 5 tests
 	// on a feed without <om:offer>). Skips do not count against conformance.
 	StatusSkip Status = "skip"
-	// StatusError — the test harness itself could not complete: the endpoint
+	// StatusError; the test harness itself could not complete: the endpoint
 	// was unreachable, the response was malformed at the transport layer, or
 	// an assertion threw. Distinct from Fail because the spec was not probed.
 	StatusError Status = "error"
 )
 
 // Level is a conformance level from FEATURESET.md §"Conformance levels".
-// v0.1 of this suite covers 1, 2, and 5 — the Indie Reader profile.
+// v0.1 of this suite covers 1, 2, and 5; the Indie Reader profile.
 type Level int
 
 const (

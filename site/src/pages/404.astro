@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Not found, Open Membership" description="The page you requested doesn't exist.">
+  <main>
+    <section>
+      <div class="mx-auto max-w-container px-6 py-24 text-center">
+        <p class="text-xs uppercase tracking-wider text-ink-mute mb-3">404</p>
+        <h1 class="font-sans text-3xl md:text-4xl font-semibold tracking-tight text-ink mb-4">That URL didn't match anything we serve.</h1>
+        <p class="text-ink-soft max-w-xl mx-auto mb-8">
+          The site has a single landing page and a per-spec section under <a href="/spec/" class="text-accent">/spec/</a>. If you arrived from a link that should have worked, please <a href="https://github.com/leanderrj/open-membership/issues" class="text-accent">open an issue</a>.
+        </p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="/" class="inline-block bg-accent text-white px-5 py-2.5 rounded font-medium no-underline hover:bg-accent-ink">Back to the homepage</a>
+          <a href="/spec/" class="inline-block border border-ink-line px-5 py-2.5 rounded font-medium text-ink no-underline hover:border-accent hover:text-accent">Read the spec</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

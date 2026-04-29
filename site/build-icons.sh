@@ -37,4 +37,4 @@ echo "→ favicon.ico (64/48/32/16 multi-resolution)"
 
 echo
 echo "Done. Sizes:"
-ls -lh og.png apple-touch-icon.png icon-192.png icon-512.png favicon.ico | awk '{print "  ", $9, "—", $5}'
+ls -lh og.png apple-touch-icon.png icon-192.png icon-512.png favicon.ico | awk '{print "  ", $9, $5}'

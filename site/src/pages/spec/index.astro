@@ -1,0 +1,31 @@
+---
+import { getEntry, render } from 'astro:content';
+import SpecLayout from '../../layouts/SpecLayout.astro';
+import { specBySlug } from '../../data/spec-meta.ts';
+
+const meta = specBySlug.get('')!;
+const entry = await getEntry(meta.collection, meta.entryId);
+if (!entry) {
+  throw new Error(`Spec entry not found: ${meta.collection}/${meta.entryId}`);
+}
+const { Content, headings } = await render(entry);
+
+const toc = headings
+  .filter((h) => h.depth >= 2 && h.depth <= 4)
+  .map((h) => ({ depth: h.depth, slug: h.slug, text: h.text }));
+
+const crumbs = [
+  { href: '/', label: 'Home' },
+  { href: '/spec/all/', label: 'All specs' },
+];
+---
+<SpecLayout
+  title={meta.title}
+  pageTitle={`${meta.title} · Open Membership RSS`}
+  summary={meta.summary}
+  meta={meta.meta}
+  crumbs={crumbs}
+  toc={toc}
+>
+  <Content />
+</SpecLayout>

@@ -80,7 +80,7 @@ func (s *Store) Import(e *shared.Export) error {
 
 // Export re-serializes the store into a new Export. Reader A preserves every
 // field verbatim except: reader_instance_id (reassigned to this reader), and
-// exported_at (set to now). updated_at on each membership is preserved — §11
+// exported_at (set to now). updated_at on each membership is preserved; §11
 // "Do not extend the updated_at timestamp on import".
 func (s *Store) Export(withSignature bool) (*shared.Export, error) {
 	memberships := make([]shared.Membership, 0, len(s.Memberships))

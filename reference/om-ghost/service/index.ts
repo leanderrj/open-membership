@@ -158,14 +158,14 @@ function installShutdown(
   process.on("uncaughtException", (err) => {
     resources.logger.fatal(
       { err: err.message, stack: err.stack },
-      "uncaughtException — terminating",
+      "uncaughtException; terminating",
     );
     process.exit(1);
   });
   process.on("unhandledRejection", (reason) => {
     resources.logger.fatal(
       { reason: String(reason) },
-      "unhandledRejection — terminating",
+      "unhandledRejection; terminating",
     );
     process.exit(1);
   });

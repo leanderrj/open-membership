@@ -1,4 +1,4 @@
-// Package om — preview.go
+// Package om; preview.go
 //
 // Substitutes <om:preview> content for the reader's rendering path when the
 // reader lacks the entitlement needed to display the full item. SPEC.md

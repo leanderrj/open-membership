@@ -1,6 +1,6 @@
 # Open Membership RSS 0.4
 
-**An open module for paid, tiered, time-gated, group-shared, value-for-value, and privacy-preserving syndication content.**
+**An RSS module for paid subscription content.**
 
 - **Latest version:** `http://purl.org/rss/modules/membership/`
 - **This version:** 0.4 (draft, 2026-04-23)
@@ -19,60 +19,14 @@ The copyright holders make no representation about the suitability of the specif
 
 ---
 
-## Featureset Summary (0.1 → 0.4)
+## Featureset
 
-This is the complete set of capabilities the spec now defines. A reader or publisher can use this list to decide which conformance levels matter for their use case.
+The capabilities this spec defines, by element family. See `docs/FEATURESET.md` for a per-version breakdown.
 
-### Foundational (0.1)
-
-- **Namespace declaration** in RSS 2.0 and RSS 1.0/RDF
-- **Provider identification** (`<om:provider>`)
-- **Authentication method declaration** (`<om:authMethod>`: `url-token`, `http-basic`, `bearer`, `dpop`)
-- **Tier declarations** (`<om:tier>` with price and period)
-- **Per-item access policy** (`<om:access>`: `open`, `preview`, `locked`, `members-only`)
-- **Decoupled unlock endpoints** (`<om:unlock>`)
-- **Publisher-curated previews** (`<om:preview>`)
-- **Cryptographic receipts** (`<om:receipt>`)
-
-### Discovery and Identity (0.2)
-
-- **Canonical discovery document** at `.well-known/open-membership`, composing with RFC 9728
-- **Time-gated content** (`<om:window>`): early access, ephemeral free, scheduled drops, event windows
-- **Group subscriptions** (`<om:group>`): publisher-managed (families) and self-managed (companies, institutions)
-- **SCIM 2.0 binding** for self-managed group rosters
-- **Verifiable Credential profile** ("OM-VC 1.0") based on W3C VC 2.0
-- **Bitstring Status List revocation** for portable credentials
-- **WorkOS umbrella binding** (non-normative reference)
-
-### Payments and Value (0.3)
-
-- **Payment Service Provider declarations** (`<om:psp>`): Stripe, Mollie, PayPal, Adyen, Paddle, Lightning, custom
-- **Feature-level entitlements** (`<om:feature>`) decoupled from tiers
-- **Purchasable offers** (`<om:offer>`) with multiple PSPs and currencies
-- **In-reader checkout flow** with publisher-side checkout endpoint
-- **Value-for-value primitives** (`<om:value>`, `<om:recipient>`, `<om:split>`)
-- **Podcasting 2.0 co-existence** rules for shared `podcast:value` and `om:value` blocks
-- **PSP binding profiles** (Stripe-native entitlements, Mollie subscription-derived, Lightning per-payment)
-
-### Privacy, Sharing, and Lifecycle (0.4)
-
-- **Refund and chargeback policy declaration** (`<om:revocation>`)
-- **Cross-publisher bundles** (`<om:bundle>`, `<om:bundled-from>`) with delegated trust
-- **Selective disclosure profile** ("OM-VC-SD 1.0") based on W3C BBS+ cryptosuite
-- **Pseudonymous tier** for journalism, legal, medical, and other sensitive contexts
-- **Gift subscriptions** (`<om:gift>`) as transferable single-use entitlements
-- **Proration policy declaration** for tier changes
-- **Identity unlinkability** between publishers via per-publisher pseudonyms
-
----
-
-## 1. What This Version Adds
-
-0.3 covered the buy-and-read happy path. 0.4 covers everything that happens when reality intervenes: people change their minds, share their subscriptions, want privacy, and refuse to be tracked across publishers. Each feature in 0.4 corresponds to a real failure mode an early implementer would hit on day one of a real deployment.
-
-The single most important addition is **identity unlinkability**. Without it, every publisher in the ecosystem accumulates a profile of every cross-publisher subscriber, which both (a) recreates the surveillance problem the spec is meant to avoid, and (b) makes the spec a non-starter for the publishers who would benefit from it most: investigative journalism, medical and mental-health publications, legal-research services, and any publication whose subscriber list is itself sensitive intelligence.
-
-The second is **bundles**, because the only realistic path to "I subscribe once and read fifteen things" without recreating Spotify is open federation, and federation needs an aggregator pattern in the spec.
+- **Namespace and access**: RSS 2.0 and RSS 1.0/RDF declarations; `<om:provider>`; `<om:authMethod>` (`url-token`, `http-basic`, `bearer`, `dpop`); per-item `<om:access>` (`open`, `preview`, `locked`, `members-only`); `<om:preview>`; `<om:unlock>`; `<om:receipt>`.
+- **Discovery and identity**: `.well-known/open-membership` (composes with RFC 9728); `<om:window>` for time-gated content; `<om:group>` (publisher-managed and self-managed) with SCIM 2.0 binding; OM-VC 1.0 (W3C VC 2.0); Bitstring Status List revocation.
+- **Payments and value**: `<om:psp>` declarations (Stripe, Mollie, PayPal, Adyen, Paddle, Lightning, custom); `<om:feature>`; `<om:offer>` with multiple PSPs and currencies; in-reader checkout; `<om:value>` / `<om:recipient>` / `<om:split>`; Podcasting 2.0 coexistence.
+- **Privacy and lifecycle**: `<om:revocation>` policy; `<om:bundle>` cross-publisher aggregation; OM-VC-SD 1.0 (BBS+ selective disclosure); pseudonymous tier; `<om:gift>`; proration declaration; per-publisher pseudonyms.
 
 ---
 
@@ -326,30 +280,24 @@ Stripe defaults to `daily`; Mollie has no native proration and `none` is the onl
 
 ---
 
-## 7. Updated Reader Conformance Levels
+## 7. Reader Conformance Levels
 
-Levels 1-6 from 0.3 unchanged. New in 0.4:
+Eight cumulative levels. Full level definitions and effort estimates are in `docs/FEATURESET.md`.
 
-- **Level 7 (Privacy)**, supports OM-VC-SD 1.0 presentations including pseudonymous mode.
-- **Level 8 (Bundles)**, accepts bundle credentials and the aggregator-trust verification flow.
-
-Levels are cumulative: a Level 8 reader supports everything from Levels 1 through 7.
+- **Level 7 (Privacy)** supports OM-VC-SD 1.0 presentations including pseudonymous mode.
+- **Level 8 (Bundles)** accepts bundle credentials and the aggregator-trust verification flow.
 
 ### 7.1 Recommended Profiles
 
-To keep adoption tractable, three named profiles are recommended:
-
-- **"Indie Reader" Profile**, Levels 1, 2, 5. Supports url-token feeds, in-app Stripe checkout, prospective-only revocation. The minimum viable shape that works for most newsletter and indie-podcast use cases.
-- **"Enterprise Reader" Profile**, Levels 1, 2, 3, 4, 5. Adds bearer auth, OM-VC verification, full PSP support. The shape an organizational reader (Inoreader, Feedly) should aim for to support B2B customers.
-- **"Privacy Reader" Profile**, Levels 1, 2, 3, 4, 5, 7. Adds pseudonymous OM-VC-SD support. The shape a journalism-focused or privacy-focused reader should aim for.
+- **Indie Reader**: Levels 1, 2, 5. URL-token feeds, in-app checkout, prospective-only revocation.
+- **Enterprise Reader**: Levels 1, 2, 3, 4, 5. Adds bearer auth, OM-VC verification, full PSP support.
+- **Privacy Reader**: Levels 1, 2, 3, 4, 5, 7. Adds pseudonymous OM-VC-SD support.
 
 A reader publishing its conformance statement SHOULD use one of these profile names plus any extensions.
 
 ---
 
-## 8. Updated Publisher Conformance
-
-0.3 rules apply, plus:
+## 8. Publisher Conformance
 
 - A publisher using `<om:revocation policy="...">` MUST honor the declared policy in their PSP webhook handlers.
 - A publisher operating as a bundle aggregator MUST satisfy §3.5 conformance requirements.
@@ -359,14 +307,14 @@ A reader publishing its conformance statement SHOULD use one of these profile na
 
 ---
 
-## 9. Updated Discovery Document
+## 9. Discovery Document
 
-The `.well-known/open-membership` document gains:
+`.well-known/open-membership` shape:
 
 ```json
 {
   "spec_version": "0.4",
-  "...": "all 0.3 fields preserved",
+  "...": "see SPEC-DISCOVERY.md for full schema",
 
   "revocation": {
     "policy": "prospective-only",
@@ -740,84 +688,6 @@ Three of these four things are within `om`'s control:
 - **A social fabric.** §G.5's IndieWebCamp model. The "two genuinely different forks competing on merits" can be approximated by encouraging *intentional* implementation diversity early, not one canonical Ghost plugin and one canonical reader, but several of each, deliberately taking different design choices within the spec's bounds.
 
 The fourth thing, the orange icon, is the visual-identity question. It probably doesn't matter much, but if `om` ends up needing a recognizable mark by 1.0, it should be commissioned cheaply (a freelance designer, a few hundred dollars) and released CC0. Don't overthink it.
-
-## H. What We Know About How the Incumbents Actually Work
-
-To compete with, or interoperate with, or replace, Substack, Patreon, and the rest, we need to be precise about what they actually do at the protocol level. Most of this is observable from outside; some requires light reverse-engineering of public web traffic. None of it is secret in any meaningful sense, and naming it correctly tells us what an `om`-compliant implementation has to *match* to be a credible alternative.
-
-### H.1 Substack
-
-**Free RSS:** standard RSS 2.0 with the `content:encoded` extension, served from `/feed` on every publication's domain (custom or `*.substack.com`). No authentication; no namespace beyond `content:`. This is fully compatible with any RSS reader.
-
-**Paid RSS for newsletters:** the same `/feed` endpoint, but the response varies based on the `substack.sid` session cookie. A logged-in subscriber's reader gets the full content of paid posts; everyone else gets previews. **There is no per-subscriber tokenized URL for paid newsletter content**, Substack relies on browser cookies, which is why no mainstream RSS reader can fetch a paid Substack feed without manual cookie copying. This is the failure mode that prompted [the RSS-Bridge Substack workaround](https://rss-bridge.github.io/rss-bridge/Bridge_Specific/Substack.html), which essentially screen-scrapes paid feeds by impersonating a logged-in browser.
-
-**Paid podcast RSS:** different model, much closer to `om`. Each paid subscriber gets a unique tokenized URL (visible in the subscriber's "Manage subscription" page). This works with any podcast app that accepts a feed URL, which is most of them, and is the closest thing to an interoperable paid feed Substack offers.
-
-**API:** none. No public API, no documentation, no developer portal. The internal API powering substack.com is observable but undocumented; multiple third-party tools (e.g., the December 2025 Chrome extension covering 1,200+ subscriptions) have built on the internal endpoints with the explicit understanding that Substack could break them at any time.
-
-**Subscriber export:** full export is supported, posts (CSV + HTML), subscriber list, optional stats, and Substack actively pitches this as a competitive feature ("you always own your content and audience"). This is genuinely true and it's the reason Ghost, beehiiv, and other competitors can credibly receive Substack migrations: there's a clean export path.
-
-**What this means for `om`:**
-
-1. The `om-ghost` reference implementation in §A.1 is *also* an upgrade path for Substack publishers. A Substack writer who exports to Ghost and enables an `om` plugin gets:
-   - Tokenized paid feeds (Substack's biggest weakness for newsletter content)
-   - Cross-reader compatibility (no more cookie-juggling)
-   - Identity portability (their subscribers' VC credentials work elsewhere)
-2. The Substack-paid-podcast model (per-subscriber tokenized feeds) is the proof-of-concept that the `om` URL-token auth method works at scale with millions of users. It's not theoretical; Substack already does it. We're standardizing it.
-3. **Substack's lack of a public API is a strategic vulnerability for them and an opportunity for `om`.** Every third-party tool built on their internal API is one Cloudflare-rule change away from being broken. An open-spec alternative that has a *real* documented contract is a better foundation for tool builders.
-
-### H.2 Patreon
-
-**Member RSS:** per-subscriber tokenized URL for audio/video content only. The token is in the URL itself; sharing it is detected via multi-device usage analytics and the link is automatically reset on second offense, with comment/DM suspension as the escalation. **Critically: text content is not included in member RSS feeds.** Patreon's RSS feature is podcast-shaped; written posts are web-only.
-
-**Anti-sharing detection:** Patreon explicitly monitors for usage anomalies on tokenized RSS URLs. From their docs: "We monitor how many devices and/or podcast apps are using each RSS link. If usage numbers are higher than usual, it may indicate that a member is sharing their link with others." First offense: warning + link reset. Second offense: 7-day comment/DM suspension. Continued: Trust & Safety review. They've also explicitly considered and rejected HTTP Basic Auth as a second factor: "Many podcast apps do not support this feature, and those that do often require openly sharing your account password, which can create security risks." This validates `om`'s 0.1 design call to make `url-token` the default auth method despite its theoretical weakness.
-
-**Creator API:** Patreon offers a real OAuth 2.0 API with documented scopes (`identity`, `identity[email]`, `campaigns`, `campaigns.members`, `campaigns.posts`). It's well-suited to letting a creator's own tooling read their patron list, but it's not designed for letting a *subscriber's* aggregator read across multiple creators. The independent project [nicholas.cloud/blog/following-patreon-creators-via-rss/](https://nicholas.cloud/blog/following-patreon-creators-via-rss/) found that they had to use the OAuth flow to get the user's pledge list, then construct synthetic per-creator RSS feeds by scraping the public API. Patreon's official position: this is technically possible, but service operators doing it at scale get blocked by Cloudflare.
-
-**What this means for `om`:**
-
-1. The anti-sharing detection model (`om` 0.4 doesn't mention this) needs to be addressed. **Open Question for 0.5:** should the spec define a `<om:sharing-policy>` element that lets publishers declare "we monitor for usage anomalies," along with reader-side conventions for honoring per-device limits? Patreon's approach works because it's a single platform; in a federated `om` ecosystem, a malicious reader could intentionally distribute one token across many devices and there would be no central party to enforce. The honest answer may be "use OM-VC with per-device key binding" (a Level 4+ feature).
-2. Patreon's creator API is the right *shape* for what an `om` aggregator would offer, but inverted, exposing the *subscriber's* aggregated subscriptions rather than the creator's roster. The discovery document (`.well-known/open-membership`) plays the API role for `om`.
-3. Patreon's text-content gap is an explicit `om` opportunity. A creator with text + audio + video content can serve all three through a single `om`-compliant feed; Patreon forces them to choose which medium gets RSS distribution.
-
-### H.3 Apple Podcasts Subscriptions, Spotify Podcast Subscriptions
-
-Both are closed ecosystems by design. Apple Podcasts Subscriptions uses Apple's payment infrastructure; subscribers are accessible only inside Apple's apps. Spotify uses Stripe (publicly announced 2022) but the resulting subscriptions are accessible only inside Spotify's clients. Neither exposes a private RSS feed; neither permits subscriber portability.
-
-**The interesting wrinkle:** Spotify's "Open Access" feature (used by some Substack podcasters) lets Substack subscribers listen on Spotify by linking their Substack account to their Spotify account. This is a precursor to what `om` could enable at the protocol level, except that "Open Access" requires per-platform integration deals rather than a standard.
-
-**What this means for `om`:**
-
-1. Apple and Spotify are not in scope for `om` adoption. They will do what they do; the spec's job is to make sure indie publishers and indie readers don't have to depend on either.
-2. The Spotify Open Access pattern (third-party identity → platform-specific access) is exactly the cross-publisher-bundle mechanism `om` 0.4 §3 generalizes. We're describing the open-protocol version of what Spotify did via bilateral deals.
-
-### H.4 The composite picture
-
-If you stack Substack + Patreon + Apple Podcasts + Spotify Podcasts side by side, the universe of paid-content delivery on RSS-shaped infrastructure looks like this:
-
-| Capability | Substack (text) | Substack (podcast) | Patreon | Apple/Spotify |
-|---|---|---|---|---|
-| Public free feed | RSS 2.0 + content:encoded | RSS 2.0 + iTunes namespace | none for non-creators | none |
-| Paid feed format | RSS 2.0, cookie-gated | RSS 2.0, URL-token-gated | RSS 2.0 audio/video, URL-token-gated | proprietary |
-| Subscriber identity portable | partially (export, no resubscribe) | yes (URL works in any app) | partially (tied to Patreon account) | no |
-| Group/family/team subscriptions | no | no | no | yes (Apple Family Sharing only) |
-| Cross-publisher bundle | no | no | no | yes (Apple Podcasts Subscriptions catalog) |
-| Time-gated content (early access) | manual | manual | manual | platform feature |
-| API for third-party readers | no | none official | OAuth, but limited | none |
-
-Every cell where `om` fills a gap is a concrete adoption story for some publisher. **The `om-ghost` plugin should aim to fill all of them in version 1.0.** That's the credible pitch to a Substack-or-Patreon-curious indie publisher: "You can do everything Substack and Patreon do, plus the things they can't, on infrastructure you own."
-
-### H.5 The three publishers `om` is built for, in priority order
-
-This is implicit in everything above but worth making explicit:
-
-1. **The Substack text writer who wants tokenized paid RSS.** They're the largest population, the easiest migration (Substack→Ghost is well-paved), and the one for whom `om` solves a real, immediate, every-day problem (their paid subscribers can't read their newsletter in their RSS reader without juggling cookies).
-2. **The Patreon podcaster who wants to add text + video without losing Patreon's distribution model.** They get the per-tier URL-token mechanism Patreon already uses, plus the multi-medium support Patreon doesn't offer, plus eventual Lightning support via Podcasting 2.0 co-existence.
-3. **The investigative journalism or specialist publication that needs the privacy layer.** Smaller population, but the one for whom no current platform works at all. OM-VC-SD pseudonymous mode is built for them. If `om` reaches 1.0 with even five such publications in production, it has accomplished something none of the incumbents can.
-
-These three personas should appear by name in every implementation conversation in the 0.5 cycle. They are the test of whether a feature, an errata, or a process change is actually serving the spec's purpose.
-
----
 
 ## Appendix C, Companion specs
 

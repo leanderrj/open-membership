@@ -9,7 +9,7 @@ import { hmacSha256 } from "../worker/src/lib/crypto.js";
  * consistent, which is the layer we own.
  *
  * A full end-to-end webhook test runs against Miniflare with the
- * stripe-mock sidecar — see docs/deploy.md.
+ * stripe-mock sidecar; see docs/deploy.md.
  */
 describe("webhook signature primitives", () => {
   it("HMAC-SHA256 matches a known-vector", async () => {

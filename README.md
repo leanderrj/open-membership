@@ -1,14 +1,12 @@
 # Open Membership RSS
 
-**An open standard for paid, tiered, time-gated, group-shared, value-for-value, and privacy-preserving subscription content over RSS.**
+**An RSS namespace for paid subscription content. Any publisher can emit it; any reader can consume it.**
 
-`om` adds a small, namespaced contract to a regular RSS feed. Any publisher can emit it. Any reader can consume it. No platform in the middle, no permission required to participate.
+`om` adds a handful of namespaced elements to an existing RSS feed. No platform in the middle.
 
 ---
 
 ## What it looks like
-
-A publisher who adopts `om` adds a handful of namespaced elements to their existing RSS feed. That is the whole protocol surface a reader has to recognise to unlock paid content.
 
 ```xml
 <rss version="2.0" xmlns:om="http://purl.org/rss/modules/membership/">
@@ -35,52 +33,33 @@ A publisher who adopts `om` adds a handful of namespaced elements to their exist
 </rss>
 ```
 
-A discovery document at `/.well-known/open-membership` ties the rest together: where to check out, how to authenticate, where the entitlement-token endpoint lives. The contract is in the feed.
+A discovery document at `/.well-known/open-membership` covers the rest: where to check out, how to authenticate, where the entitlement-token endpoint lives.
 
 ---
 
 ## How it works
 
-Three moving parts. Each is small enough to implement on its own, and each composes with the next.
+Three moving parts.
 
-1. **The feed.** A publisher's existing RSS feed gains a few namespaced elements: provider URI, accepted payment processors, tiers and prices, per-item access state (`open`, `preview`, `locked`, `members-only`). Nothing else changes. A reader that does not understand `om` keeps working unchanged. A reader that does, presents previews and unlock prompts.
+1. **The feed.** Provider URI, accepted payment processors, tiers and prices, per-item access state (`open`, `preview`, `locked`, `members-only`). A reader that doesn't understand `om` keeps working as before.
 
-2. **The discovery document.** A JSON document at `.well-known/open-membership`, composing with RFC 9728. One place a reader looks up everything the feed did not inline: token endpoints, accepted authentication methods, supported credential profiles, revocation policy, privacy posture. One fetch, no negotiation.
+2. **The discovery document.** A JSON document at `.well-known/open-membership` composing with RFC 9728. Token endpoints, auth methods, credential profiles, revocation policy.
 
-3. **The credential.** When a subscriber pays, the publisher issues a credential: a URL token, an OAuth bearer, or a W3C Verifiable Credential, depending on the publisher's conformance level. The reader stores it, presents it on the next fetch, and the locked items unlock. The credential is portable across reader apps; the spec defines an export shape so a subscriber moving between apps does not have to re-subscribe everywhere.
+3. **The credential.** A URL token, OAuth bearer, or W3C Verifiable Credential. Portable across reader apps; the spec defines an export shape.
 
-The technically distinctive design choice is **identity unlinkability**. Without it, every publisher in the ecosystem accumulates a profile of every cross-publisher subscriber. `om` solves this through a Verifiable Credential profile (OM-VC, and OM-VC-SD using BBS+ selective disclosure) that lets a subscriber prove "I am a paid member of this tier" without revealing a stable identifier any publisher can correlate against any other publisher's data.
+The distinctive design choice is **identity unlinkability**. The Verifiable Credential profile (OM-VC, and OM-VC-SD with BBS+ selective disclosure) lets a subscriber prove "I am a paid member of this tier" without revealing a stable identifier publishers can correlate.
 
----
-
-## Conformance levels
-
-Implementers commit to a level, the test suite verifies the level, and the level is what they advertise. Levels are cumulative.
-
-| Level | What it covers | Implementer effort |
-|---|---|---|
-| **1** | Parsing the namespace; previews; signup-URL display | one afternoon |
-| **2** | URL token auth; unlock endpoints; publisher-managed groups | one to two weeks |
-| **3** | OAuth bearer + DPoP; time-windowed access; SCIM groups | two to four weeks |
-| **4** | OM-VC (Verifiable Credentials) presentation auth | three to six weeks |
-| **5** | Commerce: PSP declarations, offers, checkout, entitlements, gifts, portability round-trip | two to four weeks (commerce) + one week (portability) |
-| **6** | Value-for-value: time-split recipients, Lightning composition | two to four weeks |
-| **7** | OM-VC-SD pseudonymous mode (BBS+ selective disclosure) | four to eight weeks |
-| **8** | Bundle aggregation across publishers | two to four weeks |
-
-Most publishers and reader apps will implement Level 1, 2, or 5.
+Conformance levels are defined in [`docs/FEATURESET.md`](docs/FEATURESET.md). Most publishers and reader apps will implement Level 1, 2, or 5.
 
 ---
 
 ## Get involved
 
-**Publishers.** Read [`SPEC.md`](SPEC.md), look at [`reference/om-ghost/`](reference/om-ghost/) or [`reference/om-wordpress/`](reference/om-wordpress/) for working starting points, and open an issue describing your setup if you want help onboarding.
+**Publishers.** Read [`SPEC.md`](SPEC.md). See [`reference/om-ghost/`](reference/om-ghost/) and [`reference/om-wordpress/`](reference/om-wordpress/). Open an issue if you want help onboarding.
 
-**Reader apps.** Start with the Level 1 parsing tests in [`reference/om-test-suite/`](reference/om-test-suite/) and the Miniflux patch plan in [`reference/om-miniflux/`](reference/om-miniflux/). Level 1 is one afternoon.
+**Reader apps.** Start with the parsing tests in [`reference/om-test-suite/`](reference/om-test-suite/) and the Miniflux patch plan in [`reference/om-miniflux/`](reference/om-miniflux/). First integration target is an afternoon.
 
-**Spec reviewers.** [`SPEC.md`](SPEC.md) is the canonical document. Companion specs in [`spec/`](spec/) cover ActivityPub co-existence, the Platform Adapter Profile, syndication-format mappings (Atom + JSON Feed), the subscriber portability format, and errata.
-
-Issues, pull requests, and reviews welcome on all of the above.
+**Spec reviewers.** Companion specs in [`spec/`](spec/) cover ActivityPub coexistence, the Platform Adapter Profile, syndication mappings (Atom + JSON Feed), portability, and errata.
 
 ---
 
@@ -112,4 +91,4 @@ Specification prose and design documents: CC-BY-4.0 (`LICENSE-SPEC`). All code u
 
 ## What this is not
 
-Not a business plan. Not a startup. Not a product. The work product is an open protocol under a perpetual permissive grant, held by a neutral custodian. The reference implementations are open source. The goal is that the protocol outlives every individual maintainer, the way RSS has outlived its creators.
+Not a business plan, not a startup, not a product. An open protocol under a perpetual permissive grant. Reference implementations are MIT.

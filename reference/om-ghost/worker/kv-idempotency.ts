@@ -3,7 +3,7 @@ import type { IdempotencyStore } from "../shared/idempotency.js";
 /**
  * KV-backed webhook idempotency.
  *
- * claim() does a read-then-write, which is not strictly atomic in KV —
+ * claim() does a read-then-write, which is not strictly atomic in KV -
  * two simultaneous Stripe retries of the same event could both see an
  * empty slot and both claim. For webhook-idempotency use, this is
  * acceptable: the handler is itself idempotent at the business-logic

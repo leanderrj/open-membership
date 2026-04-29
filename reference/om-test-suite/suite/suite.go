@@ -153,7 +153,7 @@ func fetchPriority(name string) int {
 
 // FetchWithTranscript makes a GET request and returns the body plus a
 // human-readable transcript suitable as TestResult.Artifact. Errors are
-// surfaced as a transcript too, never as Go errors — we want the failure to
+// surfaced as a transcript too, never as Go errors; we want the failure to
 // appear in the report, not abort the run.
 func (e *Env) FetchWithTranscript(ctx context.Context, url string) (body []byte, status int, transcript string, err error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)

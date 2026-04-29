@@ -5,7 +5,7 @@ import type { IdempotencyStore } from "../shared/idempotency.js";
  * SQLite-backed webhook idempotency.
  *
  * Uses a single table with an event id and first-seen timestamp.
- * `claim()` inserts with IGNORE — if the row existed it returns false,
+ * `claim()` inserts with IGNORE; if the row existed it returns false,
  * otherwise true. This is atomic at the SQLite level without needing a
  * transaction.
  *

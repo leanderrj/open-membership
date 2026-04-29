@@ -349,7 +349,7 @@ function registerPortal(app: Hono, deps: Deps): void {
           {
             error: {
               code: "no_subscription",
-              message: "no active subscription — cannot open portal",
+              message: "no active subscription; cannot open portal",
             },
           },
           409,
@@ -443,13 +443,13 @@ function registerWebhook(app: Hono, deps: Deps): void {
       if (err instanceof UpstreamError) {
         deps.logger.error(
           { err: err.message, event_id: event.id },
-          "webhook upstream error — will retry",
+          "webhook upstream error; will retry",
         );
         throw err;
       }
       deps.logger.error(
         { err: String(err), event_id: event.id },
-        "webhook handler non-transient error — swallowing",
+        "webhook handler non-transient error; swallowing",
       );
     }
 
