@@ -9,7 +9,7 @@ Before specifying structures, the non-negotiable principles these structures mus
 1. **Open-by-default.** All specification work happens in public. Private Slack channels, private email threads, and off-the-record decisions are not how decisions are made. They're how rumors of decisions are made. If a conversation matters, it goes in a GitHub issue.
 2. **Working-code vote.** In a disagreement, the person shipping the implementation gets the final say within their area. The person drafting the specification can override only by demonstrating a reasonable alternative implementation.
 3. **Backward compatibility is paramount.** Once an element is canonized in a frozen spec version, it does not change meaning. Adding elements is acceptable; mutating elements is not. This is the Podcast Index rule and it's the right one.
-4. **Negative results are published.** When a PSP binding breaks, when a publisher drops the spec, when a feature doesn't work as designed — this gets written up and published. Open protocols accumulate trust by being honest about failures.
+4. **Negative results are published.** When a PSP binding breaks, when a publisher drops the spec, when a feature doesn't work as designed, this gets written up and published. Open protocols accumulate trust by being honest about failures.
 5. **No one's voice is privileged by tenure.** A new implementer's first PR reviewed on its merits, not on whether they were "around for 0.2." This is how mailing lists die.
 
 ## The custodian
@@ -18,27 +18,27 @@ Before specifying structures, the non-negotiable principles these structures mus
 
 Four candidates, in the order to ask. Don't simultaneous-ask; one at a time, a week apart, adapting the pitch based on each response.
 
-**1. Internet Archive** — lowest procedural overhead, high probability of yes
+**1. Internet Archive**, lowest procedural overhead, high probability of yes
 - The Internet Archive has historically hosted specifications and preservation efforts
 - Mission-aligned: the Archive's core commitment to open standards and digital commons fits the spec's ethos
 - Contact: Brewster Kahle's team; informal first approach via existing professional contacts if possible
 - What they'd do: host the canonical spec URL at `archive.org/open-membership-rss` or equivalent, hold domain registration of `purl.org/rss/modules/membership/`, provide a stable institutional point of escalation
-- Estimated answer time: 2–4 weeks if a warm intro; 6–8 weeks cold
+- Estimated answer time: 2-4 weeks if a warm intro; 6-8 weeks cold
 
-**2. Sovereign Tech Fund / Sovereign Tech Agency** — both funder and custodian candidate
+**2. Sovereign Tech Fund / Sovereign Tech Agency**, both funder and custodian candidate
 - If the Sovereign Tech Fund grant is approved (see [../funding/sovereign-tech-fund.md](../funding/sovereign-tech-fund.md)), asking them to also hold the spec custodianship is natural
 - They already do this for other infrastructure they fund
 - Estimated answer: 2 weeks after grant approval
 
-**3. NLnet Foundation** — best institutional fit, most procedural
+**3. NLnet Foundation**, best institutional fit, most procedural
 - NLnet's formal governance structure means the custodian role involves actual board decisions
 - Their existing role as NGI coordinator means they have the staff and infrastructure for long-term stewardship
-- Estimated answer time: 4–6 weeks
+- Estimated answer time: 4-6 weeks
 
-**4. Software Freedom Conservancy** — safe US-based fallback
+**4. Software Freedom Conservancy**, safe US-based fallback
 - Most established institutional credibility
 - Biggest procedural overhead; formal project membership requires a proper application
-- Estimated answer time: 2–3 months
+- Estimated answer time: 2-3 months
 
 ### What the custodian actually does
 
@@ -77,21 +77,21 @@ Any more complex agreement is probably over-engineered.
 
 ### Composition
 
-5–8 people, roughly these shapes:
+5-8 people, roughly these shapes:
 
-- **Two publisher-side implementers** — people actually running `om`-emitting feeds
-- **Two reader-side implementers** — people shipping code that consumes `om`
-- **One protocol editor** — responsible for the spec document itself, errata management
-- **One community/documentation lead** — handles the non-code artifacts (website, guides, outreach)
-- **One paid coordinator** — part-time role covered by grant funding, handles logistics and governance
-- **Optional: one W3C VC liaison** — coordinates with the VC working group as OM-VC-SD evolves
-- **Optional: one Podcasting 2.0 liaison** — coordinates with the Podcast Index team
+- **Two publisher-side implementers**, people actually running `om`-emitting feeds
+- **Two reader-side implementers**, people shipping code that consumes `om`
+- **One protocol editor**, responsible for the spec document itself, errata management
+- **One community/documentation lead**, handles the non-code artifacts (website, guides, outreach)
+- **One paid coordinator**, part-time role covered by grant funding, handles logistics and governance
+- **Optional: one W3C VC liaison**, coordinates with the VC working group as OM-VC-SD evolves
+- **Optional: one Podcasting 2.0 liaison**, coordinates with the Podcast Index team
 
 Diversity of implementer base matters more than diversity of credentials. A working group with four people from the same company is worse than one with four people from four companies. Four nationalities is better than one. Mix of commercial and non-commercial backgrounds is better than all one or all the other.
 
 ### Seating process
 
-The first working group is appointed by the initial authors of the spec, ideally at the first IndieWebCamp-style event (month 16 in the roadmap). Before that, governance is informal — the spec authors and the first few implementers, working via GitHub.
+The first working group is appointed by the initial authors of the spec, ideally at the first IndieWebCamp-style event (month 16 in the roadmap). Before that, governance is informal, the spec authors and the first few implementers, working via GitHub.
 
 Going forward:
 - Members commit to a 2-year term, renewable once
@@ -121,7 +121,7 @@ Going forward:
 
 Semantic versioning for the spec document:
 
-- **Major versions (1.0, 2.0)** reserved for breaking changes. Only issued after a full community review cycle. Expected frequency: every 3–5 years at most.
+- **Major versions (1.0, 2.0)** reserved for breaking changes. Only issued after a full community review cycle. Expected frequency: every 3-5 years at most.
 - **Minor versions (1.1, 1.2)** for backward-compatible feature additions. Expected frequency: annually.
 - **Patch versions (1.1.1, 1.1.2)** for errata, clarifications, typo fixes. Expected frequency: as needed.
 
@@ -146,7 +146,7 @@ The deliberate friction post-1.0 is what makes 1.0 mean something.
 
 An implementation claiming conformance to spec version N MUST continue to conform if the spec advances to N+1 or N+2 (same major version) without code changes. Minor version upgrades CAN add new optional features that implementations can choose to support, but cannot mutate existing features.
 
-Example: a Level 5 reader built for 1.0 must still work against a 1.4 feed. It may not understand new Level 6 features added in 1.2, but it must still correctly handle all Level 1–5 features from the original 1.0 spec.
+Example: a Level 5 reader built for 1.0 must still work against a 1.4 feed. It may not understand new Level 6 features added in 1.2, but it must still correctly handle all Level 1-5 features from the original 1.0 spec.
 
 ### Deprecation
 
@@ -160,7 +160,7 @@ Implementations self-certify by running the `om-test-suite` and publishing the r
 
 A public registry at the custodian's URL lists implementations that have submitted test results. Each entry shows:
 - Implementation name, version, licensed, repo URL
-- Claimed conformance level (1–8)
+- Claimed conformance level (1-8)
 - Test suite version used
 - Date of last certification run
 - Pass/fail details
@@ -182,7 +182,7 @@ This is not a courtroom. It's a reputation system. An implementer who repeatedly
 
 ### Fiscal sponsor
 
-The working group is not a legal entity. Grants and donations flow through a fiscal sponsor, ideally the same entity as the custodian (Internet Archive, NLnet, Sovereign Tech Fund — they all can host fiscal sponsorship).
+The working group is not a legal entity. Grants and donations flow through a fiscal sponsor, ideally the same entity as the custodian (Internet Archive, NLnet, Sovereign Tech Fund, they all can host fiscal sponsorship).
 
 If that's not workable, use Open Collective Europe as a neutral fiscal sponsor. Standard arrangement, well-understood, low overhead.
 
@@ -194,7 +194,7 @@ Any single expense over €5,000 requires working group notification in advance.
 
 ### Contributor compensation
 
-Paid work — test suite maintenance, reference implementation development, coordinator time — is compensated at market rates from grant funds. Volunteer work is acknowledged in the spec and the public registry but not compensated.
+Paid work, test suite maintenance, reference implementation development, coordinator time, is compensated at market rates from grant funds. Volunteer work is acknowledged in the spec and the public registry but not compensated.
 
 The paid coordinator is explicitly paid; working group members are explicitly not (unless they're simultaneously doing paid implementation work under a grant).
 

@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Open Membership — paid RSS as an open standard</title>
-<meta name="description" content="An open standard for paid, tiered, time-gated, group-shared, value-for-value, and privacy-preserving subscription content — over the same RSS feeds the web has been running on for twenty years.">
+<title>Open Membership RSS</title>
+<meta name="description" content="An open standard for paid, tiered, time-gated, group-shared, value-for-value, and privacy-preserving subscription content over RSS.">
 <link rel="canonical" href="https://openmembership.org/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://openmembership.org/">
-<meta property="og:title" content="Open Membership — paid RSS as an open standard">
-<meta property="og:description" content="A small, namespaced contract any publisher can emit and any reader can consume. No platform in the middle, no permission required to participate.">
+<meta property="og:title" content="Open Membership RSS">
+<meta property="og:description" content="A small, namespaced contract any publisher can emit and any reader can consume. No platform in the middle.">
 <meta property="og:image" content="https://openmembership.org/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/style.css">
@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#161513">
-<link rel="alternate" type="application/rss+xml" title="Open Membership — example feed" href="/example/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="Open Membership example feed" href="/example/feed.xml">
 </head>
 <body>
 
@@ -27,8 +27,8 @@
     <a class="logo" href="/">Open Membership <span class="logo-mark">RSS</span></a>
     <nav>
       <a href="#protocol">Protocol</a>
-      <a href="#compare">Compare</a>
-      <a href="#status">Status</a>
+      <a href="#levels">Levels</a>
+      <a href="#involved">Contribute</a>
       <a href="https://github.com/leanderrj/open-membership">GitHub</a>
     </nav>
   </div>
@@ -36,15 +36,13 @@
 
 <section class="hero">
   <div class="container">
-    <p class="kicker">An open standard, draft 0.4 — feature-frozen, headed for IETF</p>
     <h1>Paid subscriptions on the web that <em>belong to the web</em>.</h1>
     <p class="lede">
-      A small, namespaced extension to RSS that lets any publisher charge for content and any reader unlock it — without renting that relationship from Substack, Patreon, or a closed CMS. Three moving parts, eight conformance levels, MIT and CC-BY-4.0 throughout.
+      A small, namespaced extension to RSS that lets any publisher charge for content and any reader unlock it. Three moving parts, eight conformance levels, MIT and CC-BY-4.0 throughout.
     </p>
     <p class="cta-row">
-      <a class="cta primary" href="https://github.com/leanderrj/open-membership/blob/main/SPEC.md">Read the spec</a>
+      <a class="cta primary" href="https://github.com/leanderrj/open-membership/blob/master/SPEC.md">Read the spec</a>
       <a class="cta" href="https://github.com/leanderrj/open-membership">Source on GitHub</a>
-      <a class="cta" href="#funding">Funding plan</a>
     </p>
   </div>
 </section>
@@ -73,20 +71,20 @@
     &lt;item&gt;
       &lt;title&gt;Members-only investigation: the warehouse fire&lt;/title&gt;
       &lt;om:access&gt;locked&lt;/om:access&gt;
-      &lt;om:preview&gt;The fire investigators&apos; report was filed two weeks before…&lt;/om:preview&gt;
+      &lt;om:preview&gt;The fire investigators&apos; report was filed two weeks before...&lt;/om:preview&gt;
       &lt;om:unlock&gt;https://fieldnotes.example/unlock/2026-04-fire&lt;/om:unlock&gt;
     &lt;/item&gt;
   &lt;/channel&gt;
 &lt;/rss&gt;</code></pre>
 
     <p>
-      A reader that does not understand <code>om</code> keeps working unchanged; a reader that does, presents previews and unlock prompts. Compatibility-first, the way Podcasting 2.0 does it.
+      A reader that does not understand <code>om</code> keeps working unchanged. A reader that does, presents previews and unlock prompts. Compatibility-first.
     </p>
 
     <div class="three-cards">
       <article>
         <h3>1. The feed</h3>
-        <p>A few namespaced elements: provider, accepted PSPs, tiers, per-item access state. Nothing else changes.</p>
+        <p>A few namespaced elements: provider, accepted payment processors, tiers, per-item access state. Nothing else changes.</p>
       </article>
       <article>
         <h3>2. The discovery document</h3>
@@ -94,74 +92,25 @@
       </article>
       <article>
         <h3>3. The credential</h3>
-        <p>A URL token, an OAuth bearer, or a W3C Verifiable Credential — depending on the publisher's conformance level. Portable across reader apps; export shape defined.</p>
+        <p>A URL token, an OAuth bearer, or a W3C Verifiable Credential, depending on the publisher's conformance level. Portable across reader apps; export shape defined.</p>
       </article>
     </div>
   </div>
 </section>
 
-<section id="compare" class="section section-alt">
+<section id="privacy" class="section section-alt">
   <div class="container">
-    <h2>How it compares</h2>
+    <h2>Identity unlinkability</h2>
     <p>
-      The proprietary version of this already works. FeedPress and Outpost run paid RSS for Ghost; 404 Media and Aftermath are paying customers. What the open web is missing is interoperability — a feed shape, a discovery document, and a token contract any publisher can implement and any reader can read without negotiating with a vendor.
+      Without unlinkability, every publisher in the ecosystem accumulates a profile of every cross-publisher subscriber. <code>om</code> solves this with a Verifiable Credential profile (OM-VC, and OM-VC-SD using BBS+ selective disclosure) that lets a subscriber prove "I am a paid member of this tier" without revealing any stable identifier that publishers could correlate against each other.
     </p>
-
-    <div class="table-wrap">
-      <table class="compare">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Substack</th>
-            <th>Patreon</th>
-            <th>Apple / Spotify Subscriptions</th>
-            <th>FeedPress / Outpost</th>
-            <th>Open Membership</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><th scope="row">Tokenised paid RSS</th><td>podcast only</td><td>podcast only</td><td class="x">no</td><td class="check">yes</td><td class="check">yes</td></tr>
-          <tr><th scope="row">Text in RSS</th><td>cookie-only</td><td class="x">no</td><td class="x">no</td><td class="check">yes</td><td class="check">yes</td></tr>
-          <tr><th scope="row">Subscriber identity portable</th><td>partial</td><td>partial</td><td class="x">no</td><td>vendor-locked</td><td class="check">yes</td></tr>
-          <tr><th scope="row">Cross-publisher bundle</th><td class="x">no</td><td class="x">no</td><td>Apple catalog only</td><td class="x">no</td><td class="check">Level 8</td></tr>
-          <tr><th scope="row">Pseudonymous mode</th><td class="x">no</td><td class="x">no</td><td class="x">no</td><td class="x">no</td><td class="check">Level 7 (BBS+)</td></tr>
-          <tr><th scope="row">Open specification</th><td class="x">no</td><td class="x">no</td><td class="x">no</td><td class="x">no</td><td class="check">CC-BY-4.0</td></tr>
-          <tr><th scope="row">Reference implementation open source</th><td class="x">no</td><td class="x">no</td><td class="x">no</td><td class="x">no</td><td class="check">MIT</td></tr>
-        </tbody>
-      </table>
-    </div>
-
     <p class="footnote">
-      The Substack-paid-podcast model — per-subscriber tokenised RSS URLs that work in any podcast app — is the proof-of-concept that <code>om</code>'s URL-token auth method works at scale. Substack already does it for millions of users. <code>om</code> standardises it.
+      Pseudonymous mode is built for publications where a subscriber list could be subpoenaed. Investigative journalism, medical and mental-health publications, legal-research services. The credential layer is the part of the privacy story the protocol can address.
     </p>
   </div>
 </section>
 
-<section id="personas" class="section">
-  <div class="container">
-    <h2>Who it's for</h2>
-    <p>
-      Three publisher personas drive every design decision. They are not market segments; they are the test of whether a feature is actually pulling its weight.
-    </p>
-
-    <div class="personas">
-      <article>
-        <h3>The Substack writer who has migrated to Ghost</h3>
-        <p>Escaped one walled garden, landed in a less walled one — but still no portable subscription mechanism. With <code>om</code>, the same Ghost instance emits a paid feed any RSS reader can consume. Drop in a plugin, your existing Stripe account keeps working, your subscribers stop being trapped in the Ghost web reader.</p>
-      </article>
-      <article>
-        <h3>The Patreon podcaster expanding mediums</h3>
-        <p>Patreon gives them per-tier URL-token feeds and a payment relationship; it does not give them text or video on the same terms. <code>om</code> keeps the per-tier URL-token mechanism they already use, adds the multi-medium support Patreon doesn't offer, and composes cleanly with Lightning value-splits via Podcasting 2.0.</p>
-      </article>
-      <article>
-        <h3>The investigative or specialist publication that needs the privacy layer</h3>
-        <p>A subscriber list that could be subpoenaed is a subscriber list a publication cannot ethically maintain. <code>om</code>'s pseudonymous mode (OM-VC-SD with per-publisher unlinkable BBS+ pseudonyms) is built for them. If <code>om</code> reaches 1.0 with five such publications in production, it has accomplished something the incumbents cannot.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section id="levels" class="section section-alt">
+<section id="levels" class="section">
   <div class="container">
     <h2>Conformance levels</h2>
     <p>
@@ -175,34 +124,18 @@
         </thead>
         <tbody>
           <tr><td>1</td><td>Parsing the namespace; previews; signup-URL display</td><td>one afternoon</td></tr>
-          <tr><td>2</td><td>URL token auth; unlock endpoints; publisher-managed groups</td><td>1–2 weeks</td></tr>
-          <tr><td>3</td><td>OAuth bearer + DPoP; time-windowed access; SCIM groups</td><td>2–4 weeks</td></tr>
-          <tr><td>4</td><td>OM-VC (W3C Verifiable Credentials) presentation auth</td><td>3–6 weeks</td></tr>
-          <tr><td>5</td><td>Commerce: PSP declarations, offers, checkout, entitlements, gifts</td><td>2–4 weeks</td></tr>
-          <tr><td>6</td><td>Value-for-value: time-split recipients, Lightning composition</td><td>2–4 weeks</td></tr>
-          <tr><td>7</td><td>OM-VC-SD pseudonymous mode (BBS+ selective disclosure)</td><td>4–8 weeks</td></tr>
-          <tr><td>8</td><td>Bundle aggregation across publishers</td><td>2–4 weeks</td></tr>
+          <tr><td>2</td><td>URL token auth; unlock endpoints; publisher-managed groups</td><td>1 to 2 weeks</td></tr>
+          <tr><td>3</td><td>OAuth bearer + DPoP; time-windowed access; SCIM groups</td><td>2 to 4 weeks</td></tr>
+          <tr><td>4</td><td>OM-VC (W3C Verifiable Credentials) presentation auth</td><td>3 to 6 weeks</td></tr>
+          <tr><td>5</td><td>Commerce: PSP declarations, offers, checkout, entitlements, gifts</td><td>2 to 4 weeks</td></tr>
+          <tr><td>6</td><td>Value-for-value: time-split recipients, Lightning composition</td><td>2 to 4 weeks</td></tr>
+          <tr><td>7</td><td>OM-VC-SD pseudonymous mode (BBS+ selective disclosure)</td><td>4 to 8 weeks</td></tr>
+          <tr><td>8</td><td>Bundle aggregation across publishers</td><td>2 to 4 weeks</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p class="footnote">Most publishers and reader apps will live at Level 1, 2, or 5. Levels 6–8 are for the implementers who need them.</p>
-  </div>
-</section>
-
-<section id="status" class="section">
-  <div class="container">
-    <h2>Status</h2>
-    <ul class="status-list">
-      <li><strong>Spec:</strong> feature-frozen at 0.4 draft. The next two revisions (0.5, 1.0) focus on conformance, interop, and governance — <em>not</em> new features.</li>
-      <li><strong>Reference publishers:</strong> Ghost plugin and WordPress plugin, both targeting Level 5 (Commerce). Feature-complete; production-validated work in progress.</li>
-      <li><strong>Reference reader:</strong> Miniflux fork scaffolded with a Go <code>om/</code> module, fixture feeds, and an integration runbook.</li>
-      <li><strong>Test suite:</strong> scaffolded with Level 1 tests live; Levels 2 and 5 stubbed.</li>
-      <li><strong>Subscriber portability:</strong> spec drafted, round-trip harness implements the 26-test matrix.</li>
-      <li><strong>IETF draft:</strong> <code>draft-om-rss-00.md</code>, 1,926 lines in kramdown-rfc2629 format, ready for the Independent Submission stream once the custodian is in place.</li>
-      <li><strong>Custodian:</strong> four candidates in priority order — Internet Archive, Sovereign Tech Fund, NLnet Foundation, Software Freedom Conservancy. Outreach scheduled for Phase 3.</li>
-    </ul>
-    <p class="footnote">Eighteen months from spec draft to ratified open standard with multiple production deployments — see <a href="https://github.com/leanderrj/open-membership/blob/main/ROADMAP.md">ROADMAP.md</a> for the technical phasing.</p>
+    <p class="footnote">Most publishers and reader apps will implement Level 1, 2, or 5.</p>
   </div>
 </section>
 
@@ -211,24 +144,19 @@
     <h2>Get involved</h2>
     <div class="involved-grid">
       <article>
-        <h3>You publish content</h3>
-        <p>Want to take it off a closed platform without losing the paid-RSS mechanism. Read the spec, look at the Ghost or WordPress reference implementations, and open an issue describing your setup.</p>
-        <a class="cta" href="https://github.com/leanderrj/open-membership/tree/main/reference">Reference plugins</a>
+        <h3>Publishers</h3>
+        <p>Read the spec, look at the Ghost or WordPress reference implementation, and open an issue describing your setup if you want help onboarding.</p>
+        <a class="cta" href="https://github.com/leanderrj/open-membership/tree/master/reference">Reference plugins</a>
       </article>
       <article>
-        <h3>You write a reader app</h3>
-        <p>Support paid feeds without negotiating one-off deals with each publisher. Start with the Level 1 parsing tests and the Miniflux patch plan. Level 1 is one afternoon.</p>
-        <a class="cta" href="https://github.com/leanderrj/open-membership/tree/main/reference/om-test-suite">Test suite</a>
-      </article>
-      <article id="funding">
-        <h3>You fund or shepherd open infrastructure</h3>
-        <p>The 18-month plan needs ~€205,000 in direct spend, of which ~€130,000 is targeted from grants (NLnet NGI Zero Commons, SIDN Fonds, Sovereign Tech Fund). Sendable applications and budget detail are in <code>funding/</code>.</p>
-        <a class="cta" href="https://github.com/leanderrj/open-membership/tree/main/funding">Funding plan</a>
+        <h3>Reader apps</h3>
+        <p>Start with the Level 1 parsing tests and the Miniflux patch plan. Level 1 is one afternoon.</p>
+        <a class="cta" href="https://github.com/leanderrj/open-membership/tree/master/reference/om-test-suite">Test suite</a>
       </article>
       <article>
-        <h3>You write specs</h3>
-        <p>Review the technical bets — the BBS+ selective-disclosure profile, the discovery document composing with RFC 9728, the bundle-aggregation trust model. The appendices in <code>spec/</code> cover ActivityPub co-existence, the Platform Adapter Profile, syndication-format mappings, and the 0.4.1 errata.</p>
-        <a class="cta" href="https://github.com/leanderrj/open-membership/tree/main/spec">Companion specs</a>
+        <h3>Spec reviewers</h3>
+        <p>The appendices in <code>spec/</code> cover ActivityPub co-existence, the Platform Adapter Profile, syndication mappings (Atom + JSON Feed), and the subscriber portability format.</p>
+        <a class="cta" href="https://github.com/leanderrj/open-membership/tree/master/spec">Companion specs</a>
       </article>
     </div>
   </div>
@@ -244,10 +172,9 @@
       <div>
         <h4>Repository</h4>
         <ul>
-          <li><a href="https://github.com/leanderrj/open-membership/blob/main/SPEC.md">SPEC.md</a></li>
-          <li><a href="https://github.com/leanderrj/open-membership/blob/main/ROADMAP.md">ROADMAP.md</a></li>
-          <li><a href="https://github.com/leanderrj/open-membership/blob/main/ROADSHOW.md">ROADSHOW.md</a></li>
-          <li><a href="https://github.com/leanderrj/open-membership/tree/main/funding">Funding plan</a></li>
+          <li><a href="https://github.com/leanderrj/open-membership/blob/master/SPEC.md">SPEC.md</a></li>
+          <li><a href="https://github.com/leanderrj/open-membership/tree/master/spec">Companion specs</a></li>
+          <li><a href="https://github.com/leanderrj/open-membership/tree/master/reference">Reference code</a></li>
         </ul>
       </div>
       <div>
@@ -266,7 +193,7 @@
         </ul>
       </div>
     </div>
-    <p class="copyright">© 2026 the Open Membership working group. Specification CC-BY-4.0; this site MIT-licensed alongside the reference code.</p>
+    <p class="copyright">Specification CC-BY-4.0; this site MIT-licensed alongside the reference code.</p>
   </div>
 </footer>
 

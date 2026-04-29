@@ -1,4 +1,4 @@
-# `om-ghost` — Reference Implementation for Ghost
+# `om-ghost`, Reference Implementation for Ghost
 
 This is the reference Ghost plugin/sidecar for the Open Membership RSS
 specification, as described in
@@ -6,7 +6,7 @@ specification, as described in
 
 `om-ghost` makes an unmodified Ghost instance emit feeds, discovery
 documents, and checkout flows that conform to Open Membership RSS. It
-reuses Ghost's Members system and its connected Stripe account — no
+reuses Ghost's Members system and its connected Stripe account, no
 parallel subscriber store, no Ghost core fork.
 
 ## Layout
@@ -35,28 +35,28 @@ under [`service/`](service/), or into a Cloudflare Worker under
 
 ## Features
 
-- **Discovery** — `GET /.well-known/open-membership` emits the JSON
+- **Discovery**, `GET /.well-known/open-membership` emits the JSON
   document defined in [SPEC §9](../../SPEC.md), composed from
   `om-config.yaml`, Stripe account info, and the sidecar's own
   endpoint URLs.
-- **Feed rendering** — `GET /feed/om/:token/` returns a real
+- **Feed rendering**, `GET /feed/om/:token/` returns a real
   RSS 2.0 + `om:` feed, rendered via `xmlbuilder2`, with per-item
   access decisions derived from Ghost's `visibility` field.
-- **Checkout** — `POST /api/om/checkout` creates a Stripe Checkout
+- **Checkout**, `POST /api/om/checkout` creates a Stripe Checkout
   Session for a named offer and returns the redirect URL.
-- **Entitlements polling** — `GET /api/om/entitlements?session_id=…`
+- **Entitlements polling**, `GET /api/om/entitlements?session_id=…`
   for post-checkout state confirmation.
-- **Token exchange** — `POST /api/om/token` swaps a feed token for a
+- **Token exchange**, `POST /api/om/token` swaps a feed token for a
   short-lived JWT carrying `tier_id` and `entitlements`.
-- **Customer portal** — `GET /api/om/portal?feed_token=…` redirects to
+- **Customer portal**, `GET /api/om/portal?feed_token=…` redirects to
   Stripe's Customer Portal.
-- **Webhook** — `POST /api/om/webhook`, idempotent over the Stripe
+- **Webhook**, `POST /api/om/webhook`, idempotent over the Stripe
   `event.id`, updates the feed cache from Stripe subscription events.
-- **Observability** — structured logs with request IDs, redacted
+- **Observability**, structured logs with request IDs, redacted
   secrets, and duration metrics on every request.
-- **Rate limiting** — per-endpoint, per-IP token buckets. Configured
+- **Rate limiting**, per-endpoint, per-IP token buckets. Configured
   defaults in [`shared/rate-limit.ts`](shared/rate-limit.ts).
-- **Health probes** — `/health` (liveness) and `/ready` (Ghost + Stripe
+- **Health probes**, `/health` (liveness) and `/ready` (Ghost + Stripe
   reachability).
 
 ## Conformance target
@@ -142,9 +142,9 @@ wrangler deploy
 
 Two files:
 
-- **`.env`** (Mode B) or **`wrangler secret`** (Mode A) — runtime
+- **`.env`** (Mode B) or **`wrangler secret`** (Mode A), runtime
   secrets and bindings. See `.env.example`.
-- **`om-config.yaml`** — the publisher-facing declaration of tiers,
+- **`om-config.yaml`**, the publisher-facing declaration of tiers,
   features, offers, and PSPs. See `om-config.example.yaml`. This is
   safe to commit only if the Stripe price IDs aren't considered
   sensitive in your environment.
@@ -162,7 +162,7 @@ startup. For a site with N paid members this takes roughly N/100
 Admin API round-trips (~100 members per page). On a 2 000-member site
 this is ~20 requests, completing in a couple of seconds.
 
-Cache warming runs concurrently with request handling — cold requests
+Cache warming runs concurrently with request handling, cold requests
 during warmup are served from a smaller cache, not blocked.
 
 ### Graceful shutdown
@@ -183,7 +183,7 @@ hourly.
 
 `state/idempotency.sqlite` is the only persistent state. Losing it
 means Stripe retries may be double-processed on first arrival after
-restart — harmless in practice because the business-logic handlers
+restart, harmless in practice because the business-logic handlers
 are idempotent at the cache-refresh level. Back it up if you want
 cleaner logs, but it isn't safety-critical.
 

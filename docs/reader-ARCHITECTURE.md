@@ -1,4 +1,4 @@
-# Reader Reference Architecture — Miniflux Fork
+# Reader Reference Architecture, Miniflux Fork
 
 The reader side of the first interop test. Forks [Miniflux](https://miniflux.app) to add `om` support. The goal is proving that a normal RSS reader can subscribe to a paid `om` feed, drive the checkout flow, and render gated content correctly.
 
@@ -12,7 +12,7 @@ NetNewsWire would be the higher-impact target (large active iOS+macOS user base,
 4. **Existing multi-account semantics.** Each Miniflux user already has their own feed subscriptions; adding per-feed authentication tokens fits the mental model.
 5. **Upstream-merge possibility.** If the PR is accepted into Miniflux proper (rather than remaining a fork), the adoption story improves dramatically.
 
-NetNewsWire gets a parallel effort in Phase 4 (months 10–12) using lessons learned from Miniflux.
+NetNewsWire gets a parallel effort in Phase 4 (months 10-12) using lessons learned from Miniflux.
 
 ## Scope
 
@@ -78,7 +78,7 @@ Miniflux has a clean separation between the **feed poller** (a goroutine that pe
 
 ## Components
 
-### 1. `internal/reader/om/` — feed parsing
+### 1. `internal/reader/om/`, feed parsing
 
 A new Go package that handles the `om` namespace. Integrates into Miniflux's existing RSS parser as an extension; feeds without `om` are unaffected.
 
@@ -104,7 +104,7 @@ type Offer struct {
 func Parse(reader io.Reader) (*Feed, error) { /* ... */ }
 ```
 
-### 2. `internal/storage/om_auth.go` — auth state
+### 2. `internal/storage/om_auth.go`, auth state
 
 Per-feed auth token storage. Schema additions to Miniflux's PostgreSQL:
 
@@ -131,7 +131,7 @@ CREATE TABLE om_offers (
 );
 ```
 
-### 3. `internal/reader/fetcher/om_auth.go` — auth-aware fetch
+### 3. `internal/reader/fetcher/om_auth.go`, auth-aware fetch
 
 When fetching a feed that has `om_feed_auth` state, the fetcher:
 
@@ -139,14 +139,14 @@ When fetching a feed that has `om_feed_auth` state, the fetcher:
 2. Otherwise checks if `url_token` is set → uses the token as URL parameter
 3. Otherwise fetches unauthenticated (gets a preview-only feed)
 
-### 4. `internal/api/om/` — checkout API
+### 4. `internal/api/om/`, checkout API
 
 Miniflux exposes (to the browser only, not to external callers) a small API:
 
-- `POST /om/subscribe` — starts the checkout flow
+- `POST /om/subscribe`, starts the checkout flow
   - Input: `feed_id`, `offer_id`, `psp`
   - Action: POSTs to the publisher's `/api/om/checkout`, receives a checkout URL, returns it to the browser
-- `GET /om/status?feed_id=X` — polls for entitlement
+- `GET /om/status?feed_id=X`, polls for entitlement
   - Polls the publisher's `/api/om/entitlements?session_id=Y` endpoint
   - On success, calls `/api/om/token` to receive a fresh JWT, stores it in `om_feed_auth`
   - Returns the user's current subscription status

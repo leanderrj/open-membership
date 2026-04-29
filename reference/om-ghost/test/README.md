@@ -7,7 +7,7 @@ npm install
 npm test
 ```
 
-Tests use `node:test` with `tsx` as the loader — no Jest/Vitest
+Tests use `node:test` with `tsx` as the loader, no Jest/Vitest
 dependency. Everything runs in under a second.
 
 ## Coverage
@@ -25,9 +25,9 @@ dependency. Everything runs in under a second.
 
 - End-to-end against a real Ghost instance
 - End-to-end against Stripe test-mode (offers, checkout, webhooks)
-- om-test-suite conformance (Levels 1, 2, 5) — blocked on the test
+- om-test-suite conformance (Levels 1, 2, 5), blocked on the test
   suite itself existing (see ROADMAP.md)
-- Cloudflare Worker runtime — covered manually via `wrangler dev` and
+- Cloudflare Worker runtime, covered manually via `wrangler dev` and
   `miniflare` in CI once we wire it up
 - Load tests
 

@@ -1,4 +1,4 @@
-# SIDN Fonds — Theme call (Internet & society)
+# SIDN Fonds, Theme call (Internet & society)
 
 **Funder:** SIDN Fonds (the .nl registry's foundation)
 **Programme:** Theme call, Internet & society track
@@ -22,11 +22,11 @@ The SIDN Fonds form is shorter than NLnet's. The required fields are: project de
 
 Open Membership RSS (`om`) is an open-spec extension to RSS that lets any publisher charge for content and any reader unlock it, without depending on Substack, Patreon, or another closed platform. The protocol adds a small set of namespaced elements to a standard RSS feed and a JSON discovery document at `.well-known/open-membership`. A reader app fetches the feed, recognises the gated items, and unlocks them by presenting a credential the publisher issued at checkout. The credential is portable across reader apps; the spec defines an export format so a subscriber moving between apps does not have to re-subscribe.
 
-The specification is at version 0.4 (draft, feature-frozen). Two reference implementations are scheduled — a plugin for Ghost (the most-used indie-publisher CMS) and a fork of Miniflux (a self-hosted RSS reader). The work this grant funds is the production deployment of these two implementations with at least one Dutch publisher.
+The specification is at version 0.4 (draft, feature-frozen). Two reference implementations are scheduled, a plugin for Ghost (the most-used indie-publisher CMS) and a fork of Miniflux (a self-hosted RSS reader). The work this grant funds is the production deployment of these two implementations with at least one Dutch publisher.
 
 ### Target group
 
-Independent Dutch publishers running paid content on platforms they own — primarily Ghost, WordPress, and to a lesser extent Hugo or Eleventy. The estimated population is 200–500 publications across investigative journalism, niche commentary, technology writing, and specialist newsletters. Most of them currently route their paid-subscription revenue through Substack (which takes 10% plus Stripe fees) or Patreon (which takes 5%–12%). A meaningful subset of them — including parts of the Tweakers, NRC, and De Correspondent ecosystems — already self-host on Ghost or WordPress but have no portable paid-RSS mechanism, so their paying subscribers cannot read in their preferred RSS reader without manual cookie-juggling.
+Independent Dutch publishers running paid content on platforms they own, primarily Ghost, WordPress, and to a lesser extent Hugo or Eleventy. The estimated population is 200-500 publications across investigative journalism, niche commentary, technology writing, and specialist newsletters. Most of them currently route their paid-subscription revenue through Substack (which takes 10% plus Stripe fees) or Patreon (which takes 5%-12%). A meaningful subset of them, including parts of the Tweakers, NRC, and De Correspondent ecosystems, already self-host on Ghost or WordPress but have no portable paid-RSS mechanism, so their paying subscribers cannot read in their preferred RSS reader without manual cookie-juggling.
 
 ### Why this benefits the Dutch internet specifically
 
@@ -75,7 +75,7 @@ All code released under MIT (matching the parent project's licensing). All docum
 
 ## Cover email
 
-Subject: `Open Membership RSS — application for the Internet & society theme`
+Subject: `Open Membership RSS, application for the Internet & society theme`
 
 Hello,
 

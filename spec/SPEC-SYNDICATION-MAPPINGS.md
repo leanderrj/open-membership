@@ -17,7 +17,7 @@ This document fulfils the Atom + JSON Feed row of the ROADMAP Phase 3 M9 deliver
 `SPEC.md` defines the `om` namespace as two serializations: RSS 2.0 and RSS 1.0/RDF. In practice a large share of syndication feeds on the open web today are emitted as Atom 1.0 or JSON Feed 1.1:
 
 - **Atom 1.0** is the default of most static-site generators written in Go, Rust, or Haskell (Hugo, Zola, Hakyll); it is also what W3C-orbit CMSes emit by default. Atom was designed as the successor to RSS and solved several categories of RSS 2.0 ambiguity that have since been patched over with extensions.
-- **JSON Feed 1.1** is the default of most modern JavaScript toolchains and is the natural shape for static-JSON-plus-edge-worker deployments (Eleventy, Astro, Cloudflare Pages) — which is the same substrate the Phase 4 M11 static-site reference targets.
+- **JSON Feed 1.1** is the default of most modern JavaScript toolchains and is the natural shape for static-JSON-plus-edge-worker deployments (Eleventy, Astro, Cloudflare Pages), which is the same substrate the Phase 4 M11 static-site reference targets.
 
 Without a canonical mapping, each platform reinvents an ad-hoc bridge. Each bridge is a subtle source of divergence from `SPEC.md` intent, and the fragmentation compounds. This document is the canonical mapping, so that:
 
@@ -44,7 +44,7 @@ The namespace URI is the same one used in the RSS 2.0 binding (`SPEC.md` §0). R
 
 ### 2.2 Channel-level element mapping (RSS 2.0 `<channel>` → Atom `<feed>`)
 
-Every channel-level `om` element listed in `SPEC.md` appears as a direct child of `<feed>`, with attributes and child-element structure preserved verbatim. Per RFC 4287 §6.3, an Atom processor that does not understand `om` markup MUST NOT change its behavior as a result of the markup's presence — exactly the compatibility guarantee `SPEC.md` relies on in its RSS 2.0 binding.
+Every channel-level `om` element listed in `SPEC.md` appears as a direct child of `<feed>`, with attributes and child-element structure preserved verbatim. Per RFC 4287 §6.3, an Atom processor that does not understand `om` markup MUST NOT change its behavior as a result of the markup's presence, exactly the compatibility guarantee `SPEC.md` relies on in its RSS 2.0 binding.
 
 | `om` element (RSS 2.0) | Atom placement | Shape notes |
 |---|---|---|
@@ -73,7 +73,7 @@ Every channel-level `om` element listed in `SPEC.md` appears as a direct child o
 | `om` element (RSS 2.0) | Atom placement | Shape notes |
 |---|---|---|
 | `<om:access>` | Child of `<entry>` | Unchanged. Values: `open`, `preview`, `locked`, `members-only`. |
-| `<om:preview>` | Child of `<entry>` | See §2.4.1 — interacts with `<atom:summary>` and `<atom:content>`. |
+| `<om:preview>` | Child of `<entry>` | See §2.4.1, interacts with `<atom:summary>` and `<atom:content>`. |
 | `<om:unlock>` | Child of `<entry>` | Unchanged. |
 | `<om:receipt>` | Child of `<entry>` | Unchanged. |
 | `<om:window>` | Child of `<entry>` | Entry-level time window. See §5.3. |
@@ -157,7 +157,7 @@ The same publisher as `SPEC.md` Appendix A, re-expressed as Atom 1.0. All `om` s
 </feed>
 ```
 
-The semantic payload — pseudonymous-required, vc-presentation, prospective-only revocation, a single paid tier, a single locked entry with preview — is the same as `SPEC.md` Appendix A. A Level 1 Atom reader that does not speak `om` still sees a title, a summary, and a link, and does not break.
+The semantic payload, pseudonymous-required, vc-presentation, prospective-only revocation, a single paid tier, a single locked entry with preview, is the same as `SPEC.md` Appendix A. A Level 1 Atom reader that does not speak `om` still sees a title, a summary, and a link, and does not break.
 
 ---
 
@@ -300,7 +300,7 @@ Format-specific checks, in addition to the shared conformance set:
 
 - The `xmlns:om` declaration is present on `<feed>` or an ancestor.
 - Every `<entry>` has a well-formed `<atom:id>` (RFC 4287 §4.2.6).
-- `<atom:summary>` is present when `<om:access>` is `locked`, `preview`, or `members-only` — so a non-`om` reader still displays something meaningful.
+- `<atom:summary>` is present when `<om:access>` is `locked`, `preview`, or `members-only`, so a non-`om` reader still displays something meaningful.
 - When `<om:access>` is `locked`, either `<atom:content>` is absent or the feed URL is token-authorized.
 - Enclosures are expressed as `<atom:link rel="enclosure">`, not as a foreign `<enclosure>` element.
 
@@ -308,7 +308,7 @@ Format-specific checks, in addition to the shared conformance set:
 
 - The feed `version` is `"https://jsonfeed.org/version/1.1"` (1.1 is the minimum; 1.0 feeds are rejected because they lack `authors[]` and a few fields the `om` mapping depends on).
 - `_om` keys on the feed and on items parse as valid objects.
-- Every `items[]` entry has an `id` — JSON Feed makes `id` mandatory, but the check enforces it explicitly because `om` entitlement keying depends on it.
+- Every `items[]` entry has an `id`, JSON Feed makes `id` mandatory, but the check enforces it explicitly because `om` entitlement keying depends on it.
 - Booleans in `_om` are native JSON `true` / `false`, not strings.
 - Currency codes match ISO 4217; timestamps match RFC 3339.
 
@@ -336,7 +336,7 @@ Atom requires `<atom:updated>` on every entry and feed. This is an editorial-sta
 
 ### 6.4 Both `<enclosure>` and `<media:content>` in the same item
 
-If a source RSS 2.0 feed includes both an RSS 2.0 `<enclosure>` and a `<media:content>` (Yahoo Media RSS) element referring to the same media object, the Atom conversion MUST emit a single `<atom:link rel="enclosure">` — one per distinct media URL — and MAY additionally retain `<media:content>` as foreign markup inside the `<entry>` for compatibility with media-RSS-aware readers. The `om` token passthrough rule applies to the enclosure URL only; if the `<media:content>` URL differs, the publisher MUST re-apply the token there too. The JSON Feed form expresses the same media object as a single entry in `attachments[]` with the bearer-token URL.
+If a source RSS 2.0 feed includes both an RSS 2.0 `<enclosure>` and a `<media:content>` (Yahoo Media RSS) element referring to the same media object, the Atom conversion MUST emit a single `<atom:link rel="enclosure">`, one per distinct media URL, and MAY additionally retain `<media:content>` as foreign markup inside the `<entry>` for compatibility with media-RSS-aware readers. The `om` token passthrough rule applies to the enclosure URL only; if the `<media:content>` URL differs, the publisher MUST re-apply the token there too. The JSON Feed form expresses the same media object as a single entry in `attachments[]` with the bearer-token URL.
 
 ### 6.5 `<om:license>` vs. `<atom:rights>`
 
@@ -346,7 +346,7 @@ If a source RSS 2.0 feed includes both an RSS 2.0 `<enclosure>` and a `<media:co
 
 JSON Feed 1.1 deprecated `author` in favor of `authors[]` at both the feed and item level. The plural shape is for editorial authorship. `_om.provider` is the organization identity for `om` trust purposes; it is not an author. A producer SHOULD NOT duplicate `_om.provider` into `authors[]`, and SHOULD NOT infer `_om.provider` from `authors[]` when converting from another format.
 
-### 6.7 Atom entries vs. JSON Feed items — ordering is not normative in either
+### 6.7 Atom entries vs. JSON Feed items, ordering is not normative in either
 
 Neither Atom nor JSON Feed makes entry/item ordering a protocol guarantee. Any `om` logic that depends on ordering (for example, finding the most recent item whose `<om:window>` is currently open) MUST sort by timestamp, not by feed position.
 
@@ -360,10 +360,10 @@ Per RFC 4287 §6.3 last paragraph: foreign markup inside a Text Construct or `<a
 
 This document registers no new media types, URI schemes, or well-known URIs. The relevant existing registrations are:
 
-- `application/atom+xml` — Atom 1.0 feeds and entry documents (RFC 4287 §7).
-- `application/feed+json` — JSON Feed 1.1 feeds.
-- `application/rss+xml` — RSS 2.0 feeds (the original `SPEC.md` binding).
-- `.well-known/open-membership` — the discovery document, registered as part of `SPEC.md` §9 and unchanged here.
+- `application/atom+xml`, Atom 1.0 feeds and entry documents (RFC 4287 §7).
+- `application/feed+json`, JSON Feed 1.1 feeds.
+- `application/rss+xml`, RSS 2.0 feeds (the original `SPEC.md` binding).
+- `.well-known/open-membership`, the discovery document, registered as part of `SPEC.md` §9 and unchanged here.
 
 The `om` namespace URI (`http://purl.org/rss/modules/membership/`) is the single identifier for the vocabulary in all three formats.
 

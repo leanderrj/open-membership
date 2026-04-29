@@ -1,4 +1,4 @@
-# Open Membership RSS — 0.4.1 Errata
+# Open Membership RSS, 0.4.1 Errata
 
 - **Spec:** Open Membership RSS 0.4
 - **Errata version:** 0.4.1
@@ -29,8 +29,8 @@ Without a declared stance, a reader rendering an offer from a Stripe publisher a
 
 Two OPTIONAL attributes are clarified on `<om:price>`:
 
-- `tax_inclusive` — boolean, one of `true` or `false`. When present, indicates whether `amount` already includes the applicable consumption tax for `tax_jurisdiction`. When absent, the interpretation is implementation-specific and readers MUST NOT assume a default. Publishers SHOULD declare this attribute explicitly on every `<om:price>` they emit.
-- `tax_jurisdiction` — either an ISO 3166-1 alpha-2 country code (e.g. `NL`, `DE`, `US`, `GB`, `JP`), or the literal string `multi` when the same `amount` is offered across multiple jurisdictions under the same tax stance. When absent, the jurisdiction is the publisher's declared operating jurisdiction (out of band to the spec; readers that do not know it MUST surface the tax stance without a jurisdiction qualifier).
+- `tax_inclusive`, boolean, one of `true` or `false`. When present, indicates whether `amount` already includes the applicable consumption tax for `tax_jurisdiction`. When absent, the interpretation is implementation-specific and readers MUST NOT assume a default. Publishers SHOULD declare this attribute explicitly on every `<om:price>` they emit.
+- `tax_jurisdiction`, either an ISO 3166-1 alpha-2 country code (e.g. `NL`, `DE`, `US`, `GB`, `JP`), or the literal string `multi` when the same `amount` is offered across multiple jurisdictions under the same tax stance. When absent, the jurisdiction is the publisher's declared operating jurisdiction (out of band to the spec; readers that do not know it MUST surface the tax stance without a jurisdiction qualifier).
 
 These attributes are declarations about an `amount`, not instructions to the PSP. The PSP still computes the final charge from its own configuration. The attributes exist so a reader can render the displayed price honestly and so a subscriber can make an informed decision before clicking through to checkout.
 
@@ -137,7 +137,7 @@ There is no conformance-level change. No reader needs to move to a higher level 
 
 SPEC.md 0.1 §Foundational defines four values of `<om:authMethod>` (`url-token`, `http-basic`, `bearer`, `dpop`) and 0.2 adds `vc-presentation`. The spec text describes how a reader authenticates the **feed fetch**. It is silent on how the same authentication propagates to the URL inside an `<enclosure>` element (or Atom `<link rel="enclosure">`) on a gated item. In practice, both `om-ghost` and `om-wordpress` already do a specific thing when emitting paid podcasts or paid video feeds, and Miniflux's forked reader already does the matching thing when fetching those enclosures. New implementers have asked how this is meant to work. This erratum codifies the existing behavior.
 
-The question is not theoretical. A Level 5 podcaster publishing a tokenized feed returns audio-enclosure URLs that must also be authenticated — otherwise the content is public even though the feed is gated. The same problem applies to video enclosures, to chunked streaming manifests, and to any other binary referenced by an enclosure URL.
+The question is not theoretical. A Level 5 podcaster publishing a tokenized feed returns audio-enclosure URLs that must also be authenticated, otherwise the content is public even though the feed is gated. The same problem applies to video enclosures, to chunked streaming manifests, and to any other binary referenced by an enclosure URL.
 
 ### 2.2 Clarification per auth method
 
@@ -145,8 +145,8 @@ The question is not theoretical. A Level 5 podcaster publishing a tokenized feed
 
 The enclosure URL SHOULD carry the same token as the feed URL, in a shape that matches the feed path. Publishers have two equivalent options:
 
-- **Path-segment token** — if the feed URL is `https://publisher.example/feed/om/{token}/`, the enclosure URL SHOULD be `https://publisher.example/media/om/{token}/episode-N.mp3`. The same token segment appears in the same position.
-- **Query-parameter token** — if the publisher cannot produce per-token path segments for media (common with CDN-signed URLs), the enclosure URL SHOULD be `https://cdn.publisher.example/media/episode-N.mp3?token=<token>`, where `<token>` is the same opaque value the feed URL carried.
+- **Path-segment token**, if the feed URL is `https://publisher.example/feed/om/{token}/`, the enclosure URL SHOULD be `https://publisher.example/media/om/{token}/episode-N.mp3`. The same token segment appears in the same position.
+- **Query-parameter token**, if the publisher cannot produce per-token path segments for media (common with CDN-signed URLs), the enclosure URL SHOULD be `https://cdn.publisher.example/media/episode-N.mp3?token=<token>`, where `<token>` is the same opaque value the feed URL carried.
 
 Readers MUST NOT attempt to strip or mutate the token in either form when following an enclosure URL.
 
@@ -221,7 +221,7 @@ No new element is introduced. No attribute is introduced. This erratum is pure c
 
 ## Errata process note
 
-Errata are shipped as minor-dot versions of the parent spec (0.4.1, 0.4.2, …) and are strictly additive: every errata release preserves the conformance surface of its parent. A 0.4 implementation that does not adopt 0.4.1 remains 0.4-conformant. A 0.4.1-aware implementation advertises its errata support by listing the level in the `errata` array of its discovery document (§1.6). No conformance level from ../docs/FEATURESET.md is changed by an errata release; levels are reserved for spec-minor revisions (0.5, 0.6, …) and spec-major revisions (1.0). Errata do not add new elements; they clarify existing ones. This rule is the load-bearing discipline: if a clarification requires a new element, it is not an erratum — it is 0.5 work.
+Errata are shipped as minor-dot versions of the parent spec (0.4.1, 0.4.2, …) and are strictly additive: every errata release preserves the conformance surface of its parent. A 0.4 implementation that does not adopt 0.4.1 remains 0.4-conformant. A 0.4.1-aware implementation advertises its errata support by listing the level in the `errata` array of its discovery document (§1.6). No conformance level from ../docs/FEATURESET.md is changed by an errata release; levels are reserved for spec-minor revisions (0.5, 0.6, …) and spec-major revisions (1.0). Errata do not add new elements; they clarify existing ones. This rule is the load-bearing discipline: if a clarification requires a new element, it is not an erratum, it is 0.5 work.
 
 ---
 
@@ -240,7 +240,7 @@ Considered and explicitly deferred:
 
 ## Updates to ../docs/FEATURESET.md
 
-The feature matrix in ../docs/FEATURESET.md would gain two rows on adoption of this errata. No existing row changes. No conformance level changes. These rows are informational — they describe clarifications, not new features — and are noted here so implementers can spot them at a glance:
+The feature matrix in ../docs/FEATURESET.md would gain two rows on adoption of this errata. No existing row changes. No conformance level changes. These rows are informational, they describe clarifications, not new features, and are noted here so implementers can spot them at a glance:
 
 | Proposed feature-matrix row | Category | Introduced | Conformance level | Element(s) |
 |---|---|---|---|---|

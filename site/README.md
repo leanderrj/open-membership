@@ -16,7 +16,7 @@ example/feed.xml    non-functional example feed shaped for om 0.4
 
 ## How deployment works
 
-A GitHub Actions workflow at [`../.github/workflows/pages.yml`](../.github/workflows/pages.yml) deploys this directory to GitHub Pages on every push to `master` that touches `site/`. No build step — the directory is uploaded as-is.
+A GitHub Actions workflow at [`../.github/workflows/pages.yml`](../.github/workflows/pages.yml) deploys this directory to GitHub Pages on every push to `master` that touches `site/`. No build step, the directory is uploaded as-is.
 
 The first time, you need to flip Pages on in the repository settings:
 
@@ -24,13 +24,13 @@ The first time, you need to flip Pages on in the repository settings:
 2. Push the workflow (it's already in this repo). The first run picks up the workflow and runs it.
 3. Once it finishes, the site is live at `https://leanderrj.github.io/open-membership/`. The CNAME file then routes the canonical domain (`openmembership.org`) to it.
 
-## DNS — Cloudflare
+## DNS, Cloudflare
 
 All three domains live in Cloudflare. Their roles:
 
-- **`openmembership.org`** — canonical. Apex points at GitHub Pages.
-- **`open-membership.org`** — redirect-only. 301 to canonical via a Cloudflare Single Redirect rule.
-- **`open-membership.com`** — redirect-only. Same.
+- **`openmembership.org`**, canonical. Apex points at GitHub Pages.
+- **`open-membership.org`**, redirect-only. 301 to canonical via a Cloudflare Single Redirect rule.
+- **`open-membership.com`**, redirect-only. Same.
 
 ### `openmembership.org` (canonical)
 
@@ -92,7 +92,7 @@ GitHub Pages does not have a redirect mechanism. Two options to keep these slugs
 1. **Cloudflare Single Redirects on the canonical zone.** Add a redirect rule per slug. Highest-fidelity (real 302), no detour through HTML. Recommended.
 2. **Static HTML stub files.** Drop `site/spec.html`, `site/roadmap.html`, etc., each with a `<meta http-equiv="refresh" content="0; url=...">`. Lower-fidelity but works without touching Cloudflare.
 
-Option 1, in **Rules → Redirect Rules** on the `openmembership.org` zone, paste-ready table — six rules, each `URI Path` `equals` `/<slug>` → static redirect:
+Option 1, in **Rules → Redirect Rules** on the `openmembership.org` zone, paste-ready table, six rules, each `URI Path` `equals` `/<slug>` → static redirect:
 
 | Rule name | When `URI Path equals` | Then redirect to (status `302`) |
 |---|---|---|
@@ -111,7 +111,7 @@ Then:  Static redirect → https://github.com/leanderrj/open-membership/blob/mas
        Status: 302 · Preserve query string: off
 ```
 
-If you don't want to maintain redirect rules in two places, skip the slugs entirely and link to `github.com/...` directly from the site copy — `index.html` already does this.
+If you don't want to maintain redirect rules in two places, skip the slugs entirely and link to `github.com/...` directly from the site copy, `index.html` already does this.
 
 ## Local preview
 
@@ -120,14 +120,14 @@ cd site
 python3 -m http.server 4321
 ```
 
-Then open `http://localhost:4321/`. No watch mode, no hot reload — just the file system. Edit and refresh. The `CNAME` and `.nojekyll` files don't affect local serving.
+Then open `http://localhost:4321/`. No watch mode, no hot reload, just the file system. Edit and refresh. The `CNAME` and `.nojekyll` files don't affect local serving.
 
 ## Icon assets
 
 The site ships with a complete icon set:
 
 ```
-favicon.svg              SVG source — modern browsers use this directly
+favicon.svg              SVG source, modern browsers use this directly
 favicon.ico              multi-resolution fallback (16/32/48/64) for older browsers
 icon.svg                 256×256 SVG (used by the manifest, regen source for PNG sizes)
 icon-192.png             PWA manifest icon
@@ -156,4 +156,4 @@ The setup is complete; before sharing widely, double-check:
 
 ## Switching back to Cloudflare Pages later
 
-If at some point you want to switch from GitHub Pages to Cloudflare Pages (for analytics, edge functions, or unified config), the `_headers` and `_redirects` files in git history are ready to be restored. The site itself is host-agnostic — it's static HTML, CSS, and an XML feed. Nothing in the content depends on GitHub Pages or Cloudflare Pages specifically.
+If at some point you want to switch from GitHub Pages to Cloudflare Pages (for analytics, edge functions, or unified config), the `_headers` and `_redirects` files in git history are ready to be restored. The site itself is host-agnostic, it's static HTML, CSS, and an XML feed. Nothing in the content depends on GitHub Pages or Cloudflare Pages specifically.

@@ -1,4 +1,4 @@
-# `om-ghost` — Technical Architecture
+# `om-ghost`, Technical Architecture
 
 The reference Ghost implementation of Open Membership RSS. This document describes what the plugin does, how it integrates with Ghost's existing architecture, and how it avoids the trap of requiring Ghost core changes.
 
@@ -78,11 +78,11 @@ Ghost's dynamic routing layer handles the URL matching; the `:token` segment is 
 
 The routes in §1 handle feed serving but can't validate tokens against the Members database directly from a Handlebars template. The plugin adds a small Node.js service (~400 lines) that:
 
-- Handles `/api/om/checkout` — accepts POST with `offer_id`, `psp`, `price_id`, creates a Stripe Checkout Session, returns the URL
-- Handles `/api/om/entitlements?session_id=X` — polls a Stripe session for provisioning status
-- Handles `/api/om/token` — accepts a Ghost Members session cookie OR a tokenized URL param, issues a JWT with `entitlements` claim
-- Handles `/api/om/portal` — redirects to Stripe Customer Portal for subscription management
-- Listens for Stripe webhooks — updates an internal entitlements cache
+- Handles `/api/om/checkout`, accepts POST with `offer_id`, `psp`, `price_id`, creates a Stripe Checkout Session, returns the URL
+- Handles `/api/om/entitlements?session_id=X`, polls a Stripe session for provisioning status
+- Handles `/api/om/token`, accepts a Ghost Members session cookie OR a tokenized URL param, issues a JWT with `entitlements` claim
+- Handles `/api/om/portal`, redirects to Stripe Customer Portal for subscription management
+- Listens for Stripe webhooks, updates an internal entitlements cache
 
 For Ghost(Pro) users who can't run a Node sidecar, the plugin ships a Cloudflare Worker variant that deploys alongside the Ghost(Pro) instance and uses the Ghost Admin API to read Members data.
 
@@ -142,9 +142,9 @@ feed_token = HMAC-SHA256(
 
 This has three properties:
 
-1. The token is deterministic — a given member+plan always produces the same token. Good for UX (user can bookmark their feed URL across subscriptions).
-2. The token is unguessable — a random attacker can't forge tokens without the signing key.
-3. Revocation is instant — when a subscription ends, the plugin checks the member's current status on each feed request and returns HTTP 403 with a signup prompt if the subscription is inactive.
+1. The token is deterministic, a given member+plan always produces the same token. Good for UX (user can bookmark their feed URL across subscriptions).
+2. The token is unguessable, a random attacker can't forge tokens without the signing key.
+3. Revocation is instant, when a subscription ends, the plugin checks the member's current status on each feed request and returns HTTP 403 with a signup prompt if the subscription is inactive.
 
 On each feed request:
 
@@ -231,15 +231,15 @@ om-ghost/
 
 ## Interfaces with existing Ghost features
 
-**Ghost Members** — read via Admin API. Not modified.
+**Ghost Members**, read via Admin API. Not modified.
 
-**Ghost Stripe integration** — used as-is. The Stripe account configured in Ghost Admin is the same account the plugin reads products/prices/subscriptions from. The plugin does not create a second Stripe connection.
+**Ghost Stripe integration**, used as-is. The Stripe account configured in Ghost Admin is the same account the plugin reads products/prices/subscriptions from. The plugin does not create a second Stripe connection.
 
-**Ghost Content API** — used to fetch posts for feed generation, honoring Ghost's native access-control rules (public vs. members-only vs. paid-only).
+**Ghost Content API**, used to fetch posts for feed generation, honoring Ghost's native access-control rules (public vs. members-only vs. paid-only).
 
-**Ghost Admin API** — used to read member state, subscription status, and tier membership.
+**Ghost Admin API**, used to read member state, subscription status, and tier membership.
 
-**Ghost Webhooks (optional)** — if the publisher has Ghost-native webhooks enabled, the plugin subscribes to `member.added`, `member.activated`, `member.deleted`. Otherwise it polls the Admin API on cache expiry.
+**Ghost Webhooks (optional)**, if the publisher has Ghost-native webhooks enabled, the plugin subscribes to `member.added`, `member.activated`, `member.deleted`. Otherwise it polls the Admin API on cache expiry.
 
 ## What's out of scope for v1.0
 
@@ -271,7 +271,7 @@ Decided during roadmap scoping: Ghost is the better first target because:
 1. Its Members + Stripe model is the closest existing primitive to what `om` describes; less impedance mismatch
 2. The custom-routes-and-templates mechanism makes the RSS/discovery endpoints achievable without server-side plugin architecture
 3. The Ghost community is philosophically aligned (independent publishers, no algorithmic feed, "you own your content")
-4. 404 Media and similar publishers are already on Ghost and already paying for proprietary versions of this feature — the adoption story writes itself
+4. 404 Media and similar publishers are already on Ghost and already paying for proprietary versions of this feature, the adoption story writes itself
 5. Ghost's codebase is small and approachable; WordPress's is vast and politically complex
 
 WordPress support is Phase 4 specifically because it's harder, not because it's less important.

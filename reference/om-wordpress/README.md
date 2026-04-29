@@ -1,4 +1,4 @@
-# `om-wordpress` — Reference Implementation for WordPress
+# `om-wordpress`, Reference Implementation for WordPress
 
 Production WordPress plugin that turns any WordPress site into an Open Membership RSS publisher. Ships an RSS+om feed, the discovery document, Stripe Checkout integration, a Customer Portal bridge, and a webhook handler, all as a standard drop-in plugin.
 

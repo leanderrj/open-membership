@@ -72,7 +72,7 @@ This is the complete set of capabilities the spec now defines. A reader or publi
 
 The single most important addition is **identity unlinkability**. Without it, every publisher in the ecosystem accumulates a profile of every cross-publisher subscriber, which both (a) recreates the surveillance problem the spec is meant to avoid, and (b) makes the spec a non-starter for the publishers who would benefit from it most: investigative journalism, medical and mental-health publications, legal-research services, and any publication whose subscriber list is itself sensitive intelligence.
 
-The second is **bundles**, because the only realistic path to "I subscribe once and read fifteen things" without recreating Spotify is open federation — and federation needs an aggregator pattern in the spec.
+The second is **bundles**, because the only realistic path to "I subscribe once and read fifteen things" without recreating Spotify is open federation, and federation needs an aggregator pattern in the spec.
 
 ---
 
@@ -84,11 +84,11 @@ Declares the publisher's policy for revoking access after a refund, chargeback, 
 
 Attributes:
 
-- `policy` (required) — one of:
-  - `prospective-only` — once content is delivered, the subscriber keeps it; only future content is gated. Default; matches Substack and most newsletter business models.
-  - `chargeback-revocation` — refunds keep delivered content, but a chargeback (an externally-initiated dispute) revokes future tokens *and* invalidates the subject's existing access tokens for redelivery purposes.
-  - `full-revocation` — refund or chargeback revokes everything; the subscriber's tokens are invalidated. Appropriate for subscription bundles where retroactive billing is the norm.
-- `grace_hours` (optional) — number of hours after subscription end during which the reader can still fetch already-listed content (useful for cached feeds and offline readers). Default: `0`.
+- `policy` (required), one of:
+  - `prospective-only`, once content is delivered, the subscriber keeps it; only future content is gated. Default; matches Substack and most newsletter business models.
+  - `chargeback-revocation`, refunds keep delivered content, but a chargeback (an externally-initiated dispute) revokes future tokens *and* invalidates the subject's existing access tokens for redelivery purposes.
+  - `full-revocation`, refund or chargeback revokes everything; the subscriber's tokens are invalidated. Appropriate for subscription bundles where retroactive billing is the norm.
+- `grace_hours` (optional), number of hours after subscription end during which the reader can still fetch already-listed content (useful for cached feeds and offline readers). Default: `0`.
 
 ```xml
 <om:revocation policy="prospective-only" grace_hours="48" />
@@ -128,8 +128,8 @@ Declares a bundle the aggregator sells.
 
 Attributes:
 
-- `id` (required) — opaque identifier
-- `audience` — space-separated list of provider URIs included in the bundle
+- `id` (required), opaque identifier
+- `audience`, space-separated list of provider URIs included in the bundle
 
 ```xml
 <om:bundle id="indie-news-bundle" audience="https://fieldnotes.example https://podcastco.example https://indie-news.example">
@@ -230,15 +230,15 @@ Declares the publisher's privacy posture, surfaced in `.well-known/open-membersh
 
 Values:
 
-- `standard` (default) — full credential claims expected
-- `pseudonymous` — readers SHOULD present OM-VC-SD credentials with selective disclosure; publishers MUST NOT log or correlate disclosed pseudonyms with external identifiers
-- `pseudonymous-required` — non-pseudonymous credentials are rejected
+- `standard` (default), full credential claims expected
+- `pseudonymous`, readers SHOULD present OM-VC-SD credentials with selective disclosure; publishers MUST NOT log or correlate disclosed pseudonyms with external identifiers
+- `pseudonymous-required`, non-pseudonymous credentials are rejected
 
 ```xml
 <om:privacy>pseudonymous</om:privacy>
 ```
 
-A publisher declaring `pseudonymous` or `pseudonymous-required` makes a binding commitment that affects what data they may collect. Auditing this commitment is out of scope for the protocol — but the protocol gives readers a way to choose privacy-respecting publishers.
+A publisher declaring `pseudonymous` or `pseudonymous-required` makes a binding commitment that affects what data they may collect. Auditing this commitment is out of scope for the protocol, but the protocol gives readers a way to choose privacy-respecting publishers.
 
 ### 4.4 Group Membership in Pseudonymous Mode
 
@@ -262,9 +262,9 @@ Declares a giftable variant of an offer. A gift subscription is a transferable s
 
 Attributes:
 
-- `offer` (required) — references an `<om:offer>` id
-- `redeemable_via` (required) — URL where the recipient redeems the token
-- `transferable` (optional) — `true` (default) or `false`; if `false`, the gift can only be redeemed by the email/identity specified at purchase
+- `offer` (required), references an `<om:offer>` id
+- `redeemable_via` (required), URL where the recipient redeems the token
+- `transferable` (optional), `true` (default) or `false`; if `false`, the gift can only be redeemed by the email/identity specified at purchase
 
 ```xml
 <om:gift offer="paid-yearly" redeemable_via="https://fieldnotes.example/gift/redeem" transferable="true" />
@@ -310,10 +310,10 @@ Declares how mid-cycle tier changes are handled. Important for readers that surf
 
 Values:
 
-- `none` — no proration; the new tier starts at the next billing cycle
-- `daily` — pro-rated to the day
-- `immediate` — full charge at the moment of upgrade; old plan canceled
-- `psp-default` — defer to the PSP's default behavior
+- `none`, no proration; the new tier starts at the next billing cycle
+- `daily`, pro-rated to the day
+- `immediate`, full charge at the moment of upgrade; old plan canceled
+- `psp-default`, defer to the PSP's default behavior
 
 ```xml
 <om:offer id="paid-monthly" tier="paid">
@@ -328,10 +328,10 @@ Stripe defaults to `daily`; Mollie has no native proration and `none` is the onl
 
 ## 7. Updated Reader Conformance Levels
 
-Levels 1–6 from 0.3 unchanged. New in 0.4:
+Levels 1-6 from 0.3 unchanged. New in 0.4:
 
-- **Level 7 (Privacy)** — supports OM-VC-SD 1.0 presentations including pseudonymous mode.
-- **Level 8 (Bundles)** — accepts bundle credentials and the aggregator-trust verification flow.
+- **Level 7 (Privacy)**, supports OM-VC-SD 1.0 presentations including pseudonymous mode.
+- **Level 8 (Bundles)**, accepts bundle credentials and the aggregator-trust verification flow.
 
 Levels are cumulative: a Level 8 reader supports everything from Levels 1 through 7.
 
@@ -339,9 +339,9 @@ Levels are cumulative: a Level 8 reader supports everything from Levels 1 throug
 
 To keep adoption tractable, three named profiles are recommended:
 
-- **"Indie Reader" Profile** — Levels 1, 2, 5. Supports url-token feeds, in-app Stripe checkout, prospective-only revocation. The minimum viable shape that works for most newsletter and indie-podcast use cases.
-- **"Enterprise Reader" Profile** — Levels 1, 2, 3, 4, 5. Adds bearer auth, OM-VC verification, full PSP support. The shape an organizational reader (Inoreader, Feedly) should aim for to support B2B customers.
-- **"Privacy Reader" Profile** — Levels 1, 2, 3, 4, 5, 7. Adds pseudonymous OM-VC-SD support. The shape a journalism-focused or privacy-focused reader should aim for.
+- **"Indie Reader" Profile**, Levels 1, 2, 5. Supports url-token feeds, in-app Stripe checkout, prospective-only revocation. The minimum viable shape that works for most newsletter and indie-podcast use cases.
+- **"Enterprise Reader" Profile**, Levels 1, 2, 3, 4, 5. Adds bearer auth, OM-VC verification, full PSP support. The shape an organizational reader (Inoreader, Feedly) should aim for to support B2B customers.
+- **"Privacy Reader" Profile**, Levels 1, 2, 3, 4, 5, 7. Adds pseudonymous OM-VC-SD support. The shape a journalism-focused or privacy-focused reader should aim for.
 
 A reader publishing its conformance statement SHOULD use one of these profile names plus any extensions.
 
@@ -427,7 +427,7 @@ These are real limits and the spec names them so implementers don't oversell the
 
 ---
 
-## Appendix A — Worked Example: Investigative Journalism Publisher
+## Appendix A, Worked Example: Investigative Journalism Publisher
 
 A small investigative news organization wants paid subscriptions but cannot ethically maintain a subscriber list that could be subpoenaed.
 
@@ -469,7 +469,7 @@ This is the failure mode that motivates §4. Without it, Underreported either (a
 
 ---
 
-## Appendix B — Worked Example: Indie Bundle
+## Appendix B, Worked Example: Indie Bundle
 
 Three independent publishers form a bundle. None gives up their direct subscription business; the bundle is additive.
 
@@ -526,7 +526,7 @@ A Ghost CMS plugin that:
 - Exposes a JWT-issuing token endpoint that includes Stripe entitlements as claims
 - Optionally issues OM-VC credentials using a configurable signing key
 
-Estimated effort: 4–6 weeks for one experienced developer. Ghost is the right first target because its Members feature is the closest existing primitive to what `om` describes, the codebase is open and approachable, and the Ghost community is already philosophically aligned (independent publishers, subscription models, no algorithmic feed).
+Estimated effort: 4-6 weeks for one experienced developer. Ghost is the right first target because its Members feature is the closest existing primitive to what `om` describes, the codebase is open and approachable, and the Ghost community is already philosophically aligned (independent publishers, subscription models, no algorithmic feed).
 
 A WordPress equivalent should follow within the same 0.5 cycle, ideally as a fork of an existing membership plugin (Paid Memberships Pro, MemberPress) rather than a green-field build. The point is breadth of CMS support, not technical novelty.
 
@@ -603,7 +603,7 @@ The custodian's role is narrow: hold the namespace URI and the canonical spec te
 
 **C.2 Working group formation**
 
-A working group of 5–8 people, of whom at least one is funded part-time. Composition:
+A working group of 5-8 people, of whom at least one is funded part-time. Composition:
 
 - Two from independent publisher backgrounds (Ghost or Substack-refugee newsletter operators)
 - Two from reader-app backgrounds (Miniflux, NetNewsWire, Inoreader)
@@ -626,18 +626,18 @@ The submission package needs:
 - A Security Considerations section addressing token theft, credential replay, revocation race conditions, and the privacy limits acknowledged in §10
 - An IANA Considerations section requesting registration of the namespace URI and `.well-known` suffix
 
-Submission goes to the Independent Stream Editor (currently Eliot Lear); review timeline is typically 6–12 months.
+Submission goes to the Independent Stream Editor (currently Eliot Lear); review timeline is typically 6-12 months.
 
 ## D. The Order
 
 If 0.5 had to be sequenced strictly:
 
-- **Months 1–2:** `om-ghost` plugin development. Nothing else matters until a real publisher can ship.
-- **Months 2–3:** Miniflux fork in parallel with `om-ghost` finishing. First end-to-end interop test by month 3.
-- **Months 3–4:** Test suite v1, covering at minimum the Indie Reader profile.
-- **Months 4–5:** First non-affiliated publisher onboarded. This is the qualitative milestone — when someone the spec authors don't know publishes a real `om` feed and gets paid through it, the protocol exists in the world in a way it didn't before.
-- **Months 5–6:** Custodian conversation, working group formation, NLnet application.
-- **Months 6–9:** WordPress port, NetNewsWire fork, second non-affiliated publisher, RFC submission package preparation.
+- **Months 1-2:** `om-ghost` plugin development. Nothing else matters until a real publisher can ship.
+- **Months 2-3:** Miniflux fork in parallel with `om-ghost` finishing. First end-to-end interop test by month 3.
+- **Months 3-4:** Test suite v1, covering at minimum the Indie Reader profile.
+- **Months 4-5:** First non-affiliated publisher onboarded. This is the qualitative milestone, when someone the spec authors don't know publishes a real `om` feed and gets paid through it, the protocol exists in the world in a way it didn't before.
+- **Months 5-6:** Custodian conversation, working group formation, NLnet application.
+- **Months 6-9:** WordPress port, NetNewsWire fork, second non-affiliated publisher, RFC submission package preparation.
 
 By month 9, the criteria for 1.0 are in sight: two reference implementations, a working test suite, three or more independent publishers, a neutral custodian commitment, a funded coordinator, and an RFC in the submission queue.
 
@@ -662,27 +662,27 @@ Three specific risks during the 0.5 cycle:
 
 A spec doesn't get to 1.0 in a vacuum. Several recent open protocols have walked the same road we're on, and their successes and failures map directly onto choices `om` faces in 0.5. The point of this section isn't to pick a winner; it's to be honest about which patterns worked, which didn't, and what that means for how we operate.
 
-### G.1 Podcasting 2.0 — the most direct precedent
+### G.1 Podcasting 2.0, the most direct precedent
 
 The closest analog. The Podcast Index team (Adam Curry, Dave Jones, and a small group of contributors) added a namespace to RSS, hosted it themselves, kept it open, and let the indie ecosystem adopt it before the incumbents. As of late 2025, millions of podcast episodes carry `podcast:transcript`, half a million carry `podcast:chapters`, and the `podcast:value` tag has driven real (if small) Lightning revenue to thousands of shows.
 
 What worked:
 
-- **Hosting the index themselves.** Podcast Index is both the spec custodian and the operator of an actual public service (the index of feeds). This dual role — protocol stewardship plus a working artifact — gave the spec gravitational pull that pure standards bodies struggle to generate.
+- **Hosting the index themselves.** Podcast Index is both the spec custodian and the operator of an actual public service (the index of feeds). This dual role, protocol stewardship plus a working artifact, gave the spec gravitational pull that pure standards bodies struggle to generate.
 - **"Rules for Standards-Makers" discipline.** Once an element is canonized, backward compatibility is prioritized; new elements go through a draft phase. This is the rule `om` already adopts.
 - **Compatibility-first.** Every Podcasting 2.0 tag is invisible to a reader that doesn't understand it. A regular podcast app sees a regular RSS feed. This is the same call `om` makes and it's been validated at scale.
 - **Opinionated about what to refuse.** The team has been explicit about not courting Apple or Spotify. Indie ecosystem first, incumbents later or never. This is exactly the discipline 0.5 §F.2 codifies for `om`.
 
 What didn't work as well:
 
-- **`podcast:value` adoption is narrow.** Lightning-only by design, which means the universe of compatible apps is small (Fountain, Podverse, CurioCaster, a handful of others) and the universe of compatible listeners is even smaller. The spec's commercial primitive is technically elegant but commercially marginal — most podcast revenue still flows through Patreon, Apple Subscriptions, and Spotify Subscriptions, none of which use `podcast:value`. **This is the explicit motivation for `om`'s multi-PSP design.** Lightning is a recipient, not the only recipient.
+- **`podcast:value` adoption is narrow.** Lightning-only by design, which means the universe of compatible apps is small (Fountain, Podverse, CurioCaster, a handful of others) and the universe of compatible listeners is even smaller. The spec's commercial primitive is technically elegant but commercially marginal, most podcast revenue still flows through Patreon, Apple Subscriptions, and Spotify Subscriptions, none of which use `podcast:value`. **This is the explicit motivation for `om`'s multi-PSP design.** Lightning is a recipient, not the only recipient.
 - **No bundle or aggregator pattern.** A listener can't pay one fee and get gated access to ten Podcasting 2.0 podcasts. The "podroll" tag is a discovery primitive, not an entitlement primitive. `om` 0.4 §3 is the explicit response.
 
 The implication for `om`'s 0.5 plan: the Podcast Index governance shape is the model to copy. A small team, a real working artifact (in our case, the test suite from §B), and the explicit indie-first stance.
 
-### G.2 ActivityPub — the cautionary tale on monetization
+### G.2 ActivityPub, the cautionary tale on monetization
 
-ActivityPub is now the dominant federated social protocol — Mastodon, Threads, WordPress, Ghost, Flipboard, and Pixelfed all speak it. By any structural measure it is a wildly successful open spec. But on monetization specifically, the protocol has effectively punted: there is no standard for paid follows, paid posts, or subscription-gated content. ActivityPub's co-author Evan Prodromou famously runs a paid-access Mastodon account by manually wrapping a PayPal subscription around server-side ACL — entirely outside the protocol layer.
+ActivityPub is now the dominant federated social protocol, Mastodon, Threads, WordPress, Ghost, Flipboard, and Pixelfed all speak it. By any structural measure it is a wildly successful open spec. But on monetization specifically, the protocol has effectively punted: there is no standard for paid follows, paid posts, or subscription-gated content. ActivityPub's co-author Evan Prodromou famously runs a paid-access Mastodon account by manually wrapping a PayPal subscription around server-side ACL, entirely outside the protocol layer.
 
 What we learn:
 
@@ -691,9 +691,9 @@ What we learn:
 - **Test infrastructure is funded work, not volunteer work.** In 2023, Germany's Sovereign Tech Fund granted €152,000 to socialweb.coop specifically to build an ActivityPub interoperability test suite. The lesson: serious test infrastructure for an open protocol needs serious funding. The NLnet conversation in §C.2 is in this tradition; the Sovereign Tech Fund itself should be added to the funding-target list.
 - **Account portability is *the* hardest unsolved problem in federated identity.** ActivityPub has been at this for nearly a decade and still doesn't have clean account-migration. This validates `om`'s decision to delegate identity to a publisher or umbrella rather than try to define a portable subscriber identity from first principles. We use W3C VC + DIDs because they exist and work; we don't try to invent better.
 
-The implication for `om`'s 0.5 plan: the Sovereign Tech Fund is a funding target alongside NLnet. The pitch writes itself — "fund the open-spec test suite for paid content the way you funded the one for federated social."
+The implication for `om`'s 0.5 plan: the Sovereign Tech Fund is a funding target alongside NLnet. The pitch writes itself, "fund the open-spec test suite for paid content the way you funded the one for federated social."
 
-### G.3 OpenID Connect — the patience model
+### G.3 OpenID Connect, the patience model
 
 OIDC took roughly four years from initial work (2010) to final spec (2014), and another five to become the default in production-grade B2B. It is now the most-deployed identity protocol on the open web after SAML, and it dominates new deployments.
 
@@ -703,28 +703,28 @@ What we learn:
 - **A certification program is what makes "compliant" mean something.** OIDF's self-certification process (publishers run a test suite, post results) is what every enterprise procurement department now demands. The `om-test-suite` in §B is the seed of this. By 1.0, "self-certify your `om` conformance level" should be a standard step in any implementer's release process.
 - **Standards bodies aren't required for serious adoption.** OIDC is governed by the OpenID Foundation, not IETF or W3C. It works because the foundation is small, focused, and run by people who actually ship code. This is the "lightweight foundation" option from §C.1, and OIDF is the right model to study if `om` ends up needing one.
 
-### G.4 Signal Protocol — the don't-do-this lesson
+### G.4 Signal Protocol, the don't-do-this lesson
 
 Signal Protocol is technically excellent, philosophically aligned with the open-internet ethos `om` shares, and effectively a closed ecosystem. Despite being open-source and well-documented, every meaningful deployment of Signal Protocol runs through Signal Messenger or WhatsApp; independent implementations are rare and usually broken. The spec exists; the adoption is captured.
 
 Why? Two reasons relevant to `om`:
 
 - **No registry, no discovery.** Signal Protocol has no notion of a public directory of implementations or a way for two implementations to find each other. The `.well-known/open-membership` document and the discovery flow in 0.2 §7 exist specifically to avoid this failure mode.
-- **The reference implementation is also a service.** Signal the messenger is operated by Signal Foundation, who also stewards the protocol. Adoption equals using their service. `om` deliberately separates these — the test suite is the artifact, not a hosted service. We are not in the business of operating a "default `om` provider."
+- **The reference implementation is also a service.** Signal the messenger is operated by Signal Foundation, who also stewards the protocol. Adoption equals using their service. `om` deliberately separates these, the test suite is the artifact, not a hosted service. We are not in the business of operating a "default `om` provider."
 
 The implication: any tendency in 0.5 toward "we should host a default umbrella provider for indie publishers" should be resisted. The protocol's value is that it is not a service.
 
-### G.5 IndieWeb (Webmention, Micropub, IndieAuth) — the long-tail success
+### G.5 IndieWeb (Webmention, Micropub, IndieAuth), the long-tail success
 
-The IndieWeb suite — Webmention (W3C Recommendation), Micropub (W3C Recommendation), IndieAuth (in widespread independent use) — represents what realistic open-web success at small scale looks like. None of these have hundreds of millions of users; all of them have stable, multi-implementation deployments that have lasted a decade.
+The IndieWeb suite, Webmention (W3C Recommendation), Micropub (W3C Recommendation), IndieAuth (in widespread independent use), represents what realistic open-web success at small scale looks like. None of these have hundreds of millions of users; all of them have stable, multi-implementation deployments that have lasted a decade.
 
 What we learn:
 
-- **Small can be successful.** IndieWeb has maybe 5,000 active practitioners. By any "platform" standard, that's a rounding error. By the standard `om` should aim for — "indie publishers can run their entire stack on this" — it's a complete success. The right ambition for `om` 1.0 is "a few hundred publishers in production," not "every newsletter on Substack." IndieWeb is proof that the smaller goal is sustainable.
-- **The IndieWebCamp model.** Twice-yearly small in-person events where implementers gather, demo what they're building, and propose spec changes face-to-face. Cheap to run, builds the social fabric a small protocol needs, surfaces interop problems faster than mailing lists ever do. **An `om` working group should plan to host two events in the 0.5–1.0 cycle.** Even ten people in a room for two days will move the spec faster than three months of GitHub issues.
+- **Small can be successful.** IndieWeb has maybe 5,000 active practitioners. By any "platform" standard, that's a rounding error. By the standard `om` should aim for, "indie publishers can run their entire stack on this", it's a complete success. The right ambition for `om` 1.0 is "a few hundred publishers in production," not "every newsletter on Substack." IndieWeb is proof that the smaller goal is sustainable.
+- **The IndieWebCamp model.** Twice-yearly small in-person events where implementers gather, demo what they're building, and propose spec changes face-to-face. Cheap to run, builds the social fabric a small protocol needs, surfaces interop problems faster than mailing lists ever do. **An `om` working group should plan to host two events in the 0.5-1.0 cycle.** Even ten people in a room for two days will move the spec faster than three months of GitHub issues.
 - **Don't fight the platforms; route around them.** IndieWeb explicitly does not try to convert Twitter or Facebook users; it builds for people who already want to leave. The same posture is right for `om`.
 
-### G.6 RSS itself — the spec that won by accident
+### G.6 RSS itself, the spec that won by accident
 
 The deepest lesson, and the one easiest to get wrong because it looks like luck. RSS won because:
 
@@ -735,27 +735,27 @@ The deepest lesson, and the one easiest to get wrong because it looks like luck.
 
 Three of these four things are within `om`'s control:
 
-- **Simplicity.** The full spec is now ~600 lines of Markdown. A competent developer can implement Level 5 in a week. This is acceptable but worth defending against — every 0.5 errata that adds complexity is a tax on adoption.
+- **Simplicity.** The full spec is now ~600 lines of Markdown. A competent developer can implement Level 5 in a week. This is acceptable but worth defending against, every 0.5 errata that adds complexity is a tax on adoption.
 - **Custodian transfer before it matters.** This is §C.1 and it must happen in 0.5, not after. Waiting until the spec is "popular enough to need governance" is exactly the failure mode that killed many specs Winer's transfer rescued RSS from.
-- **A social fabric.** §G.5's IndieWebCamp model. The "two genuinely different forks competing on merits" can be approximated by encouraging *intentional* implementation diversity early — not one canonical Ghost plugin and one canonical reader, but several of each, deliberately taking different design choices within the spec's bounds.
+- **A social fabric.** §G.5's IndieWebCamp model. The "two genuinely different forks competing on merits" can be approximated by encouraging *intentional* implementation diversity early, not one canonical Ghost plugin and one canonical reader, but several of each, deliberately taking different design choices within the spec's bounds.
 
-The fourth thing — the orange icon — is the visual-identity question. It probably doesn't matter much, but if `om` ends up needing a recognizable mark by 1.0, it should be commissioned cheaply (a freelance designer, a few hundred dollars) and released CC0. Don't overthink it.
+The fourth thing, the orange icon, is the visual-identity question. It probably doesn't matter much, but if `om` ends up needing a recognizable mark by 1.0, it should be commissioned cheaply (a freelance designer, a few hundred dollars) and released CC0. Don't overthink it.
 
 ## H. What We Know About How the Incumbents Actually Work
 
-To compete with — or interoperate with, or replace — Substack, Patreon, and the rest, we need to be precise about what they actually do at the protocol level. Most of this is observable from outside; some requires light reverse-engineering of public web traffic. None of it is secret in any meaningful sense, and naming it correctly tells us what an `om`-compliant implementation has to *match* to be a credible alternative.
+To compete with, or interoperate with, or replace, Substack, Patreon, and the rest, we need to be precise about what they actually do at the protocol level. Most of this is observable from outside; some requires light reverse-engineering of public web traffic. None of it is secret in any meaningful sense, and naming it correctly tells us what an `om`-compliant implementation has to *match* to be a credible alternative.
 
 ### H.1 Substack
 
 **Free RSS:** standard RSS 2.0 with the `content:encoded` extension, served from `/feed` on every publication's domain (custom or `*.substack.com`). No authentication; no namespace beyond `content:`. This is fully compatible with any RSS reader.
 
-**Paid RSS for newsletters:** the same `/feed` endpoint, but the response varies based on the `substack.sid` session cookie. A logged-in subscriber's reader gets the full content of paid posts; everyone else gets previews. **There is no per-subscriber tokenized URL for paid newsletter content** — Substack relies on browser cookies, which is why no mainstream RSS reader can fetch a paid Substack feed without manual cookie copying. This is the failure mode that prompted [the RSS-Bridge Substack workaround](https://rss-bridge.github.io/rss-bridge/Bridge_Specific/Substack.html), which essentially screen-scrapes paid feeds by impersonating a logged-in browser.
+**Paid RSS for newsletters:** the same `/feed` endpoint, but the response varies based on the `substack.sid` session cookie. A logged-in subscriber's reader gets the full content of paid posts; everyone else gets previews. **There is no per-subscriber tokenized URL for paid newsletter content**, Substack relies on browser cookies, which is why no mainstream RSS reader can fetch a paid Substack feed without manual cookie copying. This is the failure mode that prompted [the RSS-Bridge Substack workaround](https://rss-bridge.github.io/rss-bridge/Bridge_Specific/Substack.html), which essentially screen-scrapes paid feeds by impersonating a logged-in browser.
 
-**Paid podcast RSS:** different model, much closer to `om`. Each paid subscriber gets a unique tokenized URL (visible in the subscriber's "Manage subscription" page). This works with any podcast app that accepts a feed URL — which is most of them — and is the closest thing to an interoperable paid feed Substack offers.
+**Paid podcast RSS:** different model, much closer to `om`. Each paid subscriber gets a unique tokenized URL (visible in the subscriber's "Manage subscription" page). This works with any podcast app that accepts a feed URL, which is most of them, and is the closest thing to an interoperable paid feed Substack offers.
 
 **API:** none. No public API, no documentation, no developer portal. The internal API powering substack.com is observable but undocumented; multiple third-party tools (e.g., the December 2025 Chrome extension covering 1,200+ subscriptions) have built on the internal endpoints with the explicit understanding that Substack could break them at any time.
 
-**Subscriber export:** full export is supported — posts (CSV + HTML), subscriber list, optional stats — and Substack actively pitches this as a competitive feature ("you always own your content and audience"). This is genuinely true and it's the reason Ghost, beehiiv, and other competitors can credibly receive Substack migrations: there's a clean export path.
+**Subscriber export:** full export is supported, posts (CSV + HTML), subscriber list, optional stats, and Substack actively pitches this as a competitive feature ("you always own your content and audience"). This is genuinely true and it's the reason Ghost, beehiiv, and other competitors can credibly receive Substack migrations: there's a clean export path.
 
 **What this means for `om`:**
 
@@ -777,7 +777,7 @@ To compete with — or interoperate with, or replace — Substack, Patreon, and 
 **What this means for `om`:**
 
 1. The anti-sharing detection model (`om` 0.4 doesn't mention this) needs to be addressed. **Open Question for 0.5:** should the spec define a `<om:sharing-policy>` element that lets publishers declare "we monitor for usage anomalies," along with reader-side conventions for honoring per-device limits? Patreon's approach works because it's a single platform; in a federated `om` ecosystem, a malicious reader could intentionally distribute one token across many devices and there would be no central party to enforce. The honest answer may be "use OM-VC with per-device key binding" (a Level 4+ feature).
-2. Patreon's creator API is the right *shape* for what an `om` aggregator would offer, but inverted — exposing the *subscriber's* aggregated subscriptions rather than the creator's roster. The discovery document (`.well-known/open-membership`) plays the API role for `om`.
+2. Patreon's creator API is the right *shape* for what an `om` aggregator would offer, but inverted, exposing the *subscriber's* aggregated subscriptions rather than the creator's roster. The discovery document (`.well-known/open-membership`) plays the API role for `om`.
 3. Patreon's text-content gap is an explicit `om` opportunity. A creator with text + audio + video content can serve all three through a single `om`-compliant feed; Patreon forces them to choose which medium gets RSS distribution.
 
 ### H.3 Apple Podcasts Subscriptions, Spotify Podcast Subscriptions
@@ -819,11 +819,11 @@ These three personas should appear by name in every implementation conversation 
 
 ---
 
-## Appendix C — Companion specs
+## Appendix C, Companion specs
 
 The main spec keeps its scope narrow: what a publisher puts in a feed and what a reader does with it. Two companion documents extend the model to the parts of a deployment that happen off-feed:
 
-- **[Subscriber Portability Format 1.0](spec/SPEC-PORTABILITY.md)** (`http://purl.org/rss/modules/membership/portability/1.0`) — cross-reader export/import shape for a user's stored tokens, credentials, receipts, bundle memberships, and pending gifts. JSON-LD body, age or JWE encryption, passphrase-based. Answers "how does a subscriber switch from Miniflux to NetNewsWire without re-subscribing everywhere?" without introducing a portable cross-publisher identity. Required reading-round-trip for Level 5+ reader conformance at 1.0.
+- **[Subscriber Portability Format 1.0](spec/SPEC-PORTABILITY.md)** (`http://purl.org/rss/modules/membership/portability/1.0`), cross-reader export/import shape for a user's stored tokens, credentials, receipts, bundle memberships, and pending gifts. JSON-LD body, age or JWE encryption, passphrase-based. Answers "how does a subscriber switch from Miniflux to NetNewsWire without re-subscribing everywhere?" without introducing a portable cross-publisher identity. Required reading-round-trip for Level 5+ reader conformance at 1.0.
 
 Companion specs follow the same versioning as the parent: a 1.0 reader consuming a 1.0 companion artifact is guaranteed to interoperate with any other 1.0-conformant reader that produces one.
 
@@ -831,6 +831,6 @@ Companion specs follow the same versioning as the parent: a 1.0 reader consuming
 
 ## Acknowledgements (0.4)
 
-In addition to all 0.1–0.3 acknowledgements, 0.4 builds on the W3C BBS+ cryptosuite working group (Bernstein, Sporny, Lodder, et al. — `bbs-2023` is the technical foundation of the privacy work), the Podcast Index team (whose discipline around saying "no" to feature requests is the model for §E), and the WorkOS Stripe Entitlements team (whose JWT-claims pattern is the implementation backbone of §3 bundles).
+In addition to all 0.1-0.3 acknowledgements, 0.4 builds on the W3C BBS+ cryptosuite working group (Bernstein, Sporny, Lodder, et al., `bbs-2023` is the technical foundation of the privacy work), the Podcast Index team (whose discipline around saying "no" to feature requests is the model for §E), and the WorkOS Stripe Entitlements team (whose JWT-claims pattern is the implementation backbone of §3 bundles).
 
 The §G open-spec analysis draws on public histories and current operational patterns of the Podcast Index, the W3C SocialCG (ActivityPub), the OpenID Foundation (OIDC), the Signal Foundation, and the IndieWeb community. The §H platform analysis is built from publicly observable behavior and published documentation of Substack, Patreon, Apple Podcasts Subscriptions, and Spotify Podcasts Subscriptions; particular thanks to the third-party developers whose work on RSS-Bridge, the Substack Chrome extension, and `nicholas.cloud`'s Patreon-RSS bridge made the actual mechanisms legible without requiring guesswork. None of these projects endorse `om`; the spec's reading of how their target platforms work is its own.

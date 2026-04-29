@@ -3,22 +3,20 @@
   <rect width="1200" height="630" fill="#fbfaf6"/>
   <rect x="720" y="0" width="480" height="630" fill="#1c1b18"/>
 
-  <!-- top kicker -->
-  <text x="80" y="120" font-size="20" font-weight="600" letter-spacing="2.5" fill="#b1480f">OPEN STANDARD · DRAFT 0.4 · IETF-BOUND</text>
-
   <!-- main headline -->
-  <text x="80" y="220" font-size="68" font-weight="700" fill="#161513" letter-spacing="-2">Open Membership</text>
+  <text x="80" y="180" font-size="76" font-weight="700" fill="#161513" letter-spacing="-2">Open Membership</text>
+  <text x="80" y="244" font-size="44" font-weight="500" fill="#b1480f" letter-spacing="-1">RSS</text>
 
   <!-- subhead -->
-  <text x="80" y="296" font-size="32" font-weight="500" fill="#4a4844" letter-spacing="-0.5">Paid subscriptions on the web</text>
-  <text x="80" y="340" font-size="32" font-weight="500" fill="#4a4844" letter-spacing="-0.5">that belong to the web.</text>
+  <text x="80" y="328" font-size="32" font-weight="500" fill="#4a4844" letter-spacing="-0.5">Paid subscriptions on the web</text>
+  <text x="80" y="372" font-size="32" font-weight="500" fill="#4a4844" letter-spacing="-0.5">that belong to the web.</text>
 
   <!-- domain pill -->
   <rect x="80" y="500" width="380" height="56" rx="6" fill="#161513"/>
   <text x="100" y="538" font-size="24" font-weight="500" fill="#fbfaf6">openmembership.org</text>
 
   <!-- license note -->
-  <text x="80" y="585" font-size="18" font-weight="500" fill="#7a7770">Spec CC-BY-4.0 · Reference code MIT</text>
+  <text x="80" y="585" font-size="18" font-weight="500" fill="#7a7770">CC-BY-4.0 spec, MIT reference code</text>
 
   <!-- code panel on the right -->
   <g font-family="'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, monospace" font-size="20">

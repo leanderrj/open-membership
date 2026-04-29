@@ -1,4 +1,4 @@
-# `om-miniflux` — Reader Reference Implementation (fork-prep package)
+# `om-miniflux`, Reader Reference Implementation (fork-prep package)
 
 This directory is the **fork-prep package** for adding Open Membership RSS 0.4
 support to [Miniflux v2](https://github.com/miniflux/v2). It is not a full
@@ -16,12 +16,12 @@ conformance without having to redesign any of the module-level plumbing.
 `om-miniflux` adds the Indie Reader profile (Levels 1, 2, 5 per
 [`/FEATURESET.md`](../../FEATURESET.md)) to Miniflux:
 
-- **Level 1 (Parsing)** — read the `om` namespace; display `<om:tier>` info;
+- **Level 1 (Parsing)**, read the `om` namespace; display `<om:tier>` info;
   render `<om:preview>` content in place of gated items; ignore `om` elements
   on feeds that don't declare the namespace.
-- **Level 2 (URL token auth + unlocks)** — persist per-feed url-tokens,
+- **Level 2 (URL token auth + unlocks)**, persist per-feed url-tokens,
   attach them to fetch requests, follow `<om:unlock>` endpoints.
-- **Level 5 (Commerce)** — parse `<om:offer>`, drive the checkout flow
+- **Level 5 (Commerce)**, parse `<om:offer>`, drive the checkout flow
   against the publisher's `/api/om/checkout`, poll `/api/om/entitlements`,
   exchange `/api/om/token` for a bearer, store the bearer encrypted at rest
   keyed by `(feed_id, user_id)`, and refresh content when access changes.
@@ -247,7 +247,7 @@ through `om-miniflux`:
 
 Work splits into three tranches by expected upstream acceptance:
 
-### Tranche A — likely upstream-accepted
+### Tranche A, likely upstream-accepted
 
 Self-contained, zero-diff to existing functionality, opt-in per feed. PR
 these together as a single logical change called "Optional Open Membership
@@ -255,7 +255,7 @@ RSS (om) module support":
 
 - `internal/om/` package (the files in this directory)
 - `database/sql/migration_*.sql` adding the two new tables
-- `internal/storage/om_auth.go` — narrowly-scoped storage wrapper
+- `internal/storage/om_auth.go`, narrowly-scoped storage wrapper
 - Extension point in `internal/reader/fetcher/` that delegates
   `om.ApplyRequest` when the feed is in `om_feed_auth`
 - Extension point in `internal/reader/processor/` that calls `om.Parse`
@@ -263,7 +263,7 @@ RSS (om) module support":
 
 Expected size: ~1,400 lines added, ~40 lines modified in existing files.
 
-### Tranche B — upstream-eventual, discuss first
+### Tranche B, upstream-eventual, discuss first
 
 Functionality Frédéric will probably want to shape himself:
 
@@ -276,7 +276,7 @@ Functionality Frédéric will probably want to shape himself:
 - Token-refresh path on 401. The shape is clean but touches a hot path; PR
   separately so it can be reviewed on its own.
 
-### Tranche C — fork-forever
+### Tranche C, fork-forever
 
 UX surface that Miniflux's philosophy will likely reject:
 
@@ -354,8 +354,8 @@ plans/PHASE-1-2.md and the roadmap:
   the returned bearer may carry group-scope claims, but Miniflux's UI
   doesn't distinguish group from individual entitlements. Phase 3.
 - **No Mollie.** Stripe only in v0.1. Mollie reader-side requires no change
-  per ../../docs/reader-ARCHITECTURE.md §"Scope discipline" — the publisher returns a
-  redirect URL whether it's Stripe or Mollie — but live-mode Mollie
+  per ../../docs/reader-ARCHITECTURE.md §"Scope discipline", the publisher returns a
+  redirect URL whether it's Stripe or Mollie, but live-mode Mollie
   plumbing is Phase 2 M4 Track C.
 - **No live-mode Stripe.** The fork runs against Stripe test-mode only in
   v0.1. Live-mode cutover is Phase 2 M4 Track A.

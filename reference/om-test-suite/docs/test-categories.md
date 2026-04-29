@@ -11,7 +11,7 @@ JSON report so a failure always links back to an authoritative sentence in
 
 ---
 
-## Level 1 — Parsing
+## Level 1, Parsing
 
 Foundational: the feed parses, declares the namespace, and states its provider.
 
@@ -60,7 +60,7 @@ keeps the cosmetic requirement visible in the report. Spec:
 
 ---
 
-## Level 1 — Discovery
+## Level 1, Discovery
 
 The `.well-known/open-membership` document exists, matches the feed, and
 carries the required top-level fields.
@@ -69,7 +69,7 @@ carries the required top-level fields.
 
 GET the discovery URL, assert HTTP 200. If no `--discovery` flag is passed
 the test Skips (not every publisher runs Level 1 with a discovery doc in v0.4
-— though they SHOULD). Spec: `SPEC.md §9`.
+- though they SHOULD). Spec: `SPEC.md §9`.
 
 ### `discovery/discovery_spec_version_present`
 
@@ -87,29 +87,29 @@ served from a different origin than the publisher declares it is. Spec:
 
 If a `revocation` block exists, its `policy` is one of
 `{prospective-only, chargeback-revocation, full-revocation}`. Absence of the
-block is not a failure at Level 1 — the spec's default is
+block is not a failure at Level 1, the spec's default is
 `prospective-only`. Spec: `SPEC.md §2.1`.
 
 ---
 
-## Level 2 — Auth (stubs)
+## Level 2, Auth (stubs)
 
 URL token auth + unlock endpoint. Every check below is a stub emitting Skip
 with a TODO. Spec: `../../../docs/FEATURESET.md §Level 2`; `SPEC.md §Featureset Summary /
 0.1 Foundational (URL token auth)`.
 
-- `auth/url_token_gating` (stub) — feed with a valid token returns content
+- `auth/url_token_gating` (stub), feed with a valid token returns content
   different from the no-token / bad-token variants.
-- `auth/url_token_rejection` (stub) — feed with an invalid token returns
+- `auth/url_token_rejection` (stub), feed with an invalid token returns
   401 or 403.
-- `auth/unlock_endpoint_honors_token` (stub) — `<om:unlock>` URL accepts the
+- `auth/unlock_endpoint_honors_token` (stub), `<om:unlock>` URL accepts the
   token and returns full content.
-- `auth/access_revocation_no_stale_content` (stub) — after a simulated
+- `auth/access_revocation_no_stale_content` (stub), after a simulated
   revocation, subsequent fetches return 403 within the declared grace window.
 
 ---
 
-## Level 5 — Checkout (stubs + one real check)
+## Level 5, Checkout (stubs + one real check)
 
 Commerce: `<om:offer>` declarations and the `/api/checkout` contract.
 
@@ -121,28 +121,28 @@ declared `<om:tier>` `id`. Skips if no offers are declared. Spec:
 
 ### Stubs
 
-- `checkout/checkout_endpoint_accepts_valid_post` (stub) — POST with a valid
+- `checkout/checkout_endpoint_accepts_valid_post` (stub), POST with a valid
   offer returns a session URL.
-- `checkout/checkout_endpoint_rejects_invalid_post` (stub) — POST with a
+- `checkout/checkout_endpoint_rejects_invalid_post` (stub), POST with a
   bogus offer returns a 4xx with a structured error body.
-- `checkout/checkout_session_url_resolves` (stub) — the returned session URL
+- `checkout/checkout_session_url_resolves` (stub), the returned session URL
   is HTTP-reachable.
 
 ---
 
-## Level 5 — Entitlement (stubs)
+## Level 5, Entitlement (stubs)
 
-- `entitlement/entitlements_endpoint_reachable` (stub) — GET
+- `entitlement/entitlements_endpoint_reachable` (stub), GET
   `/api/entitlements?session_id=...` returns a JSON body.
-- `entitlement/entitlements_structured_response` (stub) — the JSON body
+- `entitlement/entitlements_structured_response` (stub), the JSON body
   conforms to the `{status, tier_id, features[], expires_at}` shape.
-- `entitlement/entitlements_after_webhook` (stub) — a simulated
+- `entitlement/entitlements_after_webhook` (stub), a simulated
   `checkout.session.completed` webhook causes the entitlement to surface
   within 60 seconds. Spec: `plans/PHASE-3-4.md §2.3.1 Webhook honoring`.
 
 ---
 
-## Level 5 — Revocation
+## Level 5, Revocation
 
 ### `revocation/revocation_declared_on_channel_or_discovery`
 

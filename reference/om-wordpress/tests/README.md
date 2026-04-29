@@ -24,11 +24,11 @@ composer test
 
 ## What's NOT here
 
-- Integration tests against a real WP install — those live under
+- Integration tests against a real WP install, those live under
   `tests/integration/` (not yet populated) and load WP's own
   `WP_UnitTestCase` test scaffolding.
 - End-to-end tests against Stripe test-mode or a real Ghost instance.
-- `om-test-suite` conformance tests (Level 1 / 2 / 5) — blocked on
+- `om-test-suite` conformance tests (Level 1 / 2 / 5), blocked on
   the suite itself existing.
 
 Integration test harness setup goes under `bin/install-wp-tests.sh`

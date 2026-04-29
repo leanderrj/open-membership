@@ -9,15 +9,15 @@ Every `om` publisher needs to answer two questions on every request:
 1. Is this caller entitled to the content they are asking for?
 2. What does the content look like right now?
 
-A dynamic server-side publisher (Ghost, WordPress) answers both at request time. A static-site generator cannot: the content is built once and uploaded as flat files. That means entitlement must be answered at the edge, and the content must be available at the edge — either as a static artifact the edge function reads, or as an asset the edge fetches and overlays.
+A dynamic server-side publisher (Ghost, WordPress) answers both at request time. A static-site generator cannot: the content is built once and uploaded as flat files. That means entitlement must be answered at the edge, and the content must be available at the edge, either as a static artifact the edge function reads, or as an asset the edge fetches and overlays.
 
 `om-eleventy` picks the first path. The Eleventy build emits:
 
-- `_site/index.html` — the landing page
-- `_site/posts/<slug>/index.html` — one page per post, rendered with an awareness of the post's `om_access` value so that gated posts show a preview + unlock link on the website
-- `_site/public.xml` — an RSS+om feed containing open posts in full and gated posts as preview stubs
-- `_site/.well-known/open-membership` — a JSON discovery document reflecting the publisher's configuration
-- `_site/om-config.yaml` — a copy of the publisher config, so introspection tools can see what the publisher is advertising
+- `_site/index.html`, the landing page
+- `_site/posts/<slug>/index.html`, one page per post, rendered with an awareness of the post's `om_access` value so that gated posts show a preview + unlock link on the website
+- `_site/public.xml`, an RSS+om feed containing open posts in full and gated posts as preview stubs
+- `_site/.well-known/open-membership`, a JSON discovery document reflecting the publisher's configuration
+- `_site/om-config.yaml`, a copy of the publisher config, so introspection tools can see what the publisher is advertising
 
 The Cloudflare Worker is the edge runtime. Its routes are:
 
@@ -25,10 +25,10 @@ The Cloudflare Worker is the edge runtime. Its routes are:
 |---|---|
 | `/.well-known/open-membership` | Overrides the static discovery document with one that reflects live endpoint URLs (`env.PUBLIC_URL` can differ from what was committed to the repo) |
 | `/feed/om/:token/` | Renders a fresh RSS+om feed for the subscriber the token resolves to. Entitled items get full bodies; the rest get previews |
-| `/api/checkout` | POST — creates a Stripe Checkout Session for a given offer |
-| `/api/entitlements` | GET — polls Stripe (by `session_id`) or KV (by `feed_token`) for the current entitlement view |
-| `/api/token` | POST — exchanges a feed token for a short-lived HS256 JWT carrying entitlement claims |
-| `/api/webhook` | POST — Stripe webhook sink. Verifies signature, dedupes by event id, writes member state to KV |
+| `/api/checkout` | POST, creates a Stripe Checkout Session for a given offer |
+| `/api/entitlements` | GET, polls Stripe (by `session_id`) or KV (by `feed_token`) for the current entitlement view |
+| `/api/token` | POST, exchanges a feed token for a short-lived HS256 JWT carrying entitlement claims |
+| `/api/webhook` | POST, Stripe webhook sink. Verifies signature, dedupes by event id, writes member state to KV |
 | everything else | Falls through to `env.ASSETS.fetch()`, which serves the static bucket |
 
 ## State shape
@@ -50,7 +50,7 @@ No sessions, no OAuth, no API keys beyond the Stripe and HMAC secrets stored as 
 - **D1** would be over-specified. There are no relational queries to run; the member record is self-contained.
 - **Durable Objects** would be appropriate if the webhook handler needed a strict atomic claim. KV with a read-then-put is weaker than a true compare-and-swap, but because every handler is idempotent at the record-overwrite level, a duplicate claim is not a correctness problem. We traded strict atomicity for lower operational footprint.
 
-If a future version needs atomic claims — e.g., for credit balance accounting, which `om` 0.4 does not define — the DO migration is a one-file change behind the `Kv` facade.
+If a future version needs atomic claims, e.g., for credit balance accounting, which `om` 0.4 does not define, the DO migration is a one-file change behind the `Kv` facade.
 
 ## The per-subscriber feed render
 
@@ -61,7 +61,7 @@ At render time the Worker has:
 - `entitlement`: pure function of `member.status` + `member.stripe_price_id` + config
 - `items`: the item set that should appear in the feed
 
-For the v0.1 scaffold, `items` is a fixture inside the Worker (see `worker/src/routes/feed.ts`). The production path reads the Eleventy-built static manifest: either a JSON file emitted during build (`_site/om-items.json`) or the live `_site/public.xml` parsed on demand. The scaffold leaves both approaches as a TODO — the render function is decoupled from the item loader.
+For the v0.1 scaffold, `items` is a fixture inside the Worker (see `worker/src/routes/feed.ts`). The production path reads the Eleventy-built static manifest: either a JSON file emitted during build (`_site/om-items.json`) or the live `_site/public.xml` parsed on demand. The scaffold leaves both approaches as a TODO, the render function is decoupled from the item loader.
 
 Access decision, per item (see `lib/feed.ts::decideAccess`):
 

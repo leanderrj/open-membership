@@ -1,4 +1,4 @@
-# Open Membership RSS — Roadshow
+# Open Membership RSS, Roadshow
 
 The pitch deck in prose form. This document carries the case for `om` as an open standard: the principles the work is built on, the risks named honestly, what shipping 1.0 actually ratifies, and what comes after. For dates, deliverables, and phases, see [ROADMAP.md](ROADMAP.md). For budget, see [funding/](funding/).
 
@@ -11,7 +11,7 @@ These are the rules the project is built on. When a decision comes up that isn't
 3. **The three personas are the test.** Every decision gets evaluated against: does this help the Substack writer migrating to Ghost, the Patreon podcaster expanding mediums, or the investigative journalism publication that needs pseudonymous mode? If the answer is "none of them," the thing doesn't ship in 1.0.
 4. **Indie ecosystem before incumbents.** Don't court Substack, Patreon, Spotify, or Apple. They'll adopt, fork, or ignore; none of those outcomes should be precondition for 1.0.
 5. **Governance before scale.** The custodian commitment happens before the protocol has "enough adopters to justify it," because that's exactly the Winer move that saved RSS from UserLand's collapse.
-6. **Publish negative results.** When something doesn't work — a publisher drops the spec, a PSP profile breaks, a test fails — write it up publicly. Open protocols accumulate trust through operational honesty, not marketing.
+6. **Publish negative results.** When something doesn't work, a publisher drops the spec, a PSP profile breaks, a test fails, write it up publicly. Open protocols accumulate trust through operational honesty, not marketing.
 
 ## Risk register
 
@@ -24,12 +24,12 @@ Named risks and mitigations. Funding-related risks live in [funding/](funding/).
 
 **Risk: First publisher outreach fails.**
 - Probability: medium. Publishers are busy; switching infrastructure is risky.
-- Mitigation: start outreach in month 4 with 10 candidates, expect 1 yes. If zero yeses by end of month 5, reframe — maybe the pitch is wrong, maybe the publisher persona is wrong.
+- Mitigation: start outreach in month 4 with 10 candidates, expect 1 yes. If zero yeses by end of month 5, reframe, maybe the pitch is wrong, maybe the publisher persona is wrong.
 - Escalation: if no publisher onboards by end of month 6, the spec may need significant simplification. Go back to 0.4, strip features, see if a simpler `om-lite` can get a yes.
 
 **Risk: Custodian says no, then says no, then says no.**
 - Probability: low-medium. Four candidates with different angles should produce one yes.
-- Mitigation: if all four decline, the fallback is a lightweight foundation modeled on the Podcast Index — one person, one domain, one public Git repo, no institutional overhead. Less durable but workable for 1.0.
+- Mitigation: if all four decline, the fallback is a lightweight foundation modeled on the Podcast Index, one person, one domain, one public Git repo, no institutional overhead. Less durable but workable for 1.0.
 - Escalation: if no custodian path exists, delay 1.0 until one does. Don't ratify 1.0 under informal governance.
 
 **Risk: Key crypto suite (`bbs-2023`) doesn't advance to Recommendation on schedule.**
@@ -78,7 +78,7 @@ By end of month 18, the project owns:
 - Three reference publisher implementations (Ghost, WordPress, Eleventy + edge)
 - Two reference reader implementations (Miniflux, NetNewsWire or equivalent mobile)
 - Non-normative appendices covering: Atom + JSON Feed mappings, Platform Adapter Profile, ActivityPub co-existence, subscriber portability format, enclosure auth, and a provisional anti-sharing primitive
-- A working group of 5–8 with at least one paid coordinator
+- A working group of 5-8 with at least one paid coordinator
 - Two events held (month 16, one tentatively scheduled for month 24)
 - A public record of errata, fixes, and negative results
 
@@ -91,6 +91,6 @@ Not the 1.0 team's responsibility to specify, but worth flagging:
 - Maintenance mode with occasional 1.x errata for compatibility with evolving W3C specs
 - Additional PSP binding profiles (Adyen, Paddle, Chargebee) as community submissions
 - Additional reader and CMS implementations as community projects
-- A 2.0 if and when the ecosystem genuinely needs breaking changes — realistically, not for 3–5 years minimum
+- A 2.0 if and when the ecosystem genuinely needs breaking changes, realistically, not for 3-5 years minimum
 
 The right attitude for the current team after 1.0 is to step back slowly, not step away suddenly. Codify decisions into the test suite and governance docs, make sure the working group survives the departure of any one member, and only then move on.

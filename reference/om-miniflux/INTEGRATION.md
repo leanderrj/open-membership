@@ -1,4 +1,4 @@
-# Integration runbook — `om-miniflux` against `om-ghost`
+# Integration runbook, `om-miniflux` against `om-ghost`
 
 This is the end-to-end interop test that closes Phase 1 per
 `plans/PHASE-1-2.md` §2.3. It exercises every code path in the `om` package
@@ -7,13 +7,13 @@ against the publisher reference implementation running in test mode.
 Four scenarios must pass three consecutive runs on a clean database before
 Phase 1 is considered closed:
 
-1. **Subscribe** — a fresh user subscribes, pays through Stripe test-mode,
+1. **Subscribe**, a fresh user subscribes, pays through Stripe test-mode,
    and sees gated content unlock.
-2. **Unlock** — on the next fetch, the previously-gated item renders in full
+2. **Unlock**, on the next fetch, the previously-gated item renders in full
    without re-authentication.
-3. **Cancel** — the user cancels through the publisher's Customer Portal;
+3. **Cancel**, the user cancels through the publisher's Customer Portal;
    content remains available through `grace_hours`, then reverts to preview.
-4. **Revoke** — a Stripe chargeback event triggers the publisher's
+4. **Revoke**, a Stripe chargeback event triggers the publisher's
    revocation policy; within one hour, content returns to preview on the
    reader side.
 
@@ -85,7 +85,7 @@ psql miniflux -c "\dt om_*"
 Through the Miniflux web UI or CLI. Use a throwaway email; the test does not
 use the Miniflux identity for anything outside the reader side.
 
-## Scenario 1 — Subscribe
+## Scenario 1, Subscribe
 
 ### Steps
 
@@ -126,7 +126,7 @@ use the Miniflux identity for anything outside the reader side.
   `internal/reader/fetcher/fetcher.go` patch per PATCH-PLAN.md; confirm
   `om.ApplyRequest` is invoked before `client.Do`.
 
-## Scenario 2 — Unlock
+## Scenario 2, Unlock
 
 ### Steps
 
@@ -142,7 +142,7 @@ use the Miniflux identity for anything outside the reader side.
 - Miniflux's fetcher log shows a 200 response from the feed URL with
   `Authorization: Bearer ...` on the request.
 
-## Scenario 3 — Cancel
+## Scenario 3, Cancel
 
 Scenario tests the `<om:revocation policy="prospective-only" grace_hours="N">`
 path: cancellation leaves already-listed content readable until the grace
@@ -188,7 +188,7 @@ Configure `grace_hours=0` on the test tier to avoid waiting:
   through it).
 - No stack traces in fetcher logs.
 
-## Scenario 4 — Revoke
+## Scenario 4, Revoke
 
 ### Steps
 
@@ -236,7 +236,7 @@ make interop
 ```
 
 The `interop` target (added to Miniflux's Makefile as part of this fork)
-runs Scenarios 1–4 in sequence and exits non-zero on the first failure. It
+runs Scenarios 1-4 in sequence and exits non-zero on the first failure. It
 is the single source of truth for Phase 1 exit criterion "All four interop
 scenarios pass in CI three consecutive runs".
 

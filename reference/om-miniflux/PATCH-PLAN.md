@@ -1,4 +1,4 @@
-# Patch plan — applying `om-miniflux` against Miniflux v2
+# Patch plan, applying `om-miniflux` against Miniflux v2
 
 Every change to Miniflux's existing source that applying this fork requires.
 Entries are ordered so that applying them in sequence produces a compiling,
@@ -6,24 +6,24 @@ testable tree after each step.
 
 Legend for **Type**:
 
-- **new** — file is entirely new; copy from this directory or create
+- **new**, file is entirely new; copy from this directory or create
   following the description.
-- **modify** — existing file gains new lines; existing behavior unchanged.
-- **patch** — existing file is modified in place; existing behavior changes
+- **modify**, existing file gains new lines; existing behavior unchanged.
+- **patch**, existing file is modified in place; existing behavior changes
   (always additively / behind a nil check).
 
 Legend for **Upstream**:
 
-- **yes** — PR this to `miniflux/v2`; self-contained, opt-in, no impact on
+- **yes**, PR this to `miniflux/v2`; self-contained, opt-in, no impact on
   non-`om` feeds.
-- **discuss** — PR-candidate but needs an issue first; the shape may need to
+- **discuss**, PR-candidate but needs an issue first; the shape may need to
   change to satisfy the upstream maintainer.
-- **no** — stays in the fork indefinitely; the UX surface is unlikely to be
+- **no**, stays in the fork indefinitely; the UX surface is unlikely to be
   accepted without prior demand signals.
 
 Sizes are lines added / lines removed, rounded.
 
-## Tranche A — package vendor + storage + fetcher hook
+## Tranche A, package vendor + storage + fetcher hook
 
 Drop-in, no conflict with upstream.
 
@@ -52,7 +52,7 @@ Drop-in, no conflict with upstream.
 **Tranche A sizes (rough):** +1,800 lines added, ~4 lines removed, 13 files
 touched in existing Miniflux tree, 11 new files.
 
-## Tranche B — browser-side checkout routes
+## Tranche B, browser-side checkout routes
 
 Must exist for Level 5 to function end-to-end. These are new routes, no
 conflict with existing handlers, but Miniflux's routing philosophy is
@@ -68,7 +68,7 @@ minimal so they are flagged as **discuss**.
 
 **Tranche B sizes:** +269 lines, 3 new files, 2 files patched.
 
-## Tranche C — UI templates and assets
+## Tranche C, UI templates and assets
 
 Carry as fork patches indefinitely per `README.md` §"Upstream contribution
 plan". These are the surfaces Miniflux's UI philosophy is unlikely to
@@ -88,7 +88,7 @@ accept without proof of demand.
 
 **Tranche C sizes:** +527 lines + locale strings, 6 new files, 3 modified.
 
-## Tranche D — build and CI
+## Tranche D, build and CI
 
 | # | File | Type | Size | Purpose | Upstream |
 |---|---|---|---|---|---|
@@ -96,12 +96,12 @@ accept without proof of demand.
 | D2 | `.github/workflows/test.yml` | modify | +12 / 0 | Run `go test ./internal/om/...` as part of the test matrix. | yes |
 | D3 | `.github/workflows/interop.yml` | new | +40 / 0 | Spin up `om-ghost` in a service container, run `make interop`, upload artifacts. | no |
 
-## Tranche E — docs
+## Tranche E, docs
 
 | # | File | Type | Size | Purpose | Upstream |
 |---|---|---|---|---|---|
 | E1 | `README.md` (Miniflux root) | modify | +8 / 0 | One-paragraph note that this fork supports Open Membership RSS 0.4 (Indie Reader profile), with a link to `internal/om/README.md`. | no |
-| E2 | `internal/om/README.md` | new | — | Copy [`README.md`](README.md) from this directory. | yes |
+| E2 | `internal/om/README.md` | new |, | Copy [`README.md`](README.md) from this directory. | yes |
 | E3 | `docs/om.md` or `ChangeLog` entry | modify | +20 / 0 | Operator-facing doc explaining the two new tables, the `OM_BEARER_ENCRYPTION_KEY` env var (from Tranche B discussion), and the `/om/*` routes. | yes |
 
 ## Total size
@@ -124,18 +124,18 @@ within the margin expected once UI, templates, and interop CI are counted.
 Safe dependency order. Each step leaves the tree green for `go build` and
 `go test`.
 
-1. **A1–A10** in any order. The `om` package is standalone and all unit
+1. **A1-A10** in any order. The `om` package is standalone and all unit
    tests pass after this step against `go test ./internal/om/...`.
-2. **A11–A12**. Migration is registered but not yet used.
-3. **A13–A14**. Storage layer satisfies `om.AuthStore`; still unused.
-4. **A18–A19**. Model extensions. No handler change yet.
+2. **A11-A12**. Migration is registered but not yet used.
+3. **A13-A14**. Storage layer satisfies `om.AuthStore`; still unused.
+4. **A18-A19**. Model extensions. No handler change yet.
 5. **A17**. Processor populates the model extensions; still no UI change.
-6. **A15–A16**. Fetcher hook starts using stored auth.
-7. **B1–B5**. Browser-side subscribe/status/token routes go live.
-8. **C1–C2, C6–C7**. Entry rendering picks up preview substitution.
+6. **A15-A16**. Fetcher hook starts using stored auth.
+7. **B1-B5**. Browser-side subscribe/status/token routes go live.
+8. **C1-C2, C6-C7**. Entry rendering picks up preview substitution.
 9. **C3, C5**. Upgrade modal and CTA partial.
 10. **C4, C8, C9**. Subscriptions management view + i18n.
-11. **D1–D3, E1–E3**. Build, CI, and docs.
+11. **D1-D3, E1-E3**. Build, CI, and docs.
 
 At step 7 the fork has enough to pass INTEGRATION.md Scenarios 1 and 2
 through manual testing (the user manually POSTs `/om/subscribe` and GETs
@@ -143,11 +143,11 @@ through manual testing (the user manually POSTs `/om/subscribe` and GETs
 
 ## Risks and mitigations
 
-- **A15–A16 (fetcher patch).** If Miniflux's existing HTTP client resists
+- **A15-A16 (fetcher patch).** If Miniflux's existing HTTP client resists
   per-request auth injection, budget 3 engineer-days for a targeted refactor
-  per plans/PHASE-1-2.md Week 4 risk note. The patch is kept minimal —
+  per plans/PHASE-1-2.md Week 4 risk note. The patch is kept minimal -
   inject a single function call after the existing `http.NewRequest` and
-  before `client.Do` — to reduce merge conflict risk.
+  before `client.Do`, to reduce merge conflict risk.
 - **A13 (encryption shape).** File an issue against Miniflux upstream before
   settling on a scheme. Options per plans/PHASE-1-2.md D2: AES-GCM with the
   admin secret (stdlib, simple) or libsodium secretbox (stronger, one new

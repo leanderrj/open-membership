@@ -1,4 +1,4 @@
-# Open Membership RSS — Subscriber Portability Format 1.0
+# Open Membership RSS, Subscriber Portability Format 1.0
 
 **A cross-reader export/import format for a user's `om` membership state.**
 
@@ -22,9 +22,9 @@ Copyright © 2026 by the Authors. Permission to use, copy, modify and distribute
 
 ## 1. Why this exists
 
-When a subscriber changes reader — from Miniflux to NetNewsWire, from an Android reader to an iOS reader, from a legacy self-hosted instance to a managed one — everything about their reading state today travels with them *except* paid memberships. Free feeds are expressed as URLs in an OPML file; paid memberships are expressed as per-reader bearer tokens, credentials, and stored entitlements that the receiving reader has no standard way to accept.
+When a subscriber changes reader, from Miniflux to NetNewsWire, from an Android reader to an iOS reader, from a legacy self-hosted instance to a managed one, everything about their reading state today travels with them *except* paid memberships. Free feeds are expressed as URLs in an OPML file; paid memberships are expressed as per-reader bearer tokens, credentials, and stored entitlements that the receiving reader has no standard way to accept.
 
-SPEC §G.2 names account portability as "the hardest unsolved problem in federated identity." ActivityPub has been working on it for nearly a decade. `om` sidesteps the hardest version of the problem — a portable *subscriber identity across publishers* — by delegating identity to publishers and umbrella issuers. What remains, and what this spec addresses, is a much smaller problem: a standard container shape for a user's already-issued memberships, so that the reader they move to can keep reading without re-subscribing.
+SPEC §G.2 names account portability as "the hardest unsolved problem in federated identity." ActivityPub has been working on it for nearly a decade. `om` sidesteps the hardest version of the problem, a portable *subscriber identity across publishers*, by delegating identity to publishers and umbrella issuers. What remains, and what this spec addresses, is a much smaller problem: a standard container shape for a user's already-issued memberships, so that the reader they move to can keep reading without re-subscribing.
 
 This is the OPML-for-paid-feeds, nothing more.
 
@@ -34,9 +34,9 @@ This is the OPML-for-paid-feeds, nothing more.
 
 - **Not a replacement for publisher discovery.** A destination reader MUST re-fetch `.well-known/open-membership` for every imported publisher before honoring any imported token or credential. Publisher configuration may have changed since export.
 - **Not a credential issuer.** The format ports credentials a publisher or umbrella already issued. It does not mint new ones.
-- **Not a transport.** Moving the exported file between devices — email, AirDrop, USB, cloud drive — is out of scope. The file is self-contained; how it gets from A to B is the user's and the reader's concern.
+- **Not a transport.** Moving the exported file between devices, email, AirDrop, USB, cloud drive, is out of scope. The file is self-contained; how it gets from A to B is the user's and the reader's concern.
 - **Not a subscription-list format.** Export a free feed as OPML; this format is strictly for memberships that require `om`-level authentication.
-- **Not a backup archive.** Exports are portable snapshots, not archives. Readers SHOULD NOT rely on old export files as durable backups — tokens expire and credentials rotate.
+- **Not a backup archive.** Exports are portable snapshots, not archives. Readers SHOULD NOT rely on old export files as durable backups, tokens expire and credentials rotate.
 
 ---
 
@@ -188,7 +188,7 @@ The DPoP private key is included because DPoP binding is per-key, not per-sessio
 }
 ```
 
-The full credential JSON-LD is embedded as-is. The holder's binding key is exported with it — without the binding key, the destination reader cannot re-present the credential.
+The full credential JSON-LD is embedded as-is. The holder's binding key is exported with it, without the binding key, the destination reader cannot re-present the credential.
 
 ### 4.8 vc-presentation (OM-VC-SD 1.0)
 
@@ -279,7 +279,7 @@ Every export document MUST carry a checksum over the canonicalized JSON body, ex
 
 ### 7.2 Signature (optional)
 
-A source reader MAY additionally sign the canonicalized body with an Ed25519 key bound to its `reader_instance_id`. The purpose is integrity across untrusted transport, not authentication of the user — there is no PKI, and destination readers do not know source readers.
+A source reader MAY additionally sign the canonicalized body with an Ed25519 key bound to its `reader_instance_id`. The purpose is integrity across untrusted transport, not authentication of the user, there is no PKI, and destination readers do not know source readers.
 
 ```json
 "integrity": {
@@ -312,7 +312,7 @@ This section is normative. Portability is the single point in an `om` deployment
 
 **P4 (warning on wide exports).** If the export would list more than one publisher with `privacy_mode: pseudonymous-required`, the source reader SHOULD warn the user that the combined file is a more sensitive artifact than the sum of its parts, because compromising it links two publications that were deliberately unlinked.
 
-**P5 (no telemetry).** A source reader MUST NOT report, log, or transmit the contents of an export to anyone other than the user who requested it. This is a reader conformance requirement, not a spec one — but it is the point of the whole feature.
+**P5 (no telemetry).** A source reader MUST NOT report, log, or transmit the contents of an export to anyone other than the user who requested it. This is a reader conformance requirement, not a spec one, but it is the point of the whole feature.
 
 ---
 
@@ -336,7 +336,7 @@ An export MAY be encrypted as a JWE Compact Serialization token using A256GCM co
 
 ### 9.3 Unencrypted
 
-A `.ommem` plaintext file MAY be produced **only** if the document contains zero bearer tokens, zero refresh tokens, zero DPoP keys, zero VC holder keys, and zero pseudonym secrets — i.e., in practice, only `url-token` memberships with feed URLs that already carry the secret.
+A `.ommem` plaintext file MAY be produced **only** if the document contains zero bearer tokens, zero refresh tokens, zero DPoP keys, zero VC holder keys, and zero pseudonym secrets, i.e., in practice, only `url-token` memberships with feed URLs that already carry the secret.
 
 A source reader producing a plaintext export MUST display a confirmation dialog naming every membership being exported and reminding the user the file content is equivalent to the list of tokenized feed URLs. Destination readers accepting plaintext exports MUST NOT accept any record with auth method other than `url-token`.
 
@@ -360,7 +360,7 @@ A source reader SHOULD:
 
 A source reader MUST NOT:
 
-- Include read-status, starred items, feed-entry caches, or any reading-history artifact — those are OPML/reader-specific concerns, not `om` concerns
+- Include read-status, starred items, feed-entry caches, or any reading-history artifact, those are OPML/reader-specific concerns, not `om` concerns
 - Include PSP-side identifiers (Stripe customer IDs, Mollie mandate IDs) the reader may have cached; those are publisher-only data
 - Include any membership the user has actively revoked
 
@@ -381,7 +381,7 @@ A destination reader SHOULD:
 - Show the user a preview of what will be imported before committing
 - De-duplicate against existing memberships by `provider` URI, keeping the newer `updated_at`
 - For bearer memberships where `expires_at` is in the past, attempt a refresh before discarding
-- Not extend the `updated_at` timestamp on import — imported records are not "freshly updated"
+- Not extend the `updated_at` timestamp on import, imported records are not "freshly updated"
 
 A destination reader MUST NOT:
 
@@ -526,7 +526,7 @@ This document is then passphrase-encrypted with age and saved as `leander-member
 A reader conforms to export if, given a user with at least one active `om` membership, it can:
 
 - Produce a document with a valid `@context`, `type`, `spec_version`, `exported_at`, `exported_by`, `subject`, `memberships`, and `integrity.checksum`
-- Apply §8 P1–P5
+- Apply §8 P1-P5
 - Encrypt per §9 when any non-`url-token` credential is included
 - Round-trip its own output into itself without loss (import own export → diff is empty)
 
@@ -564,7 +564,7 @@ File extensions (`.ommem`, `.ommem.jwe`, `.ommem.age`) are informational; IANA d
 
 ## 16. Non-goals revisited
 
-For readers approaching this spec with ambitions beyond what it describes, it is worth being explicit about what portability does NOT include — and where the alternative lives:
+For readers approaching this spec with ambitions beyond what it describes, it is worth being explicit about what portability does NOT include, and where the alternative lives:
 
 | Want | Answer |
 |---|---|

@@ -6,15 +6,15 @@ Each review document follows the format defined in [`../REVIEW-PACKAGE.md`](../R
 
 ## Filenames
 
-- `review-implementer-1-<initials>.md` — independent CMS-side implementer
-- `review-implementer-2-<initials>.md` — independent reader-side implementer
-- `review-implementer-3-<initials>.md` — PSP integration engineer
-- `review-security-<initials>.md` — security reviewer (non-implementer)
-- `review-privacy-<initials>.md` — privacy reviewer (non-implementer)
+- `review-implementer-1-<initials>.md`, independent CMS-side implementer
+- `review-implementer-2-<initials>.md`, independent reader-side implementer
+- `review-implementer-3-<initials>.md`, PSP integration engineer
+- `review-security-<initials>.md`, security reviewer (non-implementer)
+- `review-privacy-<initials>.md`, privacy reviewer (non-implementer)
 
 ## Status
 
-_(populated as reviews land during M14 Weeks 1–3)_
+_(populated as reviews land during M14 Weeks 1-3)_
 
 | Reviewer | Filename | Submitted | Triaged |
 |---|---|---|---|

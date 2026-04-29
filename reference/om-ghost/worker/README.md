@@ -1,7 +1,7 @@
 # Cloudflare Worker (Mode A)
 
 The Cloudflare Worker variant of `om-ghost`. Share source with the Node
-sidecar under [`../service/`](../service/) — the Hono app is built in
+sidecar under [`../service/`](../service/), the Hono app is built in
 [`../shared/app.ts`](../shared/app.ts), and Mode A supplies KV-backed
 adapters for the same cache / idempotency / rate-limit interfaces the
 Node service uses.
@@ -76,5 +76,5 @@ events:
   are cache-hits (~5ms).
 - **No startup phase**: config validation happens per request. The
   cached parse is cheap (once per Worker instance lifetime), but
-  malformed config won't crash a Worker at deploy time — it will
+  malformed config won't crash a Worker at deploy time, it will
   return 500 on the first request.

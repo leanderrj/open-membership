@@ -1,4 +1,4 @@
-# Open Membership RSS — Featureset Reference
+# Open Membership RSS, Featureset Reference
 
 The authoritative feature inventory across all spec versions. This is the reference every implementer and reviewer starts from.
 
@@ -6,13 +6,13 @@ The authoritative feature inventory across all spec versions. This is the refere
 
 Features organize into seven categories. Every element in the spec fits exactly one.
 
-1. **Foundational** — namespace, identity, authentication
-2. **Access control** — tiers, features, per-item policy
-3. **Temporal** — time-windowed access, proration
-4. **Group** — families, companies, institutions
-5. **Commercial** — payments, value-for-value, offers
-6. **Identity & privacy** — credentials, pseudonymity, selective disclosure
-7. **Lifecycle & governance** — discovery, revocation, bundles, gifts
+1. **Foundational**, namespace, identity, authentication
+2. **Access control**, tiers, features, per-item policy
+3. **Temporal**, time-windowed access, proration
+4. **Group**, families, companies, institutions
+5. **Commercial**, payments, value-for-value, offers
+6. **Identity & privacy**, credentials, pseudonymity, selective disclosure
+7. **Lifecycle & governance**, discovery, revocation, bundles, gifts
 
 ## Complete feature matrix
 
@@ -64,7 +64,7 @@ Features organize into seven categories. Every element in the spec fits exactly 
 
 Features are grouped into conformance levels. Implementers state which levels they support; each level is cumulative (Level N implies Levels 1 through N-1).
 
-### Level 1 — Parsing
+### Level 1, Parsing
 
 The bare minimum. An RSS reader at this level:
 - Parses the `om` namespace without errors
@@ -75,7 +75,7 @@ The bare minimum. An RSS reader at this level:
 
 **Implementer effort:** one afternoon.
 
-### Level 2 — URL token auth + unlocks
+### Level 2, URL token auth + unlocks
 
 Adds:
 - Persisting per-feed URL tokens
@@ -85,16 +85,16 @@ Adds:
 
 **Implementer effort:** ~1 week.
 
-### Level 3 — OAuth Bearer + time windows + SCIM groups
+### Level 3, OAuth Bearer + time windows + SCIM groups
 
 Adds:
 - Bearer token flow with RFC 9728 discovery
 - Time window evaluation (`<om:window>`) against current clock
 - Self-managed group subscription support (for company/institution plans)
 
-**Implementer effort:** ~2–3 weeks.
+**Implementer effort:** ~2-3 weeks.
 
-### Level 4 — OM-VC 1.0 + revocation checks
+### Level 4, OM-VC 1.0 + revocation checks
 
 Adds:
 - Presenting W3C VC 2.0 credentials (EdDSA or ECDSA)
@@ -103,7 +103,7 @@ Adds:
 
 **Implementer effort:** ~1 month, plus crypto library dependencies.
 
-### Level 5 — Commerce
+### Level 5, Commerce
 
 Adds:
 - `<om:offer>` parsing and display
@@ -111,11 +111,11 @@ Adds:
 - Entitlement polling and token refresh
 - Feature-based access checks (`<om:feature>` IDs in JWT claims)
 - Proration policy display
-- Subscriber Portability Format 1.0 export + import — see [../spec/SPEC-PORTABILITY.md](../spec/SPEC-PORTABILITY.md); round-trip required at 1.0
+- Subscriber Portability Format 1.0 export + import, see [../spec/SPEC-PORTABILITY.md](../spec/SPEC-PORTABILITY.md); round-trip required at 1.0
 
-**Implementer effort:** ~2–4 weeks (commerce) + ~1 week (portability).
+**Implementer effort:** ~2-4 weeks (commerce) + ~1 week (portability).
 
-### Level 6 — Value-for-value
+### Level 6, Value-for-value
 
 Adds:
 - `<om:value>` parsing
@@ -125,7 +125,7 @@ Adds:
 
 **Implementer effort:** ~2 weeks beyond Level 5, plus rail-specific wallet integration.
 
-### Level 7 — Privacy (OM-VC-SD)
+### Level 7, Privacy (OM-VC-SD)
 
 Adds:
 - W3C BBS+ cryptosuite support
@@ -135,7 +135,7 @@ Adds:
 
 **Implementer effort:** ~1 month, requires BBS+ implementation (Mattr, Spruce, or Digital Bazaar libraries exist).
 
-### Level 8 — Bundles
+### Level 8, Bundles
 
 Adds:
 - Bundle credential acceptance

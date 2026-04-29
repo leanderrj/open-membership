@@ -1,6 +1,6 @@
-# Open Membership RSS — External Review Package
+# Open Membership RSS, External Review Package
 
-**Cycle:** Phase 5 Month 14 — pre-IRSG public review of `draft-om-rss-membership-00`
+**Cycle:** Phase 5 Month 14, pre-IRSG public review of `draft-om-rss-membership-00`
 **Window:** three calendar weeks of reviewer time, with a fourth week for editorial incorporation
 **Outcome:** revision `-01` of the Internet-Draft, ready for submission to the IETF Independent Stream Editor in Month 15
 
@@ -39,7 +39,7 @@ The portability round-trip harness at [`../reference/om-portability-roundtrip/`]
 | M13 Week 3 | mid-month | Editor identifies five candidates per role; drafts one-paragraph pitches |
 | M13 Week 4 | end of month | Asks sent; reviewers commit yes/no within 72 hours |
 | M14 Week 1 | start of month | Fall-back candidates approached for any declines; final five confirmed by Friday |
-| M14 Weeks 1–3 | three weeks | Review window. Reviewers submit comments using the format in §4 |
+| M14 Weeks 1-3 | three weeks | Review window. Reviewers submit comments using the format in §4 |
 | M14 Week 3 Friday | cutoff | Comments received after this date roll into 1.x errata, not into revision -01 |
 | M14 Week 4 | one week | Editorial incorporation. Editor triages every comment to accept / decline / defer |
 | End of M14 Week 4 | submission-ready | Revision `-01` lands; the artifact that goes to the IRSG in M15 |
@@ -52,11 +52,11 @@ Reviewers are paid for their time through the custodian's fiscal sponsor (see [`
 
 Five reviewers: three implementers and two non-implementers. Each brief is roughly two pages and lists what the reviewer is being asked to look at, what is explicitly out of scope for this review, and the questions the working group most needs answered.
 
-### 3.1 Implementer-1 — independent CMS-side implementer
+### 3.1 Implementer-1, independent CMS-side implementer
 
 **Who you are.** You shipped a production deployment of `om` on a CMS that is *not* one of the working group's reference implementations (Ghost, WordPress). You read and implemented the spec from scratch as the engineer who actually had to make a publisher conform.
 
-**What you are reviewing.** The full draft. You are the closest thing the working group has to a fresh implementation perspective — you did not co-design any of this, and you are the cleanest signal on whether the spec describes what someone has to build.
+**What you are reviewing.** The full draft. You are the closest thing the working group has to a fresh implementation perspective, you did not co-design any of this, and you are the cleanest signal on whether the spec describes what someone has to build.
 
 **The questions we most need answered.**
 
@@ -70,11 +70,11 @@ Five reviewers: three implementers and two non-implementers. Each brief is rough
 
 **Return shape.** Per §4 below.
 
-### 3.2 Implementer-2 — independent reader-side implementer
+### 3.2 Implementer-2, independent reader-side implementer
 
-**Who you are.** You ship a feed reader (mobile, desktop, web, or self-hosted) that is *not* one of the working group's two reference readers (Miniflux fork, NetNewsWire fork or Feeder for Android, depending on which shipped at M11). You implemented `om` parsing, credential storage, the unlock flow, and — at Level 5 — the portability round-trip.
+**Who you are.** You ship a feed reader (mobile, desktop, web, or self-hosted) that is *not* one of the working group's two reference readers (Miniflux fork, NetNewsWire fork or Feeder for Android, depending on which shipped at M11). You implemented `om` parsing, credential storage, the unlock flow, and, at Level 5, the portability round-trip.
 
-**What you are reviewing.** Spec §7 (conformance levels), §§4.3–4.8 (credential handling end to end), and the entire companion `SPEC-PORTABILITY.md`. The reader perspective is what tells the working group whether the wire-side contract actually composes with the storage-and-presentation side.
+**What you are reviewing.** Spec §7 (conformance levels), §§4.3-4.8 (credential handling end to end), and the entire companion `SPEC-PORTABILITY.md`. The reader perspective is what tells the working group whether the wire-side contract actually composes with the storage-and-presentation side.
 
 **The questions we most need answered.**
 
@@ -88,7 +88,7 @@ Five reviewers: three implementers and two non-implementers. Each brief is rough
 
 **Return shape.** Per §4 below.
 
-### 3.3 Implementer-3 — PSP integration engineer
+### 3.3 Implementer-3, PSP integration engineer
 
 **Who you are.** You have shipped at least one production Stripe or Mollie integration. You may or may not have implemented `om`; what matters is that you have battle-tested intuitions about webhook idempotency, dispute handling, mid-cycle prorations, refunds, and the difference between "what a PSP's API documents" and "what a PSP's API actually does at scale."
 
@@ -166,7 +166,7 @@ Reviewers return a single Markdown document, one document per reviewer, named `r
 Every substantive comment is one entry in the form:
 
 ```markdown
-### Line <N> — <one-line summary>
+### Line <N>, <one-line summary>
 
 **Section:** <e.g., §3.4.2 or "Security Considerations / Token Replay">
 **Severity:** <blocking | major | minor | nit>     (security reviews additionally use info/low/medium/high/critical)
@@ -179,10 +179,10 @@ The line number is the line in the rendered TXT output of the draft, not the Mar
 For the companion `SPEC-PORTABILITY.md`, comments use the Markdown line numbers directly because that document is consumed in Markdown form.
 
 Severity guide:
-- **blocking** — the spec is wrong; submission must wait for a fix.
-- **major** — the spec has a real defect that should be fixed before -01 if possible; falls to errata otherwise.
-- **minor** — the spec is unclear or could be improved; defer to 1.x errata is acceptable.
-- **nit** — typo, grammar, formatting. Always accepted unless they conflict with kramdown-rfc syntax.
+- **blocking**, the spec is wrong; submission must wait for a fix.
+- **major**, the spec has a real defect that should be fixed before -01 if possible; falls to errata otherwise.
+- **minor**, the spec is unclear or could be improved; defer to 1.x errata is acceptable.
+- **nit**, typo, grammar, formatting. Always accepted unless they conflict with kramdown-rfc syntax.
 
 ### 4.3 Free-form summary
 
@@ -204,7 +204,7 @@ The attestation goes into the IRSG submission package per `plans/PHASE-5-6.md` �
 
 ### 4.5 Submission
 
-Reviewers commit their review document to `ietf/reviews/` in the repository as a pull request. The pull request title is `review: <role> — <initials>`. The editor merges as-is — no edits to reviewer text. Disposition (accept / decline / defer per comment) happens in a separate file (§5).
+Reviewers commit their review document to `ietf/reviews/` in the repository as a pull request. The pull request title is `review: <role>, <initials>`. The editor merges as-is, no edits to reviewer text. Disposition (accept / decline / defer per comment) happens in a separate file (§5).
 
 ---
 
@@ -214,9 +214,9 @@ Reviewers commit their review document to `ietf/reviews/` in the repository as a
 
 Within five working days of M14 Week 3 Friday cutoff, the protocol editor reads every comment in every review and triages each into one of three buckets, recorded in `ietf/REVIEW-DISPOSITIONS.md`:
 
-- **accept** — the comment lands as a diff in the draft. The disposition entry cites the review filename and line, and links to the commit.
-- **decline** — the comment does not land. The disposition entry cites the review and gives a reason (working group consensus, contradicts another reviewer, out of scope, etc.). The reviewer is notified on the GitHub issue.
-- **defer** — the comment is real but does not block the -01 revision. It moves to the 1.x errata backlog at `spec/SPEC-ERRATA-1.x.md` (created at M17 errata freeze if not earlier). The disposition entry cites the review and the errata-backlog issue number.
+- **accept**, the comment lands as a diff in the draft. The disposition entry cites the review filename and line, and links to the commit.
+- **decline**, the comment does not land. The disposition entry cites the review and gives a reason (working group consensus, contradicts another reviewer, out of scope, etc.). The reviewer is notified on the GitHub issue.
+- **defer**, the comment is real but does not block the -01 revision. It moves to the 1.x errata backlog at `spec/SPEC-ERRATA-1.x.md` (created at M17 errata freeze if not earlier). The disposition entry cites the review and the errata-backlog issue number.
 
 No comment is silently rejected. The disposition file is public.
 
@@ -238,13 +238,13 @@ By end of M14 Week 4, the editor produces revision `-01` with all **accept** cha
 
 ### 5.5 Late-arriving feedback
 
-Comments that miss the M14 Week 3 Friday cutoff are not silently lost — they are appended to the 1.x errata backlog with attribution. Reviewers are warned of the cutoff in their initial brief and again on M14 Week 3 Monday.
+Comments that miss the M14 Week 3 Friday cutoff are not silently lost, they are appended to the 1.x errata backlog with attribution. Reviewers are warned of the cutoff in their initial brief and again on M14 Week 3 Monday.
 
 ---
 
 ## 6. Reviewer compensation
 
-Per `../funding/BUDGET.md` Phase 5 line ("External review (security + privacy reviewers): €3,000"), the budget covers paid reviewer time at roughly one engineer-week each for the two non-implementer reviewers. The three implementer reviewers are paid in the same Phase 5 line (rolled in) when the working group can fund them; in practice, implementer reviewers are sometimes already employed by organizations that consider this work part of their open-source contribution time, in which case they decline payment and the residual budget rolls forward into 1.x errata work.
+Per `../internal/funding/BUDGET.md` Phase 5 line ("External review (security + privacy reviewers): €3,000"), the budget covers paid reviewer time at roughly one engineer-week each for the two non-implementer reviewers. The three implementer reviewers are paid in the same Phase 5 line (rolled in) when the working group can fund them; in practice, implementer reviewers are sometimes already employed by organizations that consider this work part of their open-source contribution time, in which case they decline payment and the residual budget rolls forward into 1.x errata work.
 
 The compensation arrangement is documented per reviewer in their sign-off attestation (§4.4) so the IRSG submission package is honest about what was paid.
 
@@ -256,7 +256,7 @@ If grant funding for this line has not landed by M13 Week 3, the editor pauses o
 
 The five reviews, the disposition file, and the diff become permanent artifacts of the spec's history. They are referenced in the published RFC's Acknowledgments section by name (with reviewer permission per §4.4) and they are linked from the custodian's spec page so that future implementers can read the working group's reasoning on every comment.
 
-The reviewers are also invited — separately, by the paid coordinator, after the submission email goes — to attend the in-person event in M16 (`ROADMAP.md` Phase 6 M16). Attendance is optional and travel-subsidized from the event line of the budget.
+The reviewers are also invited, separately, by the paid coordinator, after the submission email goes, to attend the in-person event in M16 (`internal/ROADMAP.md` Phase 6 M16). Attendance is optional and travel-subsidized from the event line of the budget.
 
 The review process is the moment where `om` stops being a working-group artifact and starts being a public protocol. Treat it accordingly.
 
@@ -266,9 +266,9 @@ The review process is the moment where `om` stops being a working-group artifact
 
 Created at the start of M14:
 
-- `ietf/REVIEW-PACKAGE.md` — this document
-- `ietf/REVIEW-DISPOSITIONS.md` — empty scaffold; the editor populates during Week 4 triage
-- `ietf/reviews/` — directory; reviewer pull requests merge here
+- `ietf/REVIEW-PACKAGE.md`, this document
+- `ietf/REVIEW-DISPOSITIONS.md`, empty scaffold; the editor populates during Week 4 triage
+- `ietf/reviews/`, directory; reviewer pull requests merge here
 
 Created during M14:
 
@@ -280,8 +280,8 @@ Created during M14:
 
 Created at the end of M14 Week 4:
 
-- `ietf/draft-om-rss-01.md` — the revised draft
-- `ietf/diff-00-to-01.md` — the human-readable diff between revisions
+- `ietf/draft-om-rss-01.md`, the revised draft
+- `ietf/diff-00-to-01.md`, the human-readable diff between revisions
 
 Bundled into the M15 submission package at `ietf-submission/2026-MM/`:
 

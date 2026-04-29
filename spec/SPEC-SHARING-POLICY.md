@@ -1,11 +1,11 @@
-# Open Membership RSS — Sharing Policy Companion 0.1
+# Open Membership RSS, Sharing Policy Companion 0.1
 
-> **Provisional — subject to errata once a production podcast publisher (SPEC §H.5 persona 2) has deployed and tested this primitive.** Do NOT treat this element as stable until at least one publisher has used it in anger. The version number is 0.1, deliberately not 1.0, to signal that the shape below is a first attempt at an open problem.
+> **Provisional, subject to errata once a production podcast publisher (SPEC §H.5 persona 2) has deployed and tested this primitive.** Do NOT treat this element as stable until at least one publisher has used it in anger. The version number is 0.1, deliberately not 1.0, to signal that the shape below is a first attempt at an open problem.
 
-- **Title:** Open Membership RSS — Sharing Policy Companion
+- **Title:** Open Membership RSS, Sharing Policy Companion
 - **This version:** 0.1 (draft, 2026-04-24)
 - **Companion to:** Open Membership RSS 0.4 (`SPEC.md`)
-- **Namespace:** `http://purl.org/rss/modules/membership/` (the element lives in the existing `om:` namespace — no new namespace is introduced)
+- **Namespace:** `http://purl.org/rss/modules/membership/` (the element lives in the existing `om:` namespace, no new namespace is introduced)
 - **Status:** Provisional. ROADMAP Phase 2 M4 deliverable. Resolves SPEC §H.2 Open Question as a first draft only. Expect churn in 0.4.1 errata once persona 2 deployment evidence arrives.
 
 ## Copyright
@@ -24,13 +24,13 @@ This companion is a first draft answer. It exists for three reasons:
 
 1. **Patreon's model is the production evidence.** It is the only widely-deployed anti-sharing model for tokenized RSS at scale. Ignoring it would leave `om` publishers improvising.
 2. **The federation risk is real.** SPEC §H.2 item 1 names it: *"in a federated `om` ecosystem, a malicious reader could intentionally distribute one token across many devices and there would be no central party to enforce."* Without even a declarative element, publishers will improvise incompatibly and readers will have no signal to honor.
-3. **Publisher visibility, not DRM.** The goal is to give publishers a signal they can act on and to give honest readers a way to behave well. This is not a rights-management primitive and cannot be made into one — see §C below.
+3. **Publisher visibility, not DRM.** The goal is to give publishers a signal they can act on and to give honest readers a way to behave well. This is not a rights-management primitive and cannot be made into one, see §C below.
 
 This companion is explicitly not a stable 1.0 artifact. ROADMAP's risk register flags "anti-sharing primitive lands too early and fragments" and mitigates with: *"ship the M4 draft as explicitly provisional, clearly marked subject to errata once persona 2 (podcaster) is in production."* That is what this document is.
 
 ---
 
-## 2. `<om:sharing-policy>` — channel-level element (optional)
+## 2. `<om:sharing-policy>`, channel-level element (optional)
 
 A publisher declares its sharing posture at channel level. The element is optional; its absence means the publisher makes no declaration and readers infer nothing.
 
@@ -83,14 +83,14 @@ The publisher expects each device to present a DPoP proof (RFC 9449) on every au
 
 - Thumbprints are stable across requests from the same reader installation.
 - Thumbprints are different across installations (a fresh key is generated per installation).
-- Thumbprints are not linkable across publishers — each publisher sees its own binding; the same device fetching from two publishers may use the same key or may use different keys at the reader's discretion (readers with pseudonymous publishers in the feed list SHOULD rotate per publisher).
+- Thumbprints are not linkable across publishers, each publisher sees its own binding; the same device fetching from two publishers may use the same key or may use different keys at the reader's discretion (readers with pseudonymous publishers in the feed list SHOULD rotate per publisher).
 - No User-Agent or IP data is implied; the thumbprint alone is enough.
 
 The DPoP public-key thumbprint IS the device identifier for the purposes of `<om:sharing-policy>`. No other identifier is introduced by this companion.
 
 ### 3.3 `detection="both"`
 
-The publisher MAY use both signals — for example, soft-count distinct thumbprints and hard-count distinct (User-Agent, IP/24) pairs. A publisher choosing `both` SHOULD document in its discovery document (§9) which signal dominates when they disagree.
+The publisher MAY use both signals, for example, soft-count distinct thumbprints and hard-count distinct (User-Agent, IP/24) pairs. A publisher choosing `both` SHOULD document in its discovery document (§9) which signal dominates when they disagree.
 
 ---
 
@@ -118,7 +118,7 @@ This companion formalizes that recommendation.
 
 - A reader importing a `.ommem` portability bundle (SPEC-PORTABILITY §4.6 shape) that includes a DPoP key SHOULD, for each such credential, inspect the publisher's feed (or cached discovery document) for `<om:sharing-policy>`.
 - If `<om:sharing-policy>` is present with `max_devices` set, the reader SHOULD display a warning: the device count will increment on first fetch from the imported installation, and the publisher MAY throttle or reject that fetch under `soft` or `hard` enforcement.
-- The reader MAY offer the user two paths: (a) import the existing DPoP key (same thumbprint, same device-count slot — recommended when retiring the source device) or (b) discard the imported key and trigger a device-rotation flow at the publisher (see §5.2 — recommended when the source device remains in use).
+- The reader MAY offer the user two paths: (a) import the existing DPoP key (same thumbprint, same device-count slot, recommended when retiring the source device) or (b) discard the imported key and trigger a device-rotation flow at the publisher (see §5.2, recommended when the source device remains in use).
 
 ### 5.2 Publisher recommendations
 
@@ -140,7 +140,7 @@ Advisory is the honest default for a publisher that wants to gather signal witho
 
 ### 6.2 `enforcement="soft"`
 
-The publisher MAY throttle feed refresh, enclosure download rate, or unlock endpoint calls for credentials exceeding `max_devices`. The specific throttle policy is publisher-local and not normatively constrained here. Readers MUST treat 429 Too Many Requests (RFC 6585) responses on gated resources the same way they treat them on any other resource — respecting `Retry-After`, backing off exponentially, surfacing the throttle to the user if it persists beyond the publisher-advertised `grace_period_hours`.
+The publisher MAY throttle feed refresh, enclosure download rate, or unlock endpoint calls for credentials exceeding `max_devices`. The specific throttle policy is publisher-local and not normatively constrained here. Readers MUST treat 429 Too Many Requests (RFC 6585) responses on gated resources the same way they treat them on any other resource, respecting `Retry-After`, backing off exponentially, surfacing the throttle to the user if it persists beyond the publisher-advertised `grace_period_hours`.
 
 A publisher in `soft` mode MUST NOT 401 or 403 over-limit fetches. `soft` is about friction, not lockout.
 
@@ -159,13 +159,13 @@ The 401 response body MUST be JSON and MUST include, at minimum:
 }
 ```
 
-`review_devices_endpoint` is a publisher-hosted URL where the subscriber can review the current device list, revoke a device, and trigger a rotation. The endpoint is OUT of scope for this companion — publishers implement whatever UX suits them; only the JSON pointer is normative.
+`review_devices_endpoint` is a publisher-hosted URL where the subscriber can review the current device list, revoke a device, and trigger a rotation. The endpoint is OUT of scope for this companion, publishers implement whatever UX suits them; only the JSON pointer is normative.
 
 ---
 
 ## 7. Privacy interaction
 
-`<om:sharing-policy>` adds tracking data to publisher logs. Not a lot — a DPoP thumbprint is 32 bytes of not-obviously-meaningful entropy — but enough to matter for publishers with a stated privacy posture.
+`<om:sharing-policy>` adds tracking data to publisher logs. Not a lot, a DPoP thumbprint is 32 bytes of not-obviously-meaningful entropy, but enough to matter for publishers with a stated privacy posture.
 
 ### 7.1 Pseudonymous publishers
 
@@ -230,11 +230,11 @@ The `.well-known/open-membership` document (SPEC 0.4 §9) gains an optional `sha
 }
 ```
 
-The `sharing_policy_version` field at top level is an explicit marker — readers that do not recognize the version string SHOULD treat the whole object as opaque and behave as if no policy were declared.
+The `sharing_policy_version` field at top level is an explicit marker, readers that do not recognize the version string SHOULD treat the whole object as opaque and behave as if no policy were declared.
 
 ---
 
-## 10. Worked example — podcast publisher (persona 2)
+## 10. Worked example, podcast publisher (persona 2)
 
 A podcast publisher matching SPEC §H.5 persona 2 (the Patreon-refugee podcaster) declares a soft-enforcement sharing policy. Full feed fragment:
 
@@ -295,7 +295,7 @@ The publisher gets a visible, actionable signal. The reader behaves honestly. A 
 
 - A **Level 3** reader (SPEC 0.4 §7) already implements bearer + DPoP auth. Such a reader honors `<om:sharing-policy>` essentially for free: it already generates and presents DPoP proofs; all that's added is the reader-side warning on portability import (§5.1) and the 401/429 response handling (§6).
 - A **Level 2** reader (url-token + in-app checkout, no DPoP) MAY ignore `<om:sharing-policy>`. Absence of DPoP means `detection="dpop-key"` is not applicable to this reader's traffic; under `detection="client-id"` the publisher falls back to whatever client-side signals it can observe.
-- A reader claiming to honor this companion MUST honor §4 (key binding) and §5 (migration warnings). It SHOULD honor §6 (surfacing 429 / 401 with device-limit JSON bodies). It MUST NOT claim to "enforce" sharing policy — this is a reader-side honest-behavior contract, not enforcement.
+- A reader claiming to honor this companion MUST honor §4 (key binding) and §5 (migration warnings). It SHOULD honor §6 (surfacing 429 / 401 with device-limit JSON bodies). It MUST NOT claim to "enforce" sharing policy, this is a reader-side honest-behavior contract, not enforcement.
 
 ### 11.2 Publisher conformance
 
@@ -327,7 +327,7 @@ This companion resolves SPEC §H.2 Open Question as a first draft. It leaves sev
 
 1. **Is `first-seen-wins` the right default under `enforcement="hard"`?** Patreon appears to use a user-visible device list with explicit revocation. `om` 0.1 punts to publisher discretion. The first podcaster to deploy will tell us whether first-seen-wins is usable or infuriating.
 2. **What is the right `grace_period_hours` default?** 0.1 says `0`. Patreon's observed behavior suggests they tolerate short-term over-limits that auto-resolve. A single production deployment with instrumentation will answer this better than any draft.
-3. **Should `max_devices` have tier-scoped variants?** A family tier SHOULD permit more devices than a solo tier. 0.1 punts — the element is channel-level only. Evidence of demand may push this to a tier-scoped attribute in 0.4.1.
+3. **Should `max_devices` have tier-scoped variants?** A family tier SHOULD permit more devices than a solo tier. 0.1 punts, the element is channel-level only. Evidence of demand may push this to a tier-scoped attribute in 0.4.1.
 4. **How does `<om:sharing-policy>` interact with `<om:group>` (SPEC 0.2)?** A group subscription already intends multiple devices. 0.1 does not specify, and the first group-subscription deployment will force clarification. Likely answer: `<om:group>` credentials are exempt from `max_devices`, or `max_devices` is per-group-member rather than per-credential.
 5. **Is `review_devices_endpoint` enough UX glue?** Or does the reader need a richer in-app flow (per RFC-9728-style metadata) to show the device list inline? 0.1 keeps it to a JSON pointer; the first reader integration will tell us whether that's enough.
 
@@ -337,12 +337,12 @@ Resolution of each open question is gated on production evidence. None of them s
 
 ## 14. Relation to SPEC 0.4 and SPEC-PORTABILITY 1.0
 
-- **SPEC 0.4 §H.2** — this companion is the first draft answer to that Open Question.
-- **SPEC 0.4 Foundational, `<om:authMethod>`** — no new auth method is added. `dpop` is reused as-is.
-- **SPEC 0.4 §4.3 `<om:privacy>`** — §7 of this companion defines the interaction.
-- **SPEC 0.4 §3 bundles** — §8 of this companion defines the interaction.
-- **SPEC-PORTABILITY §4.6 dpop credential shape** — the DPoP key pair exported there is the same key pair `<om:sharing-policy>` counts against `max_devices`.
-- **SPEC-PORTABILITY §S4 import warning** — formalized in §5.1 of this companion.
+- **SPEC 0.4 §H.2**, this companion is the first draft answer to that Open Question.
+- **SPEC 0.4 Foundational, `<om:authMethod>`**, no new auth method is added. `dpop` is reused as-is.
+- **SPEC 0.4 §4.3 `<om:privacy>`**, §7 of this companion defines the interaction.
+- **SPEC 0.4 §3 bundles**, §8 of this companion defines the interaction.
+- **SPEC-PORTABILITY §4.6 dpop credential shape**, the DPoP key pair exported there is the same key pair `<om:sharing-policy>` counts against `max_devices`.
+- **SPEC-PORTABILITY §S4 import warning**, formalized in §5.1 of this companion.
 
 ---
 

@@ -1486,7 +1486,7 @@ A Publisher declaring `om:privacy` value `pseudonymous` or
 A portability export file ({{OM-PORTABILITY}}) is the single
 point at which per-Publisher identities are co-resident in a
 single artifact. {{OM-PORTABILITY}} Section 8 defines rules
-P1–P5 constraining what an export MAY contain. Implementers
+P1-P5 constraining what an export MAY contain. Implementers
 MUST implement those rules: in particular, the export MUST
 preserve per-Publisher pseudonyms so that migration appears as
 session continuation rather than new-subscriber events at each
@@ -1567,7 +1567,7 @@ specification {{OM-PORTABILITY}}:
 IANA is requested to acknowledge the following JSON-LD context
 URI, registered under the Module's stewardship:
 
-- `https://purl.org/rss/modules/membership/portability/v1` —
+- `https://purl.org/rss/modules/membership/portability/v1` -
   JSON-LD context for the Portability Format.
 
 ## Registries Not Extended
