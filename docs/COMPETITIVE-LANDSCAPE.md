@@ -48,25 +48,49 @@ FeedPress sells private feeds with URL-key auth and device fingerprinting. Outpo
 - An open-spec alternative lets a reader interoperate with any `om`-compliant feed without per-service integration
 - The FeedPress/Outpost team may eventually adopt `om` themselves if it reaches adoption — the pitch to them would be "your product works the same; it just becomes one of several compliant implementations rather than a proprietary one"
 
-### 6. Memberful, Supercast, Supporting Cast, Castos, Glow.fm
+### 6. Passport (passport.online — Ben Thompson + Automattic)
+
+Launched 2024 by Ben Thompson (Stratechery) in collaboration with Automattic. Currently waitlist; commercial SaaS. The most architecturally adjacent product to `om`: built on the same insight that **subscription platforms should organise around entitlements, not content tiers**.
+
+Their own framing: *"A user has a set of entitlements — think of the analogy of a Passport with a set of visas — which dictates what content they can or cannot access."* That is the same shift `om` 0.4 §3 (Cross-Publisher Bundles) and §4 (Verifiable Credentials) describe — *users → entitlements → content* instead of the legacy *content → tiers → users*. A publisher of Thompson's stature, working with Automattic (WordPress.com), reaching the same architectural conclusion is the strongest external validation of the model the spec rests on.
+
+What's the same in both: per-publisher Stripe ownership (creator keeps payments and customer relationship), OAuth/OpenID for sign-in, multi-channel delivery (web + email + RSS/podcast) on a single entitlement, customisable per-subscriber paywall.
+
+What's different:
+
+- **Passport is closed SaaS, `om` is an open spec.** Entitlements live in Passport's database, queryable only via Passport's API. `om` entitlements are W3C Verifiable Credentials the subscriber holds — verifiable offline, portable across reader apps.
+- **Passport requires WordPress** (or Passport's hosted setup). `om` works on any RSS-emitting CMS via the namespace + `.well-known/open-membership`.
+- **No cross-publisher bundle.** Passport's entitlements are per-publisher; a subscriber paying ten Passport publishers gets ten separate entitlement sets. `om` 0.4 §3 defines an aggregator pattern any third party can operate.
+- **No pseudonymous mode.** Passport uses a stable subscriber identity. `om` Level 7 (OM-VC-SD with BBS+ selective disclosure) lets the subscriber prove entitlement without revealing a correlatable identifier.
+- **No subscriber portability.** A Passport member moving to a non-Passport publisher loses their entitlement. `om` defines a credential export format (`spec/SPEC-PORTABILITY.md`) for exactly that case.
+- **Closed reader surface.** A reader app cannot consume Passport content without a per-publisher integration. An `om` feed is readable by any reader implementing the namespace, today.
+
+**Strategic position for `om`:**
+
+- **Validates the architectural bet.** Two of the most credible voices in indie publishing reaching the same conclusion as the spec — within months of `om` 0.4 — is significant. The entitlement model is right; the question is whether it lives in one company's database or in an open standard.
+- **Implements roughly half of what `om` does, behind a paywall.** Passport handles multi-channel single-entitlement delivery and per-subscriber customisation. It does not solve the cross-publisher bundle problem, the pseudonymous problem, the portability problem, or the reader-interop problem. `om` solves all four.
+- **A plausible eventual adopter.** Passport's entitlement schema maps almost directly to `<om:tier>` + `<om:offer>` + the OM-VC profile. A Passport publisher emitting an `om`-conformant feed alongside Passport's native channels extends reach into any RSS reader without losing Passport's UX. The pitch parallels the FeedPress/Outpost one: "your product works the same; it just becomes one of several `om`-compliant implementations rather than the only path."
+- **The Automattic angle is double-edged.** Passport runs on WordPress; `om-wordpress` targets the same CMS; the Automattic ActivityPub plugin is one of `spec/SPEC-ACTIVITYPUB.md`'s integration points. A WordPress publisher in 2026 may face a choice: Passport (closed, polished, takes commission), an `om`-conformant self-hosted stack (open, requires self-hosting), or both alongside each other (Passport for the polished UX, `om` for cross-reader interop). The honest read is that Passport raises the bar for `om-wordpress` to clear on day-one publisher experience.
+
+### 7. Memberful, Supercast, Supporting Cast, Castos, Glow.fm
 
 All offer variants of "sell paid RSS through our service, typically with Stripe backend, private feed URLs to subscribers." Differ in pricing (flat monthly fee vs. per-subscriber fee), scope (Supercast and Castos are podcast-focused, Memberful is more general), and integration points.
 
 **Strategic position:** the group of SaaS companies that would most directly benefit from adopting `om`. Their business moat isn't the tokenized-feed mechanism (which is commoditizable); it's the publisher-facing UX and the Stripe integration. Making their feeds `om`-compliant costs them little and gives them the "works with any RSS reader" marketing advantage.
 
-### 7. Podcasting 2.0 (`podcast:` namespace)
+### 8. Podcasting 2.0 (`podcast:` namespace)
 
 The most direct open-spec precedent. Value-for-value via Lightning, published namespace, community-maintained by the Podcast Index.
 
 **Strategic position:** complementary, not competitive. `om` 0.4 §8 defines explicit co-existence rules. A feed can carry both namespaces and neither loses information. The ideal case is that Podcast Index apps adopt `om` for fiat-subscription handling while keeping their Lightning-native primitives.
 
-### 8. ActivityPub-based platforms (Ghost Fediverse, WordPress ActivityPub, Threads)
+### 9. ActivityPub-based platforms (Ghost Fediverse, WordPress ActivityPub, Threads)
 
 Rapidly adopting ActivityPub for federation. Monetization is unsolved at the protocol level. Individual publishers bolt on Patreon, PayPal, or Stripe externally.
 
 **Strategic position:** `om` complements ActivityPub the way it complements Podcasting 2.0. An `om`-aware publisher running Ghost with both the `om` plugin and Ghost's ActivityPub plugin has federated discovery AND interoperable paid content, something no current platform provides.
 
-### 9. Video-content platforms (PeerTube, Nebula, Floatplane, Corridor Digital)
+### 10. Video-content platforms (PeerTube, Nebula, Floatplane, Corridor Digital)
 
 Not directly competitive with `om` — `om` is a syndication-feed spec, these are video-hosting platforms — but the distribution of choices among paid-video creators is an important data point, because it's the exact scenario a video-aware `om` would eventually target.
 
