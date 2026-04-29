@@ -1,0 +1,121 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  site-build:
+    name: Site (build, dry-run)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: site/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-dist
+          path: site/dist
+          retention-days: 7
+
+  links:
+    name: Link checker (lychee)
+    runs-on: ubuntu-latest
+    needs: site-build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download built site
+        uses: actions/download-artifact@v4
+        with:
+          name: site-dist
+          path: site/dist
+      - name: Run lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --max-concurrency 8
+            --timeout 20
+            --max-redirects 5
+            --accept 200..=204,206,403,429
+            --exclude-path site/node_modules
+            --exclude-path references
+            --exclude-path '*.lock'
+            --exclude '^https://github\.com/leanderrj/open-membership/(blob|tree)/main/'
+            --exclude '^http://purl\.org/'
+            --exclude '^https://fieldnotes\.example/'
+            --exclude '^https://aggregator\.example/'
+            --exclude 'mailto:'
+            './**/*.md'
+            './site/dist/**/*.html'
+          fail: true
+          format: markdown
+
+  spec-validate:
+    name: Spec example validators
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install validators
+        run: |
+          npm install --no-save \
+            xmllint-wasm@4 \
+            ajv@8 ajv-formats@3
+      - name: Validate example feed against XSD
+        run: node scripts/validate-feed.mjs
+      - name: Validate inline JSON examples in SPEC.md
+        run: node scripts/validate-discovery.mjs
+
+  no-em-dashes:
+    name: Style: no em or en dashes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Search source for em or en dashes
+        shell: bash
+        run: |
+          set -e
+          # Allowed exceptions:
+          # - references/ holds verbatim upstream specs (W3C, IETF) and must not be edited.
+          # - LICENSE-SPEC reproduces the CC-BY-4.0 deed verbatim.
+          # - CONTRIBUTING.md and the PR template document the rule by literal example.
+          # - memory/ files are not part of the published artefact.
+          violations=$(grep -rln $'\xe2\x80\x94\|\xe2\x80\x93' \
+            --include='*.md' --include='*.html' --include='*.astro' \
+            --include='*.ts' --include='*.tsx' --include='*.js' \
+            --include='*.mjs' --include='*.css' --include='*.yml' \
+            --include='*.yaml' --include='*.go' --include='*.php' \
+            --include='*.xml' --include='*.cff' \
+            . 2>/dev/null \
+            | grep -v -E '^\./(references/|LICENSE-SPEC$|node_modules/|site/node_modules/|site/dist/|CONTRIBUTING\.md$|\.github/pull_request_template\.md$)' \
+            || true)
+          if [ -n "$violations" ]; then
+            echo "Em/en dashes found in:"
+            echo "$violations"
+            exit 1
+          fi
+          echo "OK"

@@ -28,8 +28,38 @@ const {
 
 const seoTitle = pageTitle ?? `${title} · Open Membership RSS`;
 const stripAnchor = (s: string) => s.replace(/[¶#]+\s*$/, '').trim();
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const ldjson = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: title,
+  name: title,
+  abstract: summary,
+  description: description ?? summary,
+  url: pageUrl,
+  inLanguage: 'en',
+  isPartOf: {
+    '@type': 'TechArticle',
+    name: 'Open Membership RSS',
+    url: 'https://openmembership.org/spec/',
+  },
+  author: {
+    '@type': 'Organization',
+    name: 'Open Membership Working Group',
+    url: 'https://openmembership.org/',
+  },
+  license: 'https://creativecommons.org/licenses/by/4.0/',
+  proficiencyLevel: 'Expert',
+  dependencies: 'RFC 8615; RFC 9728; W3C Verifiable Credentials Data Model 2.0; W3C Decentralized Identifiers 1.0; W3C BBS Cryptosuite',
+};
 ---
 <BaseLayout title={seoTitle} description={description ?? summary}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(ldjson)} />
+    <meta property="og:type" content="article" />
+    <meta property="article:section" content="Specification" />
+  </Fragment>
   <main class="bg-paper">
     <article class="mx-auto max-w-prose px-6 pt-12 pb-20">
       {crumbs.length > 0 && (
@@ -66,7 +96,9 @@ const stripAnchor = (s: string) => s.replace(/[¶#]+\s*$/, '').trim();
         </nav>
       )}
 
-      <div class="prose prose-spec max-w-none">
+      <div class="prose prose-spec max-w-none" data-pagefind-body>
+        <span data-pagefind-meta={`title:${title}`} hidden />
+        <span data-pagefind-meta={`summary:${summary}`} hidden />
         <slot />
       </div>
     </article>

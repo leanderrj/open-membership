@@ -1,0 +1,57 @@
+name: Implementation bug
+description: Report a bug in a reference implementation under reference/
+title: "[<impl>] "
+labels: ["bug", "reference-impl"]
+body:
+  - type: dropdown
+    id: implementation
+    attributes:
+      label: Implementation
+      options:
+        - om-ghost
+        - om-wordpress
+        - om-miniflux
+        - om-eleventy
+        - om-test-suite
+        - om-portability-roundtrip
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: "v0.1.0 or commit sha"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimal steps to reproduce, including the input feed/discovery doc/credential where relevant.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What does the specification say should happen? Cite the section if you can.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: OS, runtime version, CMS version, browser if applicable.
+    validations:
+      required: false

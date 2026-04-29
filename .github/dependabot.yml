@@ -1,0 +1,85 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: ci
+      include: scope
+
+  - package-ecosystem: npm
+    directory: /site
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: site
+      include: scope
+    groups:
+      astro:
+        patterns:
+          - astro
+          - "@astrojs/*"
+      tailwind:
+        patterns:
+          - tailwindcss
+          - "@tailwindcss/*"
+      rehype:
+        patterns:
+          - "rehype-*"
+
+  - package-ecosystem: npm
+    directory: /reference/om-ghost
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: om-ghost
+      include: scope
+
+  - package-ecosystem: npm
+    directory: /reference/om-eleventy
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: om-eleventy
+      include: scope
+
+  - package-ecosystem: gomod
+    directory: /reference/om-miniflux
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: om-miniflux
+      include: scope
+
+  - package-ecosystem: gomod
+    directory: /reference/om-test-suite
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: om-test-suite
+      include: scope
+
+  - package-ecosystem: gomod
+    directory: /reference/om-portability-roundtrip
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: om-portability
+      include: scope
+
+  - package-ecosystem: composer
+    directory: /reference/om-wordpress
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: om-wordpress
+      include: scope

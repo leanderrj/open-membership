@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openmembership.org/spec/schemas/om-discovery.schema.json",
+  "title": "Open Membership RSS, discovery document",
+  "description": "JSON Schema for the .well-known/open-membership discovery document. Composes with RFC 9728 OAuth 2.0 Protected Resource Metadata. Where this schema and SPEC.md disagree, SPEC.md is canonical.",
+  "type": "object",
+  "required": [
+    "spec_version",
+    "provider",
+    "auth_methods",
+    "endpoints"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "spec_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "provider": {
+      "type": "string",
+      "format": "uri"
+    },
+    "auth_methods": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["url-token", "http-basic", "bearer", "dpop"]
+      }
+    },
+    "endpoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "token": { "type": "string", "format": "uri" },
+        "checkout": { "type": "string", "format": "uri" },
+        "entitlements": { "type": "string", "format": "uri" },
+        "portal": { "type": "string", "format": "uri" },
+        "revocation": { "type": "string", "format": "uri" }
+      }
+    },
+    "revocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "policy": {
+          "type": "string",
+          "enum": ["prospective-only", "chargeback-revocation", "full-revocation"]
+        },
+        "grace_hours": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["policy"]
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["standard", "pseudonymous-supported", "pseudonymous-required"]
+        },
+        "supported_presentations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["full", "selective-disclosure"]
+          }
+        }
+      }
+    },
+    "bundles": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "is_aggregator": { "type": "boolean" },
+        "bundled_from": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["provider", "trust"],
+            "additionalProperties": false,
+            "properties": {
+              "provider": { "type": "string", "format": "uri" },
+              "trust": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                  "did": { "type": "string" },
+                  "jwks_uri": { "type": "string", "format": "uri" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "gifts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "supported": { "type": "boolean" },
+        "redeemable_via": { "type": "string", "format": "uri" }
+      }
+    },
+    "verifiable_credentials": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "profile": { "type": "string", "format": "uri" },
+        "selective_disclosure_profile": { "type": "string", "format": "uri" },
+        "cryptosuite": { "type": "string" }
+      }
+    },
+    "groups": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "publisher_managed": { "type": "boolean" },
+        "self_managed": { "type": "boolean" },
+        "scim_endpoint": { "type": "string", "format": "uri" }
+      }
+    }
+  }
+}

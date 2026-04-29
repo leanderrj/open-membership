@@ -33,6 +33,7 @@ const url = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
 <link rel="manifest" href="/manifest.webmanifest" />
 <meta name="theme-color" content="#16181c" />
 <link rel="alternate" type="application/rss+xml" title="Open Membership example feed" href="/example/feed.xml" />
+<slot name="head" />
 </head>
 <body class="bg-paper text-ink font-sans antialiased">
 
@@ -45,7 +46,7 @@ const url = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
       <a href="/#protocol" class="hover:text-accent">Protocol</a>
       <a href="/spec/" class="hover:text-accent">Spec</a>
       <a href="/docs/" class="hover:text-accent">Docs</a>
-      <a href="/#involved" class="hover:text-accent">Contribute</a>
+      <a href="/search/" class="hover:text-accent">Search</a>
       <a href="https://github.com/leanderrj/open-membership" class="hover:text-accent">GitHub</a>
     </nav>
   </div>
@@ -72,9 +73,9 @@ const url = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
     <div>
       <h4 class="text-xs uppercase tracking-wider text-ink-mute mb-2">Repository</h4>
       <ul class="space-y-1.5 text-ink-soft">
-        <li><a href="https://github.com/leanderrj/open-membership/blob/master/SPEC.md" class="hover:text-accent">SPEC.md</a></li>
-        <li><a href="https://github.com/leanderrj/open-membership/tree/master/spec" class="hover:text-accent">Companion specs</a></li>
-        <li><a href="https://github.com/leanderrj/open-membership/tree/master/reference" class="hover:text-accent">Reference code</a></li>
+        <li><a href="https://github.com/leanderrj/open-membership/blob/main/SPEC.md" class="hover:text-accent">SPEC.md</a></li>
+        <li><a href="https://github.com/leanderrj/open-membership/tree/main/spec" class="hover:text-accent">Companion specs</a></li>
+        <li><a href="https://github.com/leanderrj/open-membership/tree/main/reference" class="hover:text-accent">Reference code</a></li>
       </ul>
     </div>
     <div>

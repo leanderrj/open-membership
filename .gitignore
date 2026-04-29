@@ -1,1 +1,9 @@
 .DS_Store
+# Local validator scratch space at repo root (site has its own gitignore for node_modules).
+/node_modules/
+/package-lock.json
+/package.json
+# Built IETF draft artefacts (XML/text/html). Source is ietf/draft-om-rss-00.md.
+ietf/draft-om-rss-*.xml
+ietf/draft-om-rss-*.txt
+ietf/draft-om-rss-*.html

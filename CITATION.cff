@@ -1,0 +1,66 @@
+cff-version: 1.2.0
+title: "Open Membership RSS"
+abstract: >
+  An RSS module ("om") for paid subscription content. The module declares
+  paid-subscription metadata, accepted payment service providers, per-item
+  access policy, and credential-based unlock semantics inside a syndication
+  feed. A companion discovery document at .well-known/open-membership,
+  composing with RFC 9728, supplies the credential profiles, token endpoints,
+  revocation policy, and privacy posture that a conforming reader requires.
+type: software
+message: "If you reference this specification in academic or industry work, please cite as follows."
+authors:
+  - family-names: Jansen
+    given-names: Leander
+    email: leander@leme.nl
+    affiliation: leme
+keywords:
+  - RSS
+  - syndication
+  - subscription
+  - verifiable credentials
+  - selective disclosure
+  - BBS+
+  - DPoP
+  - OAuth
+  - W3C VC
+license: CC-BY-4.0
+license-url: https://creativecommons.org/licenses/by/4.0/
+repository-code: https://github.com/leanderrj/open-membership
+url: https://openmembership.org/
+version: "0.4"
+date-released: 2026-04-23
+identifiers:
+  - type: url
+    value: https://openmembership.org/spec/
+    description: Canonical web rendering of the specification
+  - type: url
+    value: http://purl.org/rss/modules/membership/
+    description: Namespace URI
+references:
+  - type: standard
+    title: "Verifiable Credentials Data Model v2.0"
+    authors:
+      - name: World Wide Web Consortium
+    url: https://www.w3.org/TR/vc-data-model-2.0/
+  - type: standard
+    title: "OAuth 2.0 Protected Resource Metadata"
+    authors:
+      - name: Internet Engineering Task Force
+    notes: "RFC 9728"
+    url: https://www.rfc-editor.org/rfc/rfc9728
+  - type: standard
+    title: "Well-Known Uniform Resource Identifiers"
+    authors:
+      - name: Internet Engineering Task Force
+    notes: "RFC 8615"
+    url: https://www.rfc-editor.org/rfc/rfc8615
+preferred-citation:
+  type: software
+  title: "Open Membership RSS 0.4"
+  authors:
+    - family-names: Jansen
+      given-names: Leander
+  year: 2026
+  url: https://openmembership.org/spec/
+  notes: "Draft specification. Namespace: http://purl.org/rss/modules/membership/"

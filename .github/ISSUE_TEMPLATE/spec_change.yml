@@ -1,0 +1,72 @@
+name: Specification change proposal
+description: Propose a change to SPEC.md or a companion specification
+title: "[spec] "
+labels: ["spec"]
+body:
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - Editorial fix (typo, link, formatting)
+        - Clarification of existing normative text
+        - New element or attribute
+        - New companion specification
+        - Errata to a frozen version
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target
+    attributes:
+      label: Target document
+      options:
+        - SPEC.md (canonical)
+        - spec/SPEC-PORTABILITY.md
+        - spec/SPEC-ACTIVITYPUB.md
+        - spec/SPEC-ADAPTER-PROFILE.md
+        - spec/SPEC-SYNDICATION-MAPPINGS.md
+        - spec/SPEC-SHARING-POLICY.md
+        - spec/SPEC-ERRATA-0.4.1.md
+    validations:
+      required: true
+
+  - type: textarea
+    id: section
+    attributes:
+      label: Section reference
+      description: Section number or anchor (e.g. §3.4, §4.1)
+    validations:
+      required: false
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is the problem this change addresses?
+      description: An ambiguity, a mismatch with an implementation, an interoperability gap, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Concrete edited text or a sketch of the new element/attribute.
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementations
+    attributes:
+      label: Affected implementations
+      description: Which reference implementations (if any) would need to change?
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: compat
+    attributes:
+      label: Compatibility
+      options:
+        - label: This change is backward-compatible with 0.4.
+        - label: This change requires a major version bump.

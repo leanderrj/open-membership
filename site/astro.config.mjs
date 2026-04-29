@@ -12,6 +12,12 @@ export default defineConfig({
   experimental: {
     contentLayer: true,
   },
+  redirects: {
+    '/docs/landscape/': '/docs/related-work/',
+    '/docs/landscape': '/docs/related-work/',
+    '/spec/competitive-landscape/': '/docs/related-work/',
+    '/competitive-landscape/': '/docs/related-work/',
+  },
   integrations: [tailwind({ applyBaseStyles: true })],
   markdown: {
     rehypePlugins: [

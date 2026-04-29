@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Open Membership RSS, schema for the `om:` namespace.
+
+  Profile XSD covering the elements an Open Membership feed MAY add to a
+  standard RSS 2.0 channel and item. This schema is informative, not
+  normative; it MUST stay in sync with SPEC.md. Where a discrepancy is
+  found between this schema and the prose, the prose is canonical.
+
+  Used by scripts/validate-feed.mjs in CI to keep examples honest.
+-->
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:om="http://purl.org/rss/modules/membership/"
+    targetNamespace="http://purl.org/rss/modules/membership/"
+    elementFormDefault="qualified">
+
+  <!-- Channel-level elements. -->
+
+  <xs:element name="provider" type="xs:anyURI"/>
+
+  <xs:element name="discovery" type="xs:anyURI"/>
+
+  <xs:simpleType name="authMethodType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="url-token"/>
+      <xs:enumeration value="http-basic"/>
+      <xs:enumeration value="bearer"/>
+      <xs:enumeration value="dpop"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="authMethod" type="om:authMethodType"/>
+
+  <xs:element name="psp">
+    <xs:complexType>
+      <xs:attribute name="id" type="xs:string" use="required"/>
+      <xs:attribute name="account" type="xs:string" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="tier">
+    <xs:complexType mixed="true">
+      <xs:attribute name="id" type="xs:string" use="required"/>
+      <xs:attribute name="price" type="xs:string" use="optional"/>
+      <xs:attribute name="period" type="xs:string" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="offer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="price">
+          <xs:complexType>
+            <xs:attribute name="amount" type="xs:decimal" use="required"/>
+            <xs:attribute name="currency" type="xs:string" use="required"/>
+            <xs:attribute name="period" type="xs:string" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="checkout">
+          <xs:complexType>
+            <xs:attribute name="psp" type="xs:string" use="required"/>
+            <xs:attribute name="price_id" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string" use="required"/>
+      <xs:attribute name="tier" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="revocationPolicy">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="prospective-only"/>
+      <xs:enumeration value="chargeback-revocation"/>
+      <xs:enumeration value="full-revocation"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="revocation">
+    <xs:complexType>
+      <xs:attribute name="policy" type="om:revocationPolicy" use="required"/>
+      <xs:attribute name="grace_hours" type="xs:nonNegativeInteger" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="privacyLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="standard"/>
+      <xs:enumeration value="pseudonymous-supported"/>
+      <xs:enumeration value="pseudonymous-required"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="privacy" type="om:privacyLevel"/>
+
+  <!-- Item-level elements. -->
+
+  <xs:simpleType name="accessState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="open"/>
+      <xs:enumeration value="preview"/>
+      <xs:enumeration value="locked"/>
+      <xs:enumeration value="members-only"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="access" type="om:accessState"/>
+  <xs:element name="preview" type="xs:string"/>
+  <xs:element name="unlock" type="xs:anyURI"/>
+  <xs:element name="receipt" type="xs:string"/>
+
+  <xs:element name="window">
+    <xs:complexType>
+      <xs:attribute name="from" type="xs:dateTime" use="optional"/>
+      <xs:attribute name="until" type="xs:dateTime" use="optional"/>
+      <xs:attribute name="kind" type="xs:string" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

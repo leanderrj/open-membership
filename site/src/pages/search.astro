@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Search · Open Membership RSS" description="Full-text search across the specification, companion specs, and project documents.">
+  <Fragment slot="head">
+    <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  </Fragment>
+  <main>
+    <section class="border-b border-ink-line">
+      <div class="mx-auto max-w-prose px-6 py-12">
+        <p class="text-xs uppercase tracking-wider text-ink-mute mb-3">Search</p>
+        <h1 class="font-sans text-3xl md:text-4xl font-semibold tracking-tight text-ink mb-4">Open Membership RSS</h1>
+        <p class="text-ink-soft">Searches across the canonical specification, the companion specs, and the project documents. Results link to the relevant page; in-page anchors lead to the section.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="mx-auto max-w-prose px-6 py-12">
+        <div id="search" class="om-search"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { PagefindUI } from '/pagefind/pagefind-ui.js';
+    new PagefindUI({
+      element: '#search',
+      showSubResults: true,
+      showImages: false,
+      resetStyles: false,
+      autofocus: true,
+    });
+  </script>
+
+  <style is:global>
+    .om-search .pagefind-ui {
+      --pagefind-ui-primary: #1d4ed8;
+      --pagefind-ui-text: #16181c;
+      --pagefind-ui-background: #ffffff;
+      --pagefind-ui-border: #e3e6ea;
+      --pagefind-ui-tag: #f6f7f9;
+      --pagefind-ui-border-radius: 6px;
+      --pagefind-ui-image-border-radius: 4px;
+      --pagefind-ui-font: "Inter", "Helvetica Neue", system-ui, sans-serif;
+    }
+    .om-search .pagefind-ui__search-input {
+      font-size: 1rem;
+    }
+    .om-search .pagefind-ui__result-link {
+      font-weight: 600;
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,34 @@
+# Lychee config for the Open Membership RSS repository.
+# See: https://github.com/lycheeverse/lychee#user-content-configuration
+
+# Don't follow links to local development hosts.
+exclude = [
+  "^https?://localhost",
+  "^https?://127\\.0\\.0\\.1",
+  "^https?://0\\.0\\.0\\.0",
+  # Example domains used in spec text; these are intentionally non-resolvable.
+  "^https?://(fieldnotes|aggregator|publisher|reader)\\.example",
+  "^https?://example\\.(com|org)",
+  # purl.org/rss/modules/membership/ is reserved by this specification but
+  # not yet registered with PURL, so it 404s today.
+  "^http://purl\\.org/rss/modules/membership",
+  # GitHub blob/tree links to this repo at branch 'main' will not exist
+  # before the first push; allow CI to run before push.
+  "^https://github\\.com/leanderrj/open-membership/(blob|tree|issues)/",
+]
+
+# Skip checks for upstream verbatim copies.
+exclude_path = [
+  "references/",
+  "site/node_modules/",
+  "site/dist/_astro/",
+  "node_modules/",
+]
+
+# Mailto and tel: do not need network checks.
+include_mail = false
+
+max_concurrency = 8
+max_redirects = 5
+timeout = 20
+retry_wait_time = 2

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Specification clarification
+    url: https://github.com/leanderrj/open-membership/discussions
+    about: Ask whether the specification really means what you think it means.
+  - name: Security report
+    url: https://github.com/leanderrj/open-membership/blob/main/SECURITY.md
+    about: Confidential security disclosure.
