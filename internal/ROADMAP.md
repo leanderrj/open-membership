@@ -73,7 +73,7 @@ This is the riskiest phase because it depends on someone outside the project say
   - Ghost users currently using FeedPress+Outpost for paid RSS (they've already paid for this; offering them the open version is the easiest pitch)
   - Substack refugees who've migrated to Ghost and are looking for paid-RSS support
   - Small investigative journalism publications that need pseudonymous mode
-  - **Publishers on the "Open" column of opensubscriptionplatforms.com** (WooCommerce, Memberful, Memberstack, Memberspace, Podia), they have already self-selected for open values on the publisher-data axis; `om` extends that to the subscriber axis. See [docs/COMPETITIVE-LANDSCAPE.md](../docs/COMPETITIVE-LANDSCAPE.md) "Two axes of openness."
+  - **Publishers on the "Open" column of opensubscriptionplatforms.com** (WooCommerce, Memberful, Memberstack, Memberspace, Podia), they have already self-selected for open values on the publisher-data axis; `om` extends that to the subscriber axis. See [docs/RELATED-WORK.md](../docs/RELATED-WORK.md) "Two axes of openness."
 - Write outreach emails, have calls, understand actual needs
 - Pick the best-fit publisher and onboard them with hands-on support
 - Target: one publisher in production by end of month 5

@@ -16,7 +16,7 @@ Before specifying structures, the non-negotiable principles these structures mus
 
 ### Shortlist and order of asks
 
-Four candidates, in the order to ask. Don't simultaneous-ask; one at a time, a week apart, adapting the pitch based on each response.
+Four candidates, in the order to approach. Approached sequentially, one at a time, a week apart, with the request tailored to each response.
 
 **1. Internet Archive**, lowest procedural overhead, high probability of yes
 - The Internet Archive has historically hosted specifications and preservation efforts
@@ -194,7 +194,7 @@ Any single expense over €5,000 requires working group notification in advance.
 
 ### Contributor compensation
 
-Paid work, test suite maintenance, reference implementation development, coordinator time, is compensated at market rates from grant funds. Volunteer work is acknowledged in the spec and the public registry but not compensated.
+Paid work (test suite maintenance, reference implementation development, coordinator time) is compensated at standard professional rates from grant funds. Volunteer work is acknowledged in the specification and the public registry but is not compensated.
 
 The paid coordinator is explicitly paid; working group members are explicitly not (unless they're simultaneously doing paid implementation work under a grant).
 
@@ -215,4 +215,4 @@ This is the Swartz/Winer model applied proactively. RSS survived UserLand's coll
 
 The working group adopts the [Contributor Covenant](https://www.contributor-covenant.org/) for its repositories and events. The paid coordinator handles enforcement. Escalation path: coordinator → working group → custodian.
 
-This is unglamorous infrastructure but it matters. An open protocol without a CoC is a ticking bomb.
+An open protocol without a code of conduct accumulates unresolved disputes that eventually force structural decisions under pressure. The CoC exists to prevent that.

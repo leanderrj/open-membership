@@ -7,7 +7,15 @@
 - **Previous version:** 0.3 (2026-04-23)
 - **Namespace URI:** `http://purl.org/rss/modules/membership/`
 - **Suggested prefix:** `om`
-- **Status:** Feature-frozen draft. The next two revisions (0.5, 1.0) are scheduled to focus on conformance, interop, and governance, not new features.
+- **Status:** Feature-frozen draft.
+
+## Abstract
+
+This document specifies the Open Membership RSS module ("om"), an extension to RSS 2.0 and RSS 1.0/RDF that allows a publisher to declare paid-subscription metadata, accepted payment service providers, per-item access policy, and credential-based unlock semantics inside a syndication feed. A companion discovery document at `.well-known/open-membership`, composing with RFC 9728, supplies the credential profiles, token endpoints, revocation policy, and privacy posture that a conforming reader requires to evaluate access. The module supports four authentication methods (`url-token`, `http-basic`, `bearer`, `dpop`), three credential profiles (URL token, OAuth bearer, W3C Verifiable Credential 2.0 with optional BBS+ selective disclosure), and an optional cross-publisher aggregator pattern. The credential profile permits per-publisher subscriber pseudonyms, removing the cross-publisher correlation that prior subscription systems require by construction.
+
+## Status of This Document
+
+This document is a draft specification intended for IETF Independent Submission and a corresponding registration of the namespace URI under `purl.org/rss/modules/membership/`. It is not a product of any standards-track working group. Comments are tracked at `https://github.com/leanderrj/open-membership/issues`. The 0.5 and 1.0 revisions are intended to address conformance and interoperability, not to introduce new features.
 
 ## Copyright
 
@@ -453,15 +461,11 @@ The aggregator never holds Field Notes' content; Field Notes never holds aggrega
 
 ---
 
-# Part II: The Plan for 0.5
+# Part II: Implementation Status
 
-This section is non-normative. It is a plan, not a specification.
+This section is non-normative. It records the reference implementations, conformance test artifacts, and project context that accompany this specification. Project-internal material, custodianship plans, working-group composition, RFC submission strategy, and lessons drawn from related specifications, is deliberately excluded; it is recorded in [`internal/RATIONALE.md`](internal/RATIONALE.md).
 
-The temptation after a feature-complete 0.4 is to draft 0.5 as another feature-set expansion. **0.5 should not add features.** The protocol now has more than enough conceptual surface area for any plausible paid-content use case. What it lacks is *evidence that it works*.
-
-0.5 is the version that produces that evidence, with three concrete deliverables.
-
-## A. Reference Implementations (Two, On Opposite Sides of the Wire)
+## A. Reference Implementations
 
 **A.1 Publisher reference: `om-ghost`**
 
@@ -534,161 +538,6 @@ A separate set of tests that try to break the spec:
 
 Adversarial test failures during 0.5 are 0.5 errata; failures discovered after 1.0 are governance issues.
 
-## C. Governance Foundation
-
-**C.1 Custodian commitment**
-
-Before 1.0, the spec must have a neutral home. The 0.5 cycle is when this conversation happens. The shortlist:
-
-1. **Internet Archive.** Mission-aligned, has hosted similar specs, low political overhead. Probably the easiest "yes."
-2. **NLnet Foundation.** Already funds open-internet infrastructure; a custodian role is adjacent to their existing work. Likely yes if a credible work plan accompanies the ask.
-3. **Software Freedom Conservancy.** Boring, durable, the safest choice. Most procedural overhead.
-4. **A new lightweight foundation modeled on the Podcast Index.** Best fit philosophically, requires the most work to set up, would give the spec the most independence.
-
-The order to ask in: Internet Archive first (lowest cost, fast answer), NLnet second (best fit), Conservancy as the safe fallback. Skip the new-foundation route unless all three of the above decline; the spec doesn't yet have enough deployments to justify standing up new institutional machinery.
-
-The custodian's role is narrow: hold the namespace URI and the canonical spec text, host the test suite, and serve as a point of escalation if the working group dissolves. They do not need to fund or staff the working group.
-
-**C.2 Working group formation**
-
-A working group of 5-8 people, of whom at least one is funded part-time. Composition:
-
-- Two from independent publisher backgrounds (Ghost or Substack-refugee newsletter operators)
-- Two from reader-app backgrounds (Miniflux, NetNewsWire, Inoreader)
-- One from the W3C VC working group orbit (for the OM-VC-SD work)
-- One from the Podcasting 2.0 community (for the `podcast:value` co-existence story)
-- One paid coordinator
-
-Funding for the coordinator is the single most important piece. NLnet's NGI Zero programs are the right shape (small grants, multi-year, no equity, mission-aligned). Application takes ~3 weeks to write, decisions usually come within a quarter.
-
-Failing NLnet, the next best ask is Stripe directly: they fund a lot of open-protocol work because it's strategically useful when payment infrastructure stays open. The pitch is "you already invest in keeping the web's commerce layer competitive; here's a small intervention that does that for paid content."
-
-**C.3 RFC submission preparation**
-
-The spec gets submitted as an IETF Independent Submission, not Standards Track. Independent Submissions get an RFC number without requiring a working-group charter, multi-year IETF process, or vendor consensus. This is what the original RSS specs effectively did (via Resource.org and W3C purl space), and it's the right shape for a spec that has multiple deployments but no incumbent industry sponsors.
-
-The submission package needs:
-
-- A clean spec document in IETF format (mostly mechanical conversion from the current Markdown)
-- An Implementation Status section listing the reference implementations and any other deployments
-- A Security Considerations section addressing token theft, credential replay, revocation race conditions, and the privacy limits acknowledged in §10
-- An IANA Considerations section requesting registration of the namespace URI and `.well-known` suffix
-
-Submission goes to the Independent Stream Editor (currently Eliot Lear); review timeline is typically 6-12 months.
-
-## D. The Order
-
-If 0.5 had to be sequenced strictly:
-
-- **Months 1-2:** `om-ghost` plugin development. Nothing else matters until a real publisher can ship.
-- **Months 2-3:** Miniflux fork in parallel with `om-ghost` finishing. First end-to-end interop test by month 3.
-- **Months 3-4:** Test suite v1, covering at minimum the Indie Reader profile.
-- **Months 4-5:** First non-affiliated publisher onboarded. This is the qualitative milestone, when someone the spec authors don't know publishes a real `om` feed and gets paid through it, the protocol exists in the world in a way it didn't before.
-- **Months 5-6:** Custodian conversation, working group formation, NLnet application.
-- **Months 6-9:** WordPress port, NetNewsWire fork, second non-affiliated publisher, RFC submission package preparation.
-
-By month 9, the criteria for 1.0 are in sight: two reference implementations, a working test suite, three or more independent publishers, a neutral custodian commitment, a funded coordinator, and an RFC in the submission queue.
-
-## E. What Does Not Belong in 0.5
-
-Worth saying explicitly so the discipline is visible:
-
-- **No new tags.** If a real implementer hits a missing primitive, file an issue and discuss for 1.0; don't quietly add it to 0.5.
-- **No new PSP profiles.** Stripe and Mollie cover ~95% of the addressable publisher market between them. Adding Adyen, Paddle, or Chargebee profiles is 1.x work, after adoption proves the spec is alive.
-- **No new credential profiles.** OM-VC 1.0 and OM-VC-SD 1.0 are enough. Anything else is 1.x.
-- **No "Open Membership Foundation."** Premature institutionalization is what kills small protocols. The custodian arrangement in C.1 is enough governance for 1.0.
-
-## F. The Failure Modes to Watch
-
-Three specific risks during the 0.5 cycle:
-
-1. **Spec-tinkering procrastination.** Drafting 0.6 because the implementations are taking too long. The right response to a slow implementation is to help the implementer, not to write more spec.
-2. **Premature platform engagement.** A surprise email from Spotify or Substack saying "we'd like to discuss adopting your spec" is, in 0.5, more dangerous than no engagement at all. The right answer is "we'd love to talk after 1.0; here's our roadmap." Engaging too early invites design pressure that distorts the spec away from indie-publisher fit.
-3. **Crypto-suite churn.** `bbs-2023` is at Candidate Recommendation. If the W3C process re-opens substantive issues and the cryptosuite changes meaningfully, OM-VC-SD 1.0 will need a corresponding update. Watch the W3C VC WG mailing list; budget for one OM-VC-SD point release in 0.5 if needed.
-
-## G. What We Can Learn From Other Open Specs
-
-A spec doesn't get to 1.0 in a vacuum. Several recent open protocols have walked the same road we're on, and their successes and failures map directly onto choices `om` faces in 0.5. The point of this section isn't to pick a winner; it's to be honest about which patterns worked, which didn't, and what that means for how we operate.
-
-### G.1 Podcasting 2.0, the most direct precedent
-
-The closest analog. The Podcast Index team (Adam Curry, Dave Jones, and a small group of contributors) added a namespace to RSS, hosted it themselves, kept it open, and let the indie ecosystem adopt it before the incumbents. As of late 2025, millions of podcast episodes carry `podcast:transcript`, half a million carry `podcast:chapters`, and the `podcast:value` tag has driven real (if small) Lightning revenue to thousands of shows.
-
-What worked:
-
-- **Hosting the index themselves.** Podcast Index is both the spec custodian and the operator of an actual public service (the index of feeds). This dual role, protocol stewardship plus a working artifact, gave the spec gravitational pull that pure standards bodies struggle to generate.
-- **"Rules for Standards-Makers" discipline.** Once an element is canonized, backward compatibility is prioritized; new elements go through a draft phase. This is the rule `om` already adopts.
-- **Compatibility-first.** Every Podcasting 2.0 tag is invisible to a reader that doesn't understand it. A regular podcast app sees a regular RSS feed. This is the same call `om` makes and it's been validated at scale.
-- **Opinionated about what to refuse.** The team has been explicit about not courting Apple or Spotify. Indie ecosystem first, incumbents later or never. This is exactly the discipline 0.5 §F.2 codifies for `om`.
-
-What didn't work as well:
-
-- **`podcast:value` adoption is narrow.** Lightning-only by design, which means the universe of compatible apps is small (Fountain, Podverse, CurioCaster, a handful of others) and the universe of compatible listeners is even smaller. The spec's commercial primitive is technically elegant but commercially marginal, most podcast revenue still flows through Patreon, Apple Subscriptions, and Spotify Subscriptions, none of which use `podcast:value`. **This is the explicit motivation for `om`'s multi-PSP design.** Lightning is a recipient, not the only recipient.
-- **No bundle or aggregator pattern.** A listener can't pay one fee and get gated access to ten Podcasting 2.0 podcasts. The "podroll" tag is a discovery primitive, not an entitlement primitive. `om` 0.4 §3 is the explicit response.
-
-The implication for `om`'s 0.5 plan: the Podcast Index governance shape is the model to copy. A small team, a real working artifact (in our case, the test suite from §B), and the explicit indie-first stance.
-
-### G.2 ActivityPub, the cautionary tale on monetization
-
-ActivityPub is now the dominant federated social protocol, Mastodon, Threads, WordPress, Ghost, Flipboard, and Pixelfed all speak it. By any structural measure it is a wildly successful open spec. But on monetization specifically, the protocol has effectively punted: there is no standard for paid follows, paid posts, or subscription-gated content. ActivityPub's co-author Evan Prodromou famously runs a paid-access Mastodon account by manually wrapping a PayPal subscription around server-side ACL, entirely outside the protocol layer.
-
-What we learn:
-
-- **Monetization is not solved by leaving it implicit.** ActivityPub's silence on paid content has produced a Cambrian explosion of bespoke per-server hacks: Patreon-bridged Mastodon accounts, Bandcamp embeds, Stripe links in profile fields. This is exactly the fragmentation `om` is meant to prevent.
-- **Successful federated protocols generate "find their Gmail" pressure.** ActivityPub now has Threads on it; in five years it will probably have Meta or another large operator hosting half the active accounts. `om` will face the same pressure if it succeeds. The 0.5 plan's discipline about premature platform engagement (§F.2) is the inoculation.
-- **Test infrastructure is funded work, not volunteer work.** In 2023, Germany's Sovereign Tech Fund granted €152,000 to socialweb.coop specifically to build an ActivityPub interoperability test suite. The lesson: serious test infrastructure for an open protocol needs serious funding. The NLnet conversation in §C.2 is in this tradition; the Sovereign Tech Fund itself should be added to the funding-target list.
-- **Account portability is *the* hardest unsolved problem in federated identity.** ActivityPub has been at this for nearly a decade and still doesn't have clean account-migration. This validates `om`'s decision to delegate identity to a publisher or umbrella rather than try to define a portable subscriber identity from first principles. We use W3C VC + DIDs because they exist and work; we don't try to invent better.
-
-The implication for `om`'s 0.5 plan: the Sovereign Tech Fund is a funding target alongside NLnet. The pitch writes itself, "fund the open-spec test suite for paid content the way you funded the one for federated social."
-
-### G.3 OpenID Connect, the patience model
-
-OIDC took roughly four years from initial work (2010) to final spec (2014), and another five to become the default in production-grade B2B. It is now the most-deployed identity protocol on the open web after SAML, and it dominates new deployments.
-
-What we learn:
-
-- **The reference implementations matter more than the spec.** Auth0, Okta, AWS Cognito, and (later) WorkOS shipped OIDC implementations that "just worked." Companies adopted OIDC because they could buy a turnkey implementation, not because they read the spec. `om-ghost` and the Miniflux fork in §A play the same role: the protocol exists when there's a turnkey implementation available.
-- **A certification program is what makes "compliant" mean something.** OIDF's self-certification process (publishers run a test suite, post results) is what every enterprise procurement department now demands. The `om-test-suite` in §B is the seed of this. By 1.0, "self-certify your `om` conformance level" should be a standard step in any implementer's release process.
-- **Standards bodies aren't required for serious adoption.** OIDC is governed by the OpenID Foundation, not IETF or W3C. It works because the foundation is small, focused, and run by people who actually ship code. This is the "lightweight foundation" option from §C.1, and OIDF is the right model to study if `om` ends up needing one.
-
-### G.4 Signal Protocol, the don't-do-this lesson
-
-Signal Protocol is technically excellent, philosophically aligned with the open-internet ethos `om` shares, and effectively a closed ecosystem. Despite being open-source and well-documented, every meaningful deployment of Signal Protocol runs through Signal Messenger or WhatsApp; independent implementations are rare and usually broken. The spec exists; the adoption is captured.
-
-Why? Two reasons relevant to `om`:
-
-- **No registry, no discovery.** Signal Protocol has no notion of a public directory of implementations or a way for two implementations to find each other. The `.well-known/open-membership` document and the discovery flow in 0.2 §7 exist specifically to avoid this failure mode.
-- **The reference implementation is also a service.** Signal the messenger is operated by Signal Foundation, who also stewards the protocol. Adoption equals using their service. `om` deliberately separates these, the test suite is the artifact, not a hosted service. We are not in the business of operating a "default `om` provider."
-
-The implication: any tendency in 0.5 toward "we should host a default umbrella provider for indie publishers" should be resisted. The protocol's value is that it is not a service.
-
-### G.5 IndieWeb (Webmention, Micropub, IndieAuth), the long-tail success
-
-The IndieWeb suite, Webmention (W3C Recommendation), Micropub (W3C Recommendation), IndieAuth (in widespread independent use), represents what realistic open-web success at small scale looks like. None of these have hundreds of millions of users; all of them have stable, multi-implementation deployments that have lasted a decade.
-
-What we learn:
-
-- **Small can be successful.** IndieWeb has maybe 5,000 active practitioners. By any "platform" standard, that's a rounding error. By the standard `om` should aim for, "indie publishers can run their entire stack on this", it's a complete success. The right ambition for `om` 1.0 is "a few hundred publishers in production," not "every newsletter on Substack." IndieWeb is proof that the smaller goal is sustainable.
-- **The IndieWebCamp model.** Twice-yearly small in-person events where implementers gather, demo what they're building, and propose spec changes face-to-face. Cheap to run, builds the social fabric a small protocol needs, surfaces interop problems faster than mailing lists ever do. **An `om` working group should plan to host two events in the 0.5-1.0 cycle.** Even ten people in a room for two days will move the spec faster than three months of GitHub issues.
-- **Don't fight the platforms; route around them.** IndieWeb explicitly does not try to convert Twitter or Facebook users; it builds for people who already want to leave. The same posture is right for `om`.
-
-### G.6 RSS itself, the spec that won by accident
-
-The deepest lesson, and the one easiest to get wrong because it looks like luck. RSS won because:
-
-- It was simple enough that a competent developer could implement it in an afternoon.
-- It survived its creator's company collapsing because Winer transferred ownership to Harvard *before* it mattered.
-- It had two genuinely different forks (1.0/RDF and 2.0/Winer) competing on the merits, which forced both to be robust.
-- The orange icon became the de facto identifier and gave non-technical users a thing to click.
-
-Three of these four things are within `om`'s control:
-
-- **Simplicity.** The full spec is now ~600 lines of Markdown. A competent developer can implement Level 5 in a week. This is acceptable but worth defending against, every 0.5 errata that adds complexity is a tax on adoption.
-- **Custodian transfer before it matters.** This is §C.1 and it must happen in 0.5, not after. Waiting until the spec is "popular enough to need governance" is exactly the failure mode that killed many specs Winer's transfer rescued RSS from.
-- **A social fabric.** §G.5's IndieWebCamp model. The "two genuinely different forks competing on merits" can be approximated by encouraging *intentional* implementation diversity early, not one canonical Ghost plugin and one canonical reader, but several of each, deliberately taking different design choices within the spec's bounds.
-
-The fourth thing, the orange icon, is the visual-identity question. It probably doesn't matter much, but if `om` ends up needing a recognizable mark by 1.0, it should be commissioned cheaply (a freelance designer, a few hundred dollars) and released CC0. Don't overthink it.
-
 ## Appendix C, Companion specs
 
 The main spec keeps its scope narrow: what a publisher puts in a feed and what a reader does with it. Two companion documents extend the model to the parts of a deployment that happen off-feed:
@@ -699,8 +548,31 @@ Companion specs follow the same versioning as the parent: a 1.0 reader consuming
 
 ---
 
-## Acknowledgements (0.4)
+## References
 
-In addition to all 0.1-0.3 acknowledgements, 0.4 builds on the W3C BBS+ cryptosuite working group (Bernstein, Sporny, Lodder, et al., `bbs-2023` is the technical foundation of the privacy work), the Podcast Index team (whose discipline around saying "no" to feature requests is the model for §E), and the WorkOS Stripe Entitlements team (whose JWT-claims pattern is the implementation backbone of §3 bundles).
+### Normative
 
-The §G open-spec analysis draws on public histories and current operational patterns of the Podcast Index, the W3C SocialCG (ActivityPub), the OpenID Foundation (OIDC), the Signal Foundation, and the IndieWeb community. The §H platform analysis is built from publicly observable behavior and published documentation of Substack, Patreon, Apple Podcasts Subscriptions, and Spotify Podcasts Subscriptions; particular thanks to the third-party developers whose work on RSS-Bridge, the Substack Chrome extension, and `nicholas.cloud`'s Patreon-RSS bridge made the actual mechanisms legible without requiring guesswork. None of these projects endorse `om`; the spec's reading of how their target platforms work is its own.
+- IETF. "RSS 2.0 Specification." `https://www.rssboard.org/rss-specification`.
+- IETF. RFC 4287, "The Atom Syndication Format." `https://www.rfc-editor.org/rfc/rfc4287`.
+- IETF. RFC 6749, "The OAuth 2.0 Authorization Framework." `https://www.rfc-editor.org/rfc/rfc6749`.
+- IETF. RFC 7519, "JSON Web Token (JWT)." `https://www.rfc-editor.org/rfc/rfc7519`.
+- IETF. RFC 7644, "System for Cross-domain Identity Management: Protocol." `https://www.rfc-editor.org/rfc/rfc7644`.
+- IETF. RFC 8615, "Well-Known Uniform Resource Identifiers." `https://www.rfc-editor.org/rfc/rfc8615`.
+- IETF. RFC 9449, "OAuth 2.0 Demonstrating Proof of Possession (DPoP)." `https://www.rfc-editor.org/rfc/rfc9449`.
+- IETF. RFC 9728, "OAuth 2.0 Protected Resource Metadata." `https://www.rfc-editor.org/rfc/rfc9728`.
+- W3C. "Verifiable Credentials Data Model v2.0." `https://www.w3.org/TR/vc-data-model-2.0/`.
+- W3C. "Decentralized Identifiers (DIDs) v1.0." `https://www.w3.org/TR/did-core/`.
+- W3C. "Bitstring Status List v1.0." `https://www.w3.org/TR/vc-bitstring-status-list/`.
+- W3C. "Data Integrity BBS Cryptosuites v1.0." `https://www.w3.org/TR/vc-di-bbs/`.
+
+### Informative
+
+- W3C. "JSON Feed v1.1." `https://www.jsonfeed.org/version/1.1/`.
+- Podcast Index. "Podcasting 2.0 Namespace." `https://podcastindex.org/namespace/1.0`.
+- W3C. "ActivityPub." `https://www.w3.org/TR/activitypub/`.
+- Open Membership RSS, Companion specifications: [`spec/SPEC-PORTABILITY.md`](spec/SPEC-PORTABILITY.md), [`spec/SPEC-ACTIVITYPUB.md`](spec/SPEC-ACTIVITYPUB.md), [`spec/SPEC-ADAPTER-PROFILE.md`](spec/SPEC-ADAPTER-PROFILE.md), [`spec/SPEC-SYNDICATION-MAPPINGS.md`](spec/SPEC-SYNDICATION-MAPPINGS.md), [`spec/SPEC-SHARING-POLICY.md`](spec/SPEC-SHARING-POLICY.md), [`spec/SPEC-ERRATA-0.4.1.md`](spec/SPEC-ERRATA-0.4.1.md).
+- Open Membership RSS, Project documents: [`docs/FEATURESET.md`](docs/FEATURESET.md), [`docs/RELATED-WORK.md`](docs/RELATED-WORK.md), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md), [`docs/reader-ARCHITECTURE.md`](docs/reader-ARCHITECTURE.md).
+
+## Acknowledgements
+
+This document builds on the W3C BBS+ cryptosuite working group, the Podcast Index team's discipline around namespace evolution, the WorkOS Stripe Entitlements pattern (which informs §3), and a body of public documentation from Substack, Patreon, Apple Podcasts Subscriptions, Spotify Podcast Subscriptions, FeedPress, and Outpost. Third-party tools, RSS-Bridge, the `nicholas.cloud` Patreon-RSS work, and similar projects, made the operational mechanisms of those systems legible without requiring private disclosure. None of those projects endorse this specification; the readings here are this document's own.

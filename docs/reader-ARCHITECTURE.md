@@ -200,13 +200,9 @@ v0 ships with:
 
 ## Upstream strategy
 
-The fork is called `miniflux-om`. By month 9 of the roadmap, if the implementation is stable, a PR is opened against Miniflux main. The pitch to Frédéric: "This adds ~2,000 lines, one new optional database table, and an optional UI surface. It's opt-in per feed. Happy to maintain it."
+The fork is called `miniflux-om`. When the implementation stabilises, a pull request is opened against Miniflux main describing the scope: roughly 2,000 lines, one optional database table, an opt-in UI surface, opt-in per feed.
 
-If the PR is accepted: `miniflux-om` sunsets and all users run on Miniflux main.
-
-If the PR is rejected (common reasons: scope creep, maintenance burden): `miniflux-om` continues as a permanent fork, rebased against upstream every quarter. The fork becomes the canonical reference reader.
-
-Either outcome is fine. The protocol doesn't need Miniflux main support to reach 1.0; it needs *any* reader that exists and works.
+If the PR is accepted, `miniflux-om` sunsets and users converge on Miniflux main. If it is rejected on grounds of scope or maintenance burden, `miniflux-om` continues as a permanent fork rebased against upstream quarterly and serves as the canonical reference reader. Either outcome is acceptable; the specification requires *a* reader that exists and works, not a specific one.
 
 ## File layout
 

@@ -256,7 +256,7 @@ Target: 10 candidates contacted, 1 onboarded by end of month.
 
 #### Sourcing the 10 candidates
 
-Four cohorts from ROADMAP Phase 2 M5 and COMPETITIVE-LANDSCAPE §"Two axes of openness".
+Four cohorts from ROADMAP Phase 2 M5 and RELATED-WORK §"Two axes of openness".
 
 | Cohort | Why they fit | Source channels | Target count |
 |---|---|---|---|
@@ -343,7 +343,7 @@ Per ROADMAP Phase 2 M6 and §"Interop & platform-surface track".
 | D8 | External security reviewer (individual vs small firm) | Spec editor | Start of month 4 | Individual with public track record on webhook/JWT reviews |
 | D9 | Mollie profile: subscription-derived entitlements vs per-payment | Ghost maintainer | Mid-month 4 | Subscription-derived, mirroring Stripe's path |
 | D10 | Permanent home for the public demo feed (`demo.open-membership.org` or equivalent) | Spec editor | End of month 4 | Subdomain on a working-group-owned apex registered in month 4 |
-| D11 | First-candidate sourcing: prioritize cohort A (FeedPress users) or cohort B (Substack refugees) | Spec editor | End of week 1 of month 5 | Cohort A, lowest switch friction per COMPETITIVE-LANDSCAPE §5 |
+| D11 | First-candidate sourcing: prioritize cohort A (FeedPress users) or cohort B (Substack refugees) | Spec editor | End of week 1 of month 5 | Cohort A, lowest switch friction per RELATED-WORK §5 |
 | D12 | Whether to ship `<om:sharing-policy>` in 0.4.1 at all if no deployment has exercised it | Spec editor + reader eng | Mid-month 6 | Ship as Provisional; ROADMAP risk register explicitly allows this |
 | D13 | Whether to backport the 0.4.1 errata to spec file or land in a new `SPEC-0.4.1.md` addendum | Spec editor | End of month 6 | Addendum file; keep SPEC.md at 0.4 until 0.5 |
 | D14 | Public case study on the first publisher: written now or at Phase 3 M7 | Spec editor + publisher | End of month 6 | Short version now, long version at Phase 3 |

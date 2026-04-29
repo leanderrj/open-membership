@@ -152,13 +152,13 @@ Named combinations of levels for common use cases:
 
 **Levels:** 1, 2, 5
 **Good for:** general-purpose RSS readers adding paid-content support
-**Rationale:** covers the Substack writer + Patreon podcaster personas; no crypto complexity
+**Rationale:** covers the dominant text-newsletter and tokenized-podcast cases; no cryptographic dependencies beyond signed JWTs
 
 ### Enterprise Reader profile
 
 **Levels:** 1, 2, 3, 4, 5
-**Good for:** readers supporting organizational customers with SCIM-provisioned teams
-**Rationale:** adds the B2B subscription infrastructure; still no BBS+ complexity
+**Good for:** readers serving organisational subscribers (companies, institutions) with SCIM-provisioned group rosters
+**Rationale:** adds organisational-subscription infrastructure; still no BBS+ complexity
 
 ### Privacy Reader profile
 

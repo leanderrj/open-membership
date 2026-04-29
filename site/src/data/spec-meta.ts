@@ -128,13 +128,13 @@ export const docs: SpecMeta[] = [
     order: 3,
   },
   {
-    slug: 'landscape',
+    slug: 'related-work',
     collection: 'docs',
-    entryId: 'competitive-landscape',
-    title: 'Competitive Landscape',
-    shortTitle: 'Landscape',
+    entryId: 'related-work',
+    title: 'Related Work',
+    shortTitle: 'Related work',
     summary:
-      'How om relates to Substack, Patreon, FeedPress, Passport, Podcasting 2.0, ActivityPub, and the rest. The single comparative document in this repo.',
+      'Prior art and adjacent open protocols: Substack, Patreon, Apple and Spotify, FeedPress and Outpost, Passport, Memberful and similar services, Podcasting 2.0, ActivityPub, Unlock Protocol, the IndieWeb suite, and W3C VC/DID. The single document in this repository that surveys related systems.',
     group: 'Project',
     order: 4,
   },

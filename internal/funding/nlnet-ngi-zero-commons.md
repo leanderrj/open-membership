@@ -105,7 +105,7 @@ In order, lightest first:
 
 1. The spec's README (`README.md`), ~180 lines, written for an interested but non-expert reader. It explains the protocol's three moving parts and the three publisher personas the design serves.
 2. The 18-month roadmap (`ROADMAP.md`), which lays out exactly what `om-ghost` and the Miniflux fork need to do, month by month, to reach a first paying subscriber.
-3. The competitive landscape document (`docs/COMPETITIVE-LANDSCAPE.md`), which compares `om` to Substack, Patreon, Apple Podcasts Subscriptions, Spotify, and the open-CMS tier in concrete terms.
+3. The competitive landscape document (`docs/RELATED-WORK.md`), which compares `om` to Substack, Patreon, Apple Podcasts Subscriptions, Spotify, and the open-CMS tier in concrete terms.
 4. The ActivityPub co-existence appendix (`spec/SPEC-ACTIVITYPUB.md`), which is the most-recent piece of work and the one most directly relevant to NLnet's portfolio. It demonstrates the co-existence discipline the spec uses generally, specifying how `om` composes with neighbouring open standards rather than overriding them.
 5. The full specification (`SPEC.md`), 836 lines, only if a reviewer wants to read normative prose.
 

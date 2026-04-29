@@ -121,7 +121,7 @@ Grant content, amounts, and detailed narratives live in ../funding/README.md. Th
 **Internal review bar before submission:**
 
 - Each grant application is reviewed by at least one working-group member not on the drafting team
-- Pitches must match the four audience-framings in ../../docs/COMPETITIVE-LANDSCAPE.md §"The strategic narrative", no frankenstein mixes of them
+- Pitches must match the four audience-framings in ../../docs/RELATED-WORK.md §"The strategic narrative", no frankenstein mixes of them
 - Every application must link to: `SPEC.md`, `../../docs/FEATURESET.md`, `reference/om-ghost/`, `reference/om-wordpress/`, a production publisher case study from Phase 2 M6
 - The review reviewer writes a one-paragraph "what this application is asking for" summary; if the drafter disagrees with the summary, the pitch is unclear and needs a rewrite before submission
 - No two applications submitted in the same week; a 7-day gap between submissions minimum, so the first response can inform the second
@@ -327,7 +327,7 @@ The Profile document has these sections. Content is not written here.
 
 #### 3.1.3 Validation pass against WooCommerce and Memberful
 
-Per ../../docs/COMPETITIVE-LANDSCAPE.md §"The 'Open' column is `om`'s adapter pipeline", these two are the cleanest external stress test of the Profile. The validation is the point; it is what turns the Profile from speculative into shipped.
+Per ../../docs/RELATED-WORK.md §"The 'Open' column is `om`'s adapter pipeline", these two are the cleanest external stress test of the Profile. The validation is the point; it is what turns the Profile from speculative into shipped.
 
 **Integration points to probe (per platform):**
 
@@ -442,7 +442,7 @@ Per ROADMAP.md risk register: "pick an existing Eleventy-based indie publisher b
 
 | Step | Action | Timing |
 |---|---|---|
-| 1 | Compile shortlist of 8-12 Eleventy-based indie publishers with paid content ambitions. Source: 11ty.dev showcase + Ghost-migration forum posts + ../../docs/COMPETITIVE-LANDSCAPE.md §"Closed column" migrants | M10 week 3 (overlaps with Profile work) |
+| 1 | Compile shortlist of 8-12 Eleventy-based indie publishers with paid content ambitions. Source: 11ty.dev showcase + Ghost-migration forum posts + ../../docs/RELATED-WORK.md §"Closed column" migrants | M10 week 3 (overlaps with Profile work) |
 | 2 | Outreach: "we'll build you paid-RSS infrastructure for free; you run the reference; we write a case study" | M10 week 4 |
 | 3 | Target one commitment by end of M10 (otherwise M11 downgrade per risk register) | M10 week 4 hard deadline |
 | 4 | M11 W1: kickoff with committed publisher; architecture handoff | M11 W1 |
@@ -479,7 +479,7 @@ Baseline going into M12: 1 publisher from Phase 2 M6 + the Eleventy publisher fr
 |---|---|---|
 | 1 | Second outside publisher (net new) | Likely a Ghost publisher from the Phase 2 M5 shortlist of 10 who was a "maybe" the first time. Onboarding now takes 3-5 days because the infra is proven |
 | 2 | Third outside publisher (net new) | Targeting a WordPress publisher using `om-wordpress` directly |
-| 3 | Fourth outside publisher (net new) | From ../../docs/COMPETITIVE-LANDSCAPE.md "Open column": Memberful or WooCommerce publisher, using the Profile-validated adapter |
+| 3 | Fourth outside publisher (net new) | From ../../docs/RELATED-WORK.md "Open column": Memberful or WooCommerce publisher, using the Profile-validated adapter |
 | 4 | Catch-up + case study writeup | Buffer for slippage; write three short case studies (not one long one) |
 
 **What "in production" means:**
