@@ -1,32 +1,26 @@
 # Open Membership RSS, Sharing Policy Companion 0.1
 
-> **Provisional, subject to errata once a production podcast publisher (SPEC §H.5 persona 2) has deployed and tested this primitive.** Do NOT treat this element as stable until at least one publisher has used it in anger. The version number is 0.1, deliberately not 1.0, to signal that the shape below is a first attempt at an open problem.
-
-- **Title:** Open Membership RSS, Sharing Policy Companion
-- **This version:** 0.1 (draft, 2026-04-24)
-- **Companion to:** Open Membership RSS 0.4 (`SPEC.md`)
-- **Namespace:** `http://purl.org/rss/modules/membership/` (the element lives in the existing `om:` namespace, no new namespace is introduced)
-- **Status:** Provisional. ROADMAP Phase 2 M4 deliverable. Resolves SPEC §H.2 Open Question as a first draft only. Expect churn in 0.4.1 errata once persona 2 deployment evidence arrives.
+- **This version:** 0.1 (provisional, 2026-04-24)
+- **Companion to:** Open Membership RSS 0.4 ([`SPEC.md`](../SPEC.md))
+- **Namespace:** `http://purl.org/rss/modules/membership/` (the element extends the existing `om:` namespace; no new namespace is introduced)
+- **Status:** Provisional. The 0.1 version number signals that the surface defined here is a first draft, MAY change in response to deployment evidence, and MUST NOT be relied on as stable.
 
 ## Copyright
 
-Copyright © 2026 by the Authors. Same terms as `SPEC.md`.
+Copyright © 2026 by the Authors. Same terms as [`SPEC.md`](../SPEC.md).
 
 ---
 
-## 1. Why this exists
+## 1. Scope
 
-SPEC §H.2 documents Patreon's production-validated anti-sharing machinery: multi-device usage analytics on tokenized RSS URLs, automatic link reset on detected sharing, comment/DM suspension as escalation, Trust & Safety review as terminal. Patreon's own documentation is quoted there: *"We monitor how many devices and/or podcast apps are using each RSS link. If usage numbers are higher than usual, it may indicate that a member is sharing their link with others."* SPEC §H.2 item 1 then says:
+This companion defines `<om:sharing-policy>`, an optional element that lets a publisher declare a per-device or per-client sharing posture, with reader-side conventions for honouring it.
 
-> **Open Question for 0.5:** should the spec define a `<om:sharing-policy>` element that lets publishers declare "we monitor for usage anomalies," along with reader-side conventions for honoring per-device limits?
+Two facts motivate the addition:
 
-This companion is a first draft answer. It exists for three reasons:
+1. **Production precedent.** Patreon operates the only widely deployed anti-sharing model for tokenised RSS at scale: multi-device usage analytics on per-subscriber URLs, automatic link reset on detected sharing, escalation paths for repeated misuse. The element below preserves the publisher-side signal of that model.
+2. **Federation risk.** In a federated Open Membership ecosystem, a malicious reader can distribute one URL token across many devices with no central party to enforce limits. Absent a declarative element, publishers improvise incompatibly and readers have no signal to honour.
 
-1. **Patreon's model is the production evidence.** It is the only widely-deployed anti-sharing model for tokenized RSS at scale. Ignoring it would leave `om` publishers improvising.
-2. **The federation risk is real.** SPEC §H.2 item 1 names it: *"in a federated `om` ecosystem, a malicious reader could intentionally distribute one token across many devices and there would be no central party to enforce."* Without even a declarative element, publishers will improvise incompatibly and readers will have no signal to honor.
-3. **Publisher visibility, not DRM.** The goal is to give publishers a signal they can act on and to give honest readers a way to behave well. This is not a rights-management primitive and cannot be made into one, see §C below.
-
-This companion is explicitly not a stable 1.0 artifact. ROADMAP's risk register flags "anti-sharing primitive lands too early and fragments" and mitigates with: *"ship the M4 draft as explicitly provisional, clearly marked subject to errata once persona 2 (podcaster) is in production."* That is what this document is.
+Scope boundaries: `<om:sharing-policy>` is a publisher-visibility primitive, not a rights-management mechanism. It MUST NOT be relied on for content protection. §C records the threats this element does not address.
 
 ---
 
@@ -71,7 +65,7 @@ The `detection` attribute selects the mechanism the publisher uses to distinguis
 
 ### 3.1 `detection="client-id"`
 
-The publisher relies on client-supplied hints: User-Agent, session cookie, reader-assigned installation identifier. This is the mechanism Patreon currently uses (SPEC §H.2), observable from outside. It is cheap to implement but:
+The publisher relies on client-supplied hints: User-Agent, session cookie, reader-assigned installation identifier. This is the mechanism deployed in Patreon's production system. It is cheap to implement but:
 
 - It is trivially spoofed.
 - It leaks User-Agent and IP-shaped fingerprints into publisher logs.
@@ -110,7 +104,7 @@ The reader does NOT need to know the publisher is counting thumbprints. From the
 
 ## 5. Legitimate reader migration
 
-SPEC-PORTABILITY §S4 already names this interaction: *"Importing a credential does not migrate the publisher's notion of who the subscriber is. If the publisher has a device-count limit (SPEC §H.2 anti-sharing), importing on a new device counts as an additional device. Readers SHOULD warn the user when importing a credential whose publisher advertises a `<om:sharing-policy>` with per-device limits."*
+[`SPEC-PORTABILITY.md`](SPEC-PORTABILITY.md) §S4 already names this interaction: *"Importing a credential does not migrate the publisher's notion of who the subscriber is. If the publisher has a device-count limit (per-device limits in this companion), importing on a new device counts as an additional device. Readers SHOULD warn the user when importing a credential whose publisher advertises a `<om:sharing-policy>` with per-device limits."*
 
 This companion formalizes that recommendation.
 
@@ -206,7 +200,7 @@ This means a subscriber using a bundle across three publishers generates three i
 
 Aggregators SHOULD NOT attempt to enforce `<om:sharing-policy>` across participating publishers. A bundle aggregator has no operational visibility into thumbprint counts at each participating publisher and no authority over them. Enforcement is strictly per-publisher; the aggregator's role ends at credential issuance.
 
-This is the honest answer to SPEC §H.2's "no central enforcer" concern: there is no central enforcer, by design, and the spec chooses federated fragmentation over re-centralization.
+On the question of central enforcement: there is no central enforcer, by design, and the spec chooses federated fragmentation over re-centralization.
 
 ---
 
@@ -234,9 +228,9 @@ The `sharing_policy_version` field at top level is an explicit marker, readers t
 
 ---
 
-## 10. Worked example, podcast publisher (persona 2)
+## 10. Worked example, podcast publisher (podcast publisher persona)
 
-A podcast publisher matching SPEC §H.5 persona 2 (the Patreon-refugee podcaster) declares a soft-enforcement sharing policy. Full feed fragment:
+A podcast publisher in the podcast-publisher persona declares a soft-enforcement sharing policy. Full feed fragment:
 
 ```xml
 <rss version="2.0" xmlns:om="http://purl.org/rss/modules/membership/">
@@ -289,7 +283,7 @@ The publisher gets a visible, actionable signal. The reader behaves honestly. A 
 
 ## 11. Conformance
 
-**This section is provisional, like the rest of the document.** Do NOT treat any of the below as stable Level assignments until at least one podcaster (persona 2) has deployed and tested the primitive.
+The Level mappings below are provisional and MAY be revised as deployment evidence accumulates.
 
 ### 11.1 Reader conformance
 
@@ -305,7 +299,7 @@ The publisher gets a visible, actionable signal. The reader behaves honestly. A 
 
 ### 11.3 Provisional marker
 
-> **Reminder: this document is Provisional 0.1.** The ROADMAP risk register explicitly permits replacing this element wholesale in 0.4.x errata if persona 2 deployment shows the current shape doesn't fit. A reader or publisher adopting this companion today should budget for a breaking change in 0.4.1 or 0.4.2. Conformance claims against 0.1 are claims against a known-unstable target.
+> **Status reminder.** This companion is at version 0.1 and is provisional. The element shape MAY be replaced wholesale in a subsequent revision if first deployment evidence shows the current surface does not fit. Implementations adopting this companion at 0.1 MUST treat any conformance claim against it as a claim against a known-unstable target.
 
 ---
 
@@ -323,7 +317,7 @@ This is not a DRM primitive. A reader that is actively hostile to its publisher 
 
 ## 13. Open questions for 0.5
 
-This companion resolves SPEC §H.2 Open Question as a first draft. It leaves several dependent questions unresolved; their resolution comes from production deployment evidence, not from further drafting.
+This companion is a first draft. It leaves several dependent questions unresolved; their resolution comes from production deployment evidence, not from further drafting.
 
 1. **Is `first-seen-wins` the right default under `enforcement="hard"`?** Patreon appears to use a user-visible device list with explicit revocation. `om` 0.1 punts to publisher discretion. The first podcaster to deploy will tell us whether first-seen-wins is usable or infuriating.
 2. **What is the right `grace_period_hours` default?** 0.1 says `0`. Patreon's observed behavior suggests they tolerate short-term over-limits that auto-resolve. A single production deployment with instrumentation will answer this better than any draft.
@@ -348,6 +342,6 @@ Resolution of each open question is gated on production evidence. None of them s
 
 ## 15. Acknowledgements (0.1)
 
-This companion's shape is built on public observation of Patreon's anti-sharing operation (SPEC §H.2 and the sources named there), on RFC 9449 (OAuth 2.0 Demonstrating Proof of Possession, the DPoP mechanism), and on the ROADMAP risk register's explicit permission to ship provisional primitives. None of the acknowledged parties endorse this companion.
+This companion's shape is built on public observation of Patreon's anti-sharing operation (see [`docs/RELATED-WORK.md`](../docs/RELATED-WORK.md) §1.2) and on RFC 9449 (OAuth 2.0 Demonstrating Proof of Possession). None of the acknowledged parties endorse this companion.
 
-> **Final reminder: Provisional 0.1.** This document will change once persona 2 is in production. Do not ship a reader or publisher that depends on any detail above being stable.
+> **Final status reminder.** This companion is at 0.1 and is provisional. Implementations MUST NOT depend on the surface defined here as if it were stable.

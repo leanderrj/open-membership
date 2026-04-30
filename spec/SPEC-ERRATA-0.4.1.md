@@ -168,7 +168,7 @@ The enclosure is fetched with the same short-lived bearer token the publisher is
 
 #### 2.2.5 `http-basic`
 
-The reader uses the same `Authorization: Basic <base64>` header for the enclosure as for the feed. This is explicitly discouraged for new deployments per SPEC §H.2 (Patreon rejected it for podcast apps) but is codified here for completeness.
+The reader uses the same `Authorization: Basic <base64>` header for the enclosure as for the feed. New deployments SHOULD prefer one of the bearer-based auth methods, since HTTP Basic is poorly supported across podcast clients (see [`docs/RELATED-WORK.md`](../docs/RELATED-WORK.md) §1.2). The mapping is codified here for completeness.
 
 ### 2.3 HLS and DASH: chunked delivery
 
@@ -253,10 +253,10 @@ The tax-inclusive row introduces two attributes (`tax_inclusive`, `tax_jurisdict
 
 ## Acknowledgements
 
-This errata was produced during Phase 2 of the ROADMAP execution plan, driven by:
+This errata was produced in response to:
 
 - EU VAT reporting requirements surfaced during Mollie PSP-profile integration in `om-ghost` and `om-wordpress`.
-- Podcast-publisher persona work (SPEC §H.5 persona 2) surfacing the enclosure-auth question during the first outside-publisher onboarding.
-- `miniflux-om` Phase 1 interop testing, which exercised the enclosure-fetch path against both `om-ghost` and `om-wordpress` and validated the behavior codified in §2.
+- Podcast-publisher deployment surfacing the enclosure-auth question during onboarding.
+- `miniflux-om` interop testing, which exercised the enclosure-fetch path against both `om-ghost` and `om-wordpress` and validated the behaviour codified in §2.
 
-No changes to SPEC.md or ../docs/FEATURESET.md accompany this errata; the parent spec remains at 0.4 until 0.5, per the discipline named in SPEC §E ("no new tags"). This errata exists so implementers building against 0.4 today can do so without ambiguity.
+No changes to [`SPEC.md`](../SPEC.md) or [`../docs/FEATURESET.md`](../docs/FEATURESET.md) accompany this errata; the parent specification remains at 0.4. This errata exists so implementations building against 0.4 can do so without ambiguity.

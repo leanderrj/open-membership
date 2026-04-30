@@ -8,7 +8,7 @@
 - **Suggested prefix:** `om` (unchanged)
 - **Status:** Non-normative. This document does not alter any semantics defined in `SPEC.md`. It describes how the same `om` semantics are carried in two additional syndication substrates. Where this document and `SPEC.md` appear to disagree, `SPEC.md` wins.
 
-This document fulfils the Atom + JSON Feed row of the ROADMAP Phase 3 M9 deliverable. It does not define new features, new conformance levels, or new test categories beyond those already specified for RSS 2.0.
+This document does not define new features, new conformance levels, or new test categories beyond those already specified for RSS 2.0. It maps each `om:` element to its Atom and JSON Feed equivalent so that a publisher emitting any of the three formats carries the same Open Membership semantics.
 
 ---
 
@@ -332,7 +332,7 @@ RSS 2.0 and Atom both allow a feed that includes "we updated this item, please r
 
 ### 6.3 `<om:window start="...">` vs. `<atom:updated>`
 
-Atom requires `<atom:updated>` on every entry and feed. This is an editorial-state timestamp (RFC 4287 §4.2.15), not an access-state timestamp. A publisher MUST NOT conflate `<om:window start="...">` (when does this entry become accessible) with `<atom:updated>` (when did we last edit this). If a reader sees both, the entitlement evaluation uses `<om:window>`; display ordering uses `<atom:updated>`.
+Atom requires `<atom:updated>` on every entry and feed. This is an editorial-state timestamp (RFC 4287 §4.2.15), not an access-state timestamp. A publisher MUST NOT conflate `<om:window start="...">` (when an entry becomes accessible) with `<atom:updated>` (when an entry was last edited). When a reader observes both, entitlement evaluation MUST use `<om:window>` and display ordering uses `<atom:updated>`.
 
 ### 6.4 Both `<enclosure>` and `<media:content>` in the same item
 
@@ -373,7 +373,7 @@ The `om` namespace URI (`http://purl.org/rss/modules/membership/`) is the single
 
 This document is a **lens**, not a spec. It does not override any statement in `SPEC.md`. A conflict between this document and `SPEC.md` is a bug in this document.
 
-Versioning is independent: this document's 1.0 maps to `SPEC.md` 0.4. Future revisions of `SPEC.md` that add new elements may require a corresponding revision here; there is no automatic guarantee that this document moves in lockstep with the spec. A publisher emitting Atom or JSON Feed with `om` markup SHOULD cite the Syndication Mappings version they targeted alongside the `om` version in their discovery document, for traceability.
+Versioning is independent: this document's 1.0 maps to [`SPEC.md`](../SPEC.md) 0.4. Future revisions to the parent specification that add new elements MAY require a corresponding revision here; movement is not automatically in lockstep. A publisher emitting Atom or JSON Feed with `om:` markup SHOULD cite the Syndication Mappings version targeted alongside the parent specification version in the discovery document.
 
 ---
 

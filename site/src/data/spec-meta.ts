@@ -87,7 +87,7 @@ export const specs: SpecMeta[] = [
     entryId: 'spec-errata-041',
     title: 'Errata 0.4.1',
     shortTitle: 'Errata 0.4.1',
-    summary: 'Editorial corrections to 0.4. Non-substantive; canonical URI remains the 0.4 namespace.',
+    summary: 'Two optional `<om:price>` attributes (`tax_inclusive`, `tax_jurisdiction`) and an enclosure-auth clarification covering podcast and HLS/DASH delivery against gated feeds.',
     group: 'Companion',
     order: 7,
   },

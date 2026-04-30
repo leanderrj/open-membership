@@ -29,7 +29,7 @@ The copyright holders make no representation about the suitability of the specif
 
 ## Featureset
 
-The capabilities this spec defines, by element family. See `docs/FEATURESET.md` for a per-version breakdown.
+Capabilities defined in this specification, by element family. A per-version index appears in `docs/FEATURESET.md`.
 
 - **Namespace and access**: RSS 2.0 and RSS 1.0/RDF declarations; `<om:provider>`; `<om:authMethod>` (`url-token`, `http-basic`, `bearer`, `dpop`); per-item `<om:access>` (`open`, `preview`, `locked`, `members-only`); `<om:preview>`; `<om:unlock>`; `<om:receipt>`.
 - **Discovery and identity**: `.well-known/open-membership` (composes with RFC 9728); `<om:window>` for time-gated content; `<om:group>` (publisher-managed and self-managed) with SCIM 2.0 binding; OM-VC 1.0 (W3C VC 2.0); Bitstring Status List revocation.
@@ -58,7 +58,7 @@ Attributes:
 
 ### 2.2 Reader Behavior
 
-A reader at Level 5 (commerce) or above MUST display the publisher's revocation policy on the checkout screen if the policy is anything other than `prospective-only`. This is the specification's UX consent layer: surprises about refunds are bad protocol design, not a publisher problem.
+A reader at Level 5 (commerce) or above MUST display the publisher's revocation policy on the checkout screen when the policy is anything other than `prospective-only`. The subscriber MUST be informed before payment of any condition under which delivered content can be revoked.
 
 ### 2.3 Webhook Mapping
 
@@ -72,7 +72,7 @@ PSP binding profiles are extended:
 
 ## 3. Cross-Publisher Bundles
 
-A bundle is a single subscription that grants access to content from multiple publishers. The challenge: nothing in 0.3 lets a subscriber prove to Publisher B that they paid Publisher A's bundle product. Federated trust is required.
+A bundle is a single subscription that grants access to content from multiple publishers. A subscriber paying Publisher A's bundle product MUST be able to prove that entitlement to Publisher B without re-authenticating against Publisher B's payment system. This requires a federated trust mechanism, defined below.
 
 ### 3.1 The Aggregator Pattern
 
@@ -80,7 +80,7 @@ A **bundle aggregator** is a special kind of publisher that:
 
 1. Operates its own discovery document, offers, and checkout flow like any other publisher.
 2. Issues entitlements (bearer tokens or VCs) that name *other* publishers as their `audience`.
-3. Maintains business agreements with those publishers (out of scope for the spec) and a public list of bundled publishers (in scope).
+3. Maintains agreements with the participating publishers (out of scope for this specification) and publishes a list of bundled publishers (in scope).
 
 A subscriber pays the aggregator. The aggregator issues a credential. The subscriber presents it at any bundled publisher. The bundled publisher trusts the aggregator's signature and grants access.
 
@@ -147,15 +147,15 @@ A bundled publisher MUST:
 - Accept presentations from aggregators they list in `<om:bundled-from>`.
 - Issue their own scoped tokens after verification, never relay the aggregator's credential.
 
-### 3.6 Why This Doesn't Recreate Spotify
+### 3.6 Properties of the Aggregator Pattern
 
-The aggregator pattern looks superficially like a platform, and the worry is fair. Three structural differences:
+The aggregator pattern preserves three properties that distinguish it from a centralised platform:
 
-1. **The aggregator can't lock a publisher in.** A publisher can drop an aggregator at any time by removing it from `<om:bundled-from>`. The aggregator has no contractual leverage from the protocol layer.
-2. **The aggregator can't lock a subscriber in.** The subscriber's identity (subject DID) is portable across aggregators, and they can hold credentials from many aggregators simultaneously without telling any of them.
-3. **The aggregator competes on terms, not technology.** Because any party can be an aggregator with no privileged access, the market for aggregation is contestable. If one aggregator takes 30% and another takes 5%, publishers will quickly migrate.
+1. **A publisher MAY drop an aggregator at any time** by removing the aggregator's entry from `<om:bundled-from>`. The protocol grants the aggregator no contractual leverage.
+2. **A subscriber's identity (subject DID) is portable across aggregators.** A subscriber MAY hold credentials from multiple aggregators simultaneously and MUST NOT be required to disclose those holdings to any one aggregator.
+3. **Any party MAY operate as an aggregator** without privileged access. The aggregator role is defined by behaviour against this specification, not by registration with any authority.
 
-This is the same shape as registrar competition under ICANN: the protocol enables the market without picking a winner.
+The pattern is structurally analogous to registrar competition under ICANN: protocol-level openness, commercial competition above the protocol.
 
 ---
 
@@ -163,7 +163,7 @@ This is the same shape as registrar competition under ICANN: the protocol enable
 
 ### 4.1 OM-VC-SD 1.0 Profile
 
-A new credential profile for privacy-preserving entitlement proofs, layered on top of OM-VC 1.0 (defined in 0.2 §9). The profile uses the W3C `bbs-2023` cryptosuite (Candidate Recommendation, with active interoperability testing), specifically its **pseudonyms with hidden ID** feature.
+A credential profile for privacy-preserving entitlement proofs, layered on top of OM-VC 1.0. OM-VC-SD 1.0 uses the W3C `bbs-2023` cryptosuite (Candidate Recommendation), specifically its **pseudonyms with hidden ID** feature.
 
 Differences from OM-VC 1.0:
 
@@ -200,19 +200,19 @@ Values:
 <om:privacy>pseudonymous</om:privacy>
 ```
 
-A publisher declaring `pseudonymous` or `pseudonymous-required` makes a binding commitment that affects what data they may collect. Auditing this commitment is out of scope for the protocol, but the protocol gives readers a way to choose privacy-respecting publishers.
+A publisher declaring `pseudonymous` or `pseudonymous-required` MAKES a binding commitment about the data they collect. Auditing the commitment is out of scope for this specification; declaring it MUST NOT be done absent the operational changes required to honour it.
 
 ### 4.4 Group Membership in Pseudonymous Mode
 
-A subscriber in a company group plan can prove "I am authorized via Acme Corp's subscription" without revealing *which* employee they are, and without Acme being able to track which articles they read. The BBS+ scheme supports this directly: the credential carries the group ID, the holder selectively discloses it without revealing the seat ID, and the publisher accepts the group ID + status list check as sufficient.
+A subscriber in a group plan MAY prove "I hold a seat in Acme Corp's subscription" without revealing which seat. The BBS+ scheme supports this directly: the credential carries the group identifier, the holder selectively discloses the group identifier without revealing the seat identifier, and the verifier accepts the group identifier plus a Bitstring Status List check as sufficient.
 
-This is the feature that makes corporate subscriptions tenable for privacy-sensitive publications. A medical-research firm can subscribe its employees to a journal without the journal learning which researcher reads which paper.
+The construction enables organisational subscriptions for privacy-sensitive publications. An organisation MAY enrol seats with a journal without the journal learning which seat reads which article.
 
 ### 4.5 Implementation Note
 
-The `bbs-2023` cryptosuite is W3C Candidate Recommendation with two-implementation interop required for advancement. As of 0.4 publication, multiple implementations exist (Mattr, Spruce, Digital Bazaar). A publisher implementing OM-VC-SD 1.0 SHOULD pin to the `bbs-2023` suite version listed in `.well-known/open-membership` under `verifiable_credentials.cryptosuite` and update as the spec advances to Recommendation.
+The `bbs-2023` cryptosuite is at W3C Candidate Recommendation. Multiple independent implementations exist (Mattr, Spruce, Digital Bazaar). A publisher implementing OM-VC-SD 1.0 SHOULD pin to the `bbs-2023` suite version declared in `.well-known/open-membership` under `verifiable_credentials.cryptosuite`.
 
-For publishers without crypto-engineering capacity, an umbrella issuer (WorkOS-style or specialized identity provider) issues the BBS-signed credentials on the publisher's behalf. The publisher only verifies presentations; this is the easier half.
+A publisher MAY delegate credential issuance to a third-party identity provider; in this case the publisher's role is reduced to verifying presentations.
 
 ---
 
@@ -369,23 +369,21 @@ A reader publishing its conformance statement SHOULD use one of these profile na
 
 ---
 
-## 10. The Long-Term Privacy Question (Acknowledged, Not Solved)
+## 10. Privacy Limits
 
-OM-VC-SD provides per-publisher pseudonymity at the credential layer. It does not provide network-layer or payment-method unlinkability. A reader that always uses the same IP address and always pays with the same card is still trackable. The protocol can address the credential layer; the surrounding infrastructure cannot be fixed by an XML namespace.
+OM-VC-SD provides per-publisher pseudonymity at the credential layer only. The following remain out of scope and MUST be disclosed to subscribers as such:
 
-What 0.4 does provide:
+- Network-layer linkability. A reader connecting from a stable IP address remains identifiable to a publisher operating IP-based logging.
+- Payment-method linkability. The payment service provider observes the subscriber's card or account; the publisher does not, but the PSP retains the linkage.
+- Side-channel correlation. A publisher logging access patterns against a presented pseudonym MAY infer subscriber identity from those patterns even when the credential profile prevents direct identification.
 
-- A subscriber to ten different publishers under one umbrella aggregator can be ten different pseudonyms to those ten publishers.
-- A publisher cannot prove that any two of its subscribers came from the same upstream identity.
-- A subscriber's payment to Stripe is visible to Stripe but not to the publisher's analytics, if the subscriber chooses pseudonymous mode.
+Within scope, OM-VC-SD with the aggregator pattern (§3) provides:
 
-What 0.4 does NOT provide:
+- Distinct per-publisher pseudonyms for a single subscriber across multiple bundled publishers.
+- A publisher MUST NOT be able to prove that two of its subscribers correspond to the same upstream identity.
+- The PSP-to-publisher data path: under pseudonymous mode the publisher receives an entitlement claim, not the underlying payment identifier.
 
-- Network-level anonymity (reader still connects from a real IP)
-- Payment-method anonymity (PSPs see payment cards)
-- Protection against malicious publishers who log against the disclosed pseudonym and link it to article access patterns
-
-These are real limits and the spec names them so implementers don't oversell the privacy properties to users.
+Implementations MUST NOT represent the credential-layer privacy properties as full anonymity.
 
 ---
 
@@ -427,7 +425,7 @@ Subscriber flow:
 5. Subscriber reads articles; Underreported logs the pseudonym, not an identity.
 6. If Underreported is subpoenaed, they can produce their pseudonym→article-access logs but cannot link any pseudonym to a real person.
 
-This is the failure mode that motivates §4. Without it, Underreported either (a) refuses paid subscriptions, (b) accepts surveillance risk for its subscribers, or (c) builds custom infrastructure.
+This deployment relies entirely on §4. Without OM-VC-SD, the publisher would be forced to choose between refusing paid subscriptions, accepting surveillance risk, or building custom infrastructure outside the specification.
 
 ---
 
@@ -463,86 +461,66 @@ Subscriber flow:
 5. Field Notes issues a Field-Notes-scoped bearer token.
 6. The same flow runs for the other two publishers.
 
-The aggregator never holds Field Notes' content; Field Notes never holds aggregator subscriber data beyond the pseudonym. Revenue share between aggregator and publishers is settled out of band, governed by whatever business agreement they signed.
+The aggregator never holds Field Notes' content; Field Notes never holds aggregator subscriber data beyond the pseudonym. Revenue share between aggregator and publishers is settled out of band.
 
 ---
 
 # Part II: Implementation Status
 
-This section is non-normative. It records the reference implementations, conformance test artifacts, and project context that accompany this specification. Project-internal material, custodianship plans, working-group composition, RFC submission strategy, and lessons drawn from related specifications, is deliberately excluded; it is recorded in [`internal/RATIONALE.md`](internal/RATIONALE.md).
+This section is non-normative. It enumerates the reference implementations and the conformance test suite that accompany this specification. Custodianship, working-group composition, submission strategy, and lessons drawn from adjacent specifications are recorded in [`internal/RATIONALE.md`](internal/RATIONALE.md).
 
 ## A. Reference Implementations
 
-**A.1 Publisher reference: `om-ghost`**
+### A.1 Publisher reference: `om-ghost`
 
 A Ghost CMS plugin that:
 
-- Reads Ghost's existing Members configuration (tiers, prices)
-- Emits RSS feeds with full `om` 0.4 markup
-- Serves the `.well-known/open-membership` document
-- Wraps Ghost's existing Stripe integration to expose the `/api/checkout`, `/api/entitlements`, and `/api/portal` endpoints
-- Exposes a JWT-issuing token endpoint that includes Stripe entitlements as claims
-- Optionally issues OM-VC credentials using a configurable signing key
+- Reads Ghost's existing Members configuration (tiers, prices).
+- Emits RSS feeds carrying the full `om:` element set defined in this specification.
+- Serves the `.well-known/open-membership` document.
+- Wraps Ghost's existing Stripe integration to expose the `/api/checkout`, `/api/entitlements`, and `/api/portal` endpoints.
+- Issues JWT bearer tokens that include Stripe entitlements as claims.
+- Optionally issues OM-VC credentials using a configurable signing key.
 
-Estimated effort: 4-6 weeks for one experienced developer. Ghost is the right first target because its Members feature is the closest existing primitive to what `om` describes, the codebase is open and approachable, and the Ghost community is already philosophically aligned (independent publishers, subscription models, no algorithmic feed).
+### A.2 Publisher reference: `om-wordpress`
 
-A WordPress equivalent should follow within the same 0.5 cycle, ideally as a fork of an existing membership plugin (Paid Memberships Pro, MemberPress) rather than a green-field build. The point is breadth of CMS support, not technical novelty.
+A WordPress plugin that exposes the same eight integration points as `om-ghost`, structured against a host-agnostic adapter contract documented in [`SPEC-ADAPTER-PROFILE.md`](spec/SPEC-ADAPTER-PROFILE.md).
 
-**A.2 Reader reference: forked Miniflux or NetNewsWire**
+### A.3 Reader reference: `om-miniflux`
 
-Miniflux is the better target than NetNewsWire for v0:
+A fork of Miniflux that implements the Indie Reader profile (Levels 1, 2, 5): `om:` markup parsing, URL-token and bearer authentication, `<om:offer>` checkout flow, and evaluation of `<om:feature>` claims.
 
-- Self-hosted, written in Go, code is small and approachable
-- Already has multi-account and feed-per-user semantics
-- The maintainer (Frédéric Guillot) has a track record of accepting well-scoped PRs
-- Web UI means the checkout flow can use a real browser without per-platform native integration
+### A.4 Reader reference: `om-eleventy`
 
-The Miniflux fork should implement the "Indie Reader" profile (Levels 1, 2, 5): parse `om` markup, do url-token and bearer auth, support `<om:offer>` checkout flow against Stripe, evaluate `<om:feature>` claims. Adding pseudonymous OM-VC-SD support comes later; v0 is about proving the everyday case works.
-
-NetNewsWire is the better long-term target (production iOS reader, large active user base, also open-source) but the Apple platform constraints make it a harder first build. Better to prove the protocol with Miniflux, then port to NetNewsWire in 0.6.
-
-**A.3 Interoperability test: live deployment**
-
-The criterion for "0.5 done" is not "the implementations exist" but "a real subscriber paid a real publisher through one and read content in the other." This is a qualitatively different bar. It surfaces every assumption the spec made that doesn't survive contact with reality:
-
-- Does the discovery flow actually resolve when the publisher is on a custom domain?
-- Does the Stripe webhook arrive before the user clicks back to the reader?
-- Does revocation propagate correctly when the subscriber cancels in Stripe's customer portal?
-- What happens when the subscriber switches readers mid-subscription?
-
-Each of these is a 0.5 errata candidate. The spec text won't change in major ways; the conformance requirements will tighten in response to what breaks.
+A static-site reference for the Platform Adapter Profile, demonstrating that an `om:`-conformant feed can be produced by a stateless build pipeline driven by host-side declarations.
 
 ## B. Test Suite
 
-**B.1 The `om-test-suite` project**
+### B.1 The `om-test-suite` project
 
-A standalone HTTP service that, given a feed URL, runs all the conformance checks in spec order and produces a pass/fail report per level. Modeled directly on the W3C VC v2.0 Interoperability Report.
+A standalone HTTP service that, given a feed URL, runs the conformance checks defined in this specification in spec order and produces a per-level pass/fail report. The shape is modelled on the W3C VC v2.0 Interoperability Report.
 
 Test categories:
 
-- **Parsing:** does the feed declare the namespace correctly, do all required elements appear, do attribute types validate
-- **Discovery:** does `.well-known/open-membership` resolve, does it match the `<om:provider>`, do all required fields validate
-- **Auth:** does the token endpoint accept a valid credential and reject an invalid one, does the bearer token gate content
-- **Checkout:** does the checkout endpoint accept a valid POST and return a Stripe Session ID (test mode), does the session URL render
-- **Entitlement lifecycle:** does the published webhook handler update entitlements within 60 seconds of a Stripe test event
-- **Revocation:** does a test chargeback event trigger the declared revocation policy
-- **Bundle (optional):** does a presented bundle credential get accepted by a participating publisher
+- **Parsing.** The feed declares the namespace correctly, every required element is present, attribute types validate.
+- **Discovery.** `.well-known/open-membership` resolves, matches the `<om:provider>` URI, and validates against the schema in `spec/schemas/om-discovery.schema.json`.
+- **Authentication.** The token endpoint accepts a valid credential and rejects an invalid one; bearer tokens gate content correctly.
+- **Checkout.** The checkout endpoint accepts a valid POST and returns a redirectable session URL.
+- **Entitlement lifecycle.** The webhook handler updates entitlements within 60 seconds of a PSP test event.
+- **Revocation.** A test chargeback triggers the publisher's declared revocation policy.
+- **Bundles (optional).** A presented bundle credential is accepted at a participating publisher.
 
-Each test produces an artifact (HTTP request/response transcript, validation log) so failures can be debugged without re-running the full suite.
+Each test produces a transcript artefact so failures can be inspected without re-running the suite.
 
-The test suite is *the* artifact that lets `om` claim "interoperable" credibly. It also resolves the political question of who counts as conformant: the suite does, not the spec authors.
+### B.2 Adversarial tests
 
-**B.2 Adversarial tests**
+A separate suite verifies that the failure modes the specification rules out actually fail:
 
-A separate set of tests that try to break the spec:
-
-- Token replay across publishers (should fail at non-bundled publishers)
-- Bundle credential without `audience` matching (should fail)
-- Pseudonymous credential presented to non-pseudonymous publisher (should be accepted as full disclosure)
-- Time-window evaluation around DST and leap-second boundaries
-- Webhook order-of-arrival edge cases (refund arrives before subscription.created)
-
-Adversarial test failures during 0.5 are 0.5 errata; failures discovered after 1.0 are governance issues.
+- Token replay across non-bundled publishers MUST fail.
+- A bundle credential whose `audience` does not include the verifying publisher MUST be rejected.
+- A pseudonymous credential presented to a non-pseudonymous publisher MUST be accepted as full disclosure.
+- Time-window evaluation MUST behave correctly across DST and leap-second boundaries.
+- Webhook order-of-arrival edge cases (refund before `subscription.created`) MUST not produce inconsistent entitlement state.
 
 ## Appendix C, Companion specs
 

@@ -24,7 +24,7 @@ Copyright © 2026 by the Authors. Permission to use, copy, modify and distribute
 
 When a subscriber changes reader, from Miniflux to NetNewsWire, from an Android reader to an iOS reader, from a legacy self-hosted instance to a managed one, everything about their reading state today travels with them *except* paid memberships. Free feeds are expressed as URLs in an OPML file; paid memberships are expressed as per-reader bearer tokens, credentials, and stored entitlements that the receiving reader has no standard way to accept.
 
-SPEC §G.2 names account portability as "the hardest unsolved problem in federated identity." ActivityPub has been working on it for nearly a decade. `om` sidesteps the hardest version of the problem, a portable *subscriber identity across publishers*, by delegating identity to publishers and umbrella issuers. What remains, and what this spec addresses, is a much smaller problem: a standard container shape for a user's already-issued memberships, so that the reader they move to can keep reading without re-subscribing.
+Portable subscriber identity across publishers is a hard unsolved problem in federated identity, with nearly a decade of ActivityPub work as evidence. This specification does not attempt that problem. It addresses the narrower one: a standard container shape for a subscriber's already-issued memberships, so that a reader migrating between applications keeps reading without re-subscribing. Identity itself is delegated to publishers and umbrella issuers.
 
 This is the OPML-for-paid-feeds, nothing more.
 
@@ -409,7 +409,7 @@ Merging is additive for receipt arrays and last-write-wins for scalar fields. Cr
 
 **S3.** Checksum verification is not authentication. A malicious actor producing an entirely new valid-looking file will pass checksum verification. The signature in §7.2 is the mechanism to detect tampering in transit, but it does not prove the file was exported by a trusted reader.
 
-**S4.** Importing a credential does not migrate the publisher's notion of who the subscriber is. If the publisher has a device-count limit (SPEC §H.2 anti-sharing), importing on a new device counts as an additional device. Readers SHOULD warn the user when importing a credential whose publisher advertises a `<om:sharing-policy>` with per-device limits.
+**S4.** Importing a credential does not migrate the publisher's notion of who the subscriber is. If the publisher declares a device-count limit (see [`SPEC-SHARING-POLICY.md`](SPEC-SHARING-POLICY.md)), importing on a new device counts as an additional device. Readers SHOULD warn the user when importing a credential whose publisher advertises an `<om:sharing-policy>` with per-device limits.
 
 **S5.** A compromised source reader can produce exports that exfiltrate more than the user thinks. The format's rules are reader-side conformance; a non-conformant reader can violate §8 freely. Destination readers SHOULD display the publishers named in the import and let the user confirm each.
 
