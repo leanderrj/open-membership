@@ -61,12 +61,11 @@ jobs:
             --accept 200..=204,206,403,429
             --exclude-path site/node_modules
             --exclude-path references
-            --exclude-path '*.lock'
             --exclude '^https://github\.com/leanderrj/open-membership/(blob|tree)/main/'
             --exclude '^http://purl\.org/'
-            --exclude '^https://fieldnotes\.example/'
-            --exclude '^https://aggregator\.example/'
-            --exclude 'mailto:'
+            --exclude '^https://(fieldnotes|aggregator|publisher|reader)\.example'
+            --exclude '^https://example\.(com|org)'
+            --exclude '^mailto:'
             './**/*.md'
             './site/dist/**/*.html'
           fail: true
