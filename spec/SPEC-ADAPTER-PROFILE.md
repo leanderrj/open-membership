@@ -2,7 +2,7 @@
 
 - **Profile URI:** `http://purl.org/rss/modules/membership/adapter-profile/1.0`
 - **This version:** 1.0 (draft, 2026-04-24)
-- **Status:** Non-normative. Companion to [`SPEC.md`](SPEC.md) 0.4 (and anticipated 1.0).
+- **Status:** Non-normative. Companion to [`SPEC.md`](../SPEC.md) 0.4 (and anticipated 1.0).
 - **Relationship to the spec:** This profile does not change, extend, or reinterpret `SPEC.md`. It is an implementer's guide. "Profile-compliant" is an informative label, not a conformance claim. Conformance is defined in `SPEC.md` §7, §8 and `../docs/FEATURESET.md`.
 
 ---
@@ -11,7 +11,7 @@
 
 Open Membership RSS defines a wire-level contract: what a publisher puts in a feed, what a `.well-known` document advertises, and what the checkout and token-exchange endpoints return. It says nothing about the host the publisher runs on. That gap is where every new CMS port starts.
 
-Two production reference implementations, [`reference/om-ghost/`](reference/om-ghost/) and [`reference/om-wordpress/`](reference/om-wordpress/), independently converged on the same eight integration points with their host. Each time, the question was not "how do I express `<om:tier>` in XML?" (the spec answers that) but "where does the host keep the data I need to fill that element in?" The second question has no answer in `SPEC.md`, and a green-field build for every new CMS re-derives it from scratch.
+Two production reference implementations, [`reference/om-ghost/`](../reference/om-ghost/) and [`reference/om-wordpress/`](../reference/om-wordpress/), independently converged on the same eight integration points with their host. Each time, the question was not "how do I express `<om:tier>` in XML?" (the spec answers that) but "where does the host keep the data I need to fill that element in?" The second question has no answer in `SPEC.md`, and a green-field build for every new CMS re-derives it from scratch.
 
 This profile is the captured contract. It says: here are the eight capabilities the host must expose for an `om` adapter to be writable; here is how Ghost and WordPress expose them; here is how WooCommerce and Memberful would expose them; here are the host-side primitives to look for when bringing up a third. The precedent is the OpenID Foundation's Implementer's Guide pattern, a contract on one page, a concrete mapping on the facing page, and, more loosely, the ActivityPub "platform adapter" pattern where federated interop depends on a small shared data model rather than on a shared storage engine. We use the same shape here: define the minimum contract, then validate it against external platforms before publication.
 

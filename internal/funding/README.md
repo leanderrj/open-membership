@@ -35,7 +35,7 @@ Each NLnet round runs on a fixed cadence (1st of every even month). If the June 
 
 ## Fiscal sponsor
 
-NLnet, SIDN Fonds, and STF all pay to a legal entity with a bank account, not to a project. Open Membership does not yet have a permanent custodian (the four candidates, Internet Archive, Sovereign Tech Fund itself, NLnet, Software Freedom Conservancy, are tracked in [`docs/GOVERNANCE.md`](../../../docs/GOVERNANCE.md), and Phase 3 outreach is when one is locked in).
+NLnet, SIDN Fonds, and STF all pay to a legal entity with a bank account, not to a project. Open Membership does not yet have a permanent custodian (the four candidates, Internet Archive, Sovereign Tech Fund itself, NLnet, Software Freedom Conservancy, are tracked in [`docs/GOVERNANCE.md`](../../docs/GOVERNANCE.md), and Phase 3 outreach is when one is locked in).
 
 **Interim fiscal sponsor: leme** (Netherlands). IBAN `NL77 ADYB 1000 0421 82`, BIC `ADYBNL2A` (Adyen-issued business IBAN). Contact: Leander Jansen, leander@leme.nl.
 

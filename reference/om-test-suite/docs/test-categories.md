@@ -171,6 +171,6 @@ These conformance levels are deliberately out of the v0.1 suite per
 - Level 7 (OM-VC-SD 1.0, per-verifier pseudonyms)
 - Level 8 (bundle credential acceptance)
 
-Adding them follows the template in [`adding-tests.md`](adding-tests.md): a
-new category file under `suite/`, an `init()` that calls `Register`, and the
+Adding them follows the same template as the existing categories: a
+new file under `suite/`, an `init()` that calls `Register`, and the
 test's level set to the appropriate `report.Level*` constant.

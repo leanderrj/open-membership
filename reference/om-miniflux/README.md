@@ -14,7 +14,7 @@ conformance without having to redesign any of the module-level plumbing.
 ## What this adds to Miniflux
 
 `om-miniflux` adds the Indie Reader profile (Levels 1, 2, 5 per
-[`/FEATURESET.md`](../../FEATURESET.md)) to Miniflux:
+[`docs/FEATURESET.md`](../../docs/FEATURESET.md)) to Miniflux:
 
 - **Level 1 (Parsing)**, read the `om` namespace; display `<om:tier>` info;
   render `<om:preview>` content in place of gated items; ignore `om` elements

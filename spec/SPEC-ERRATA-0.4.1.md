@@ -5,7 +5,7 @@
 - **Status:** Draft
 - **Release date:** 2026-04-24
 - **Canonical URI:** `http://purl.org/rss/modules/membership/errata/0.4.1`
-- **Parent spec:** [SPEC.md](SPEC.md)
+- **Parent spec:** [SPEC.md](../SPEC.md)
 - **Feature matrix:** [../docs/FEATURESET.md](../docs/FEATURESET.md)
 
 ## Summary
@@ -234,7 +234,7 @@ Considered and explicitly deferred:
 - **Per-country price variants under one `<om:offer>`.** Expressing "12 EUR in the EU, 14 USD in the US, 10 GBP in the UK" on a single offer is out of scope; publishers SHOULD use multiple `<om:offer>` elements, one per jurisdiction, and rely on reader-side jurisdiction matching (future work).
 - **Proration for tax-rate changes mid-period.** If the applicable tax rate changes during a subscription period (uncommon but real), reconciliation is the PSP's job. The spec has no opinion.
 - **Cross-currency tax reporting.** If `currency` differs from the jurisdiction's native currency, the relationship between declared amount, applicable tax, and the publisher's reported revenue is out of scope.
-- **`<om:sharing-policy>`.** A separate provisional primitive under discussion for 0.4.1-or-later per SPEC §H.2. Tracked in [plans/PHASE-1-2.md §3.1 Track F](plans/PHASE-1-2.md); not included here because it is net-new surface and therefore fails the errata "pure clarification" rule. If it ships, it ships as a marked-Provisional addition with its own errata document.
+- **`<om:sharing-policy>`.** A separate provisional primitive defined in [`spec/SPEC-SHARING-POLICY.md`](SPEC-SHARING-POLICY.md). Not included in this errata because it is net-new surface and therefore fails the errata "pure clarification" rule.
 
 ---
 
