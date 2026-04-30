@@ -12,8 +12,8 @@ import { dirname, resolve } from 'node:path';
 import { chromium } from 'playwright';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(__dirname, '..');
-const distRoot = resolve(repoRoot, 'site/dist');
+const siteRoot = resolve(__dirname, '..');
+const distRoot = resolve(siteRoot, 'dist');
 const outDir = resolve(distRoot, '_pdf');
 
 const routes = [

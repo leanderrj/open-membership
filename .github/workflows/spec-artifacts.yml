@@ -83,7 +83,7 @@ jobs:
 
       - name: Render spec routes to PDF
         working-directory: site
-        run: node ../scripts/render-pdfs.mjs
+        run: node scripts/render-pdfs.mjs
 
       - name: Upload PDFs
         uses: actions/upload-artifact@v4

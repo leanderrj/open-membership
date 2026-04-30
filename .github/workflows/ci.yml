@@ -91,7 +91,7 @@ jobs:
         run: node scripts/validate-discovery.mjs
 
   no-em-dashes:
-    name: Style: no em or en dashes
+    name: "Style: no em or en dashes"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
