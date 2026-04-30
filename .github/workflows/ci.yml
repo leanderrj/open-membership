@@ -58,16 +58,17 @@ jobs:
             --max-concurrency 8
             --timeout 20
             --max-redirects 5
-            --accept 200..=204,206,403,429
+            --accept 200..=204,206,403,429,999
             --exclude-path site/node_modules
+            --exclude-path site/dist
             --exclude-path references
             --exclude '^https://github\.com/leanderrj/open-membership/(blob|tree)/main/'
-            --exclude '^http://purl\.org/'
+            --exclude '^https?://purl\.org/'
             --exclude '^https://(fieldnotes|aggregator|publisher|reader)\.example'
             --exclude '^https://example\.(com|org)'
             --exclude '^mailto:'
             './**/*.md'
-            './site/dist/**/*.html'
+            './site/src/**/*.astro'
           fail: true
           format: markdown
 

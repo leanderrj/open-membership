@@ -117,11 +117,11 @@ informative:
     date: 2026
   OM-GHOST:
     title: "om-ghost: Open Membership reference implementation for Ghost CMS"
-    target: "https://github.com/open-membership/om-ghost"
+    target: "https://github.com/leanderrj/open-membership/tree/main/reference/om-ghost"
     date: 2026
   OM-WORDPRESS:
     title: "om-wordpress: Open Membership reference implementation for WordPress"
-    target: "https://github.com/open-membership/om-wordpress"
+    target: "https://github.com/leanderrj/open-membership/tree/main/reference/om-wordpress"
     date: 2026
 
 --- abstract
