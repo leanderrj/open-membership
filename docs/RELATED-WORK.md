@@ -27,7 +27,7 @@ Passport (`passport.online`), launched in 2024, is a closed-source SaaS built on
 - Entitlements live in Passport's database; this specification places entitlements in W3C Verifiable Credentials held by the subscriber.
 - Passport requires WordPress; this specification works over any RSS-emitting CMS.
 - Passport has no cross-publisher aggregation; this specification defines an aggregator pattern in §3.
-- Passport uses a stable subscriber identity; this specification's Level 7 supports per-publisher pseudonyms via OM-VC-SD.
+- Passport uses a stable subscriber identity; this specification's Level 7 (pseudonymous mode, OM-VC-SD with BBS+) supports per-publisher pseudonyms.
 - Passport defines no subscriber portability format; this specification provides one in [SPEC-PORTABILITY.md](../spec/SPEC-PORTABILITY.md).
 - A Passport feed is not readable by an arbitrary RSS reader without per-publisher integration.
 

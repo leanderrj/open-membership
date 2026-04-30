@@ -50,7 +50,7 @@ These are conventions, not requirements. A publisher who has manually reconciled
 
 ### 1.4 Reader behavior
 
-A Level 5 reader SHOULD, when rendering an `<om:offer>`:
+A Level 5 (commerce) reader SHOULD, when rendering an `<om:offer>`:
 
 - Display the `amount` and `currency` as before.
 - When `tax_inclusive="true"` is present, append a localized marker equivalent to "(incl. VAT)" or "(incl. tax)" to the price.
@@ -58,7 +58,7 @@ A Level 5 reader SHOULD, when rendering an `<om:offer>`:
 - When `tax_jurisdiction` is present and the reader knows the subscriber's jurisdiction, indicate whether the two match; if they do not, surface a non-blocking advisory (the actual price at checkout may differ).
 - When neither attribute is present, render the price as in 0.4 with no marker. Readers MUST NOT fabricate a default stance.
 
-Readers at Level 4 or below are not required to surface these attributes but MUST NOT reject a feed that contains them.
+Readers at Level 4 (Verifiable Credentials) or below are not required to surface these attributes but MUST NOT reject a feed that contains them.
 
 ### 1.5 XML example
 

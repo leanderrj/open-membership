@@ -101,6 +101,22 @@ const ldjson = {
         <span data-pagefind-meta={`summary:${summary}`} hidden />
         <slot />
       </div>
+
+      <aside class="mt-16 pt-8 border-t border-ink-line text-sm text-ink-soft" aria-label="Conformance levels at a glance">
+        <h2 class="text-xs uppercase tracking-wider text-ink-mute mb-3">Conformance levels at a glance</h2>
+        <p class="m-0 mb-3 text-ink-mute">Eight cumulative conformance levels. An implementation at level <em>N</em> supports everything at levels 1 through <em>N</em>. Most readers and publishers target Level 1, 2, or 5.</p>
+        <dl class="grid sm:grid-cols-2 gap-x-6 gap-y-1 m-0">
+          <div><dt class="inline font-semibold text-ink">Level 1</dt><dd class="inline m-0"> · parsing the namespace and previews</dd></div>
+          <div><dt class="inline font-semibold text-ink">Level 2</dt><dd class="inline m-0"> · URL-token authentication and unlocks</dd></div>
+          <div><dt class="inline font-semibold text-ink">Level 3</dt><dd class="inline m-0"> · OAuth bearer + DPoP, time windows, SCIM groups</dd></div>
+          <div><dt class="inline font-semibold text-ink">Level 4</dt><dd class="inline m-0"> · Verifiable Credential presentation (OM-VC)</dd></div>
+          <div><dt class="inline font-semibold text-ink">Level 5</dt><dd class="inline m-0"> · commerce: PSPs, offers, checkout, entitlements</dd></div>
+          <div><dt class="inline font-semibold text-ink">Level 6</dt><dd class="inline m-0"> · value-for-value, recipient splits, Lightning</dd></div>
+          <div><dt class="inline font-semibold text-ink">Level 7</dt><dd class="inline m-0"> · pseudonymous mode (OM-VC-SD with BBS+)</dd></div>
+          <div><dt class="inline font-semibold text-ink">Level 8</dt><dd class="inline m-0"> · cross-publisher bundle aggregation</dd></div>
+        </dl>
+        <p class="m-0 mt-3 text-ink-mute">Full effort estimates and per-level requirements: <a href="/docs/featureset/" class="text-accent">Featureset and Conformance Levels</a>.</p>
+      </aside>
     </article>
   </main>
 </BaseLayout>

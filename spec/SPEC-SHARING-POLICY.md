@@ -293,8 +293,8 @@ The publisher gets a visible, actionable signal. The reader behaves honestly. A 
 
 ### 11.1 Reader conformance
 
-- A **Level 3** reader (SPEC 0.4 §7) already implements bearer + DPoP auth. Such a reader honors `<om:sharing-policy>` essentially for free: it already generates and presents DPoP proofs; all that's added is the reader-side warning on portability import (§5.1) and the 401/429 response handling (§6).
-- A **Level 2** reader (url-token + in-app checkout, no DPoP) MAY ignore `<om:sharing-policy>`. Absence of DPoP means `detection="dpop-key"` is not applicable to this reader's traffic; under `detection="client-id"` the publisher falls back to whatever client-side signals it can observe.
+- A **Level 3** reader (OAuth bearer + DPoP, SPEC 0.4 §7) already implements bearer + DPoP auth. Such a reader honors `<om:sharing-policy>` essentially for free: it already generates and presents DPoP proofs; all that's added is the reader-side warning on portability import (§5.1) and the 401/429 response handling (§6).
+- A **Level 2** reader (URL-token authentication, no DPoP) MAY ignore `<om:sharing-policy>`. Absence of DPoP means `detection="dpop-key"` is not applicable to this reader's traffic; under `detection="client-id"` the publisher falls back to whatever client-side signals it can observe.
 - A reader claiming to honor this companion MUST honor §4 (key binding) and §5 (migration warnings). It SHOULD honor §6 (surfacing 429 / 401 with device-limit JSON bodies). It MUST NOT claim to "enforce" sharing policy, this is a reader-side honest-behavior contract, not enforcement.
 
 ### 11.2 Publisher conformance

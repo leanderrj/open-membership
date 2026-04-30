@@ -58,7 +58,7 @@ Attributes:
 
 ### 2.2 Reader Behavior
 
-A reader at Level 5 or above MUST display the publisher's revocation policy on the checkout screen if the policy is anything other than `prospective-only`. This is the spec's UX consent layer: surprises about refunds are bad protocol design, not a publisher problem.
+A reader at Level 5 (commerce) or above MUST display the publisher's revocation policy on the checkout screen if the policy is anything other than `prospective-only`. This is the specification's UX consent layer: surprises about refunds are bad protocol design, not a publisher problem.
 
 ### 2.3 Webhook Mapping
 
@@ -137,7 +137,7 @@ If all four pass, the publisher issues its own short-lived bearer token scoped t
 
 A bundle aggregator MUST:
 
-- Operate full Level 5 conformance (offers, checkout, entitlement) as a publisher.
+- Operate full Level 5 (commerce) conformance (offers, checkout, entitlement) as a publisher.
 - Issue OM-VC credentials with valid `audience` arrays.
 - Maintain a Bitstring Status List for issued bundle credentials.
 - Publish, in their `.well-known/open-membership`, a `bundles` array listing every active bundle and its participating publishers.
@@ -253,8 +253,8 @@ Publisher returns the normal Checkout Session URL; on completion, the publisher 
 
 The recipient's reader fetches `redeemable_via` with the redemption token. The publisher validates and either:
 
-- Issues an OM-VC bound to the recipient's subject DID (Level 4 publishers), or
-- Creates an internal subscription record keyed by the recipient's email and the recipient receives a tokenized URL or login link (Level 2/3 publishers).
+- Issues an OM-VC bound to the recipient's subject DID (Level 4 publishers, Verifiable Credential presentation), or
+- Creates an internal subscription record keyed by the recipient's email and the recipient receives a tokenized URL or login link (Level 2 url-token, Level 3 OAuth bearer publishers).
 
 ### 5.4 PSP-Specific Notes
 
@@ -290,10 +290,16 @@ Stripe defaults to `daily`; Mollie has no native proration and `none` is the onl
 
 ## 7. Reader Conformance Levels
 
-Eight cumulative levels. Full level definitions and effort estimates are in `docs/FEATURESET.md`.
+Eight cumulative conformance levels. A reader at Level *N* supports every requirement at Levels 1 through *N*. Effort estimates and per-feature requirements are in `docs/FEATURESET.md`.
 
-- **Level 7 (Privacy)** supports OM-VC-SD 1.0 presentations including pseudonymous mode.
-- **Level 8 (Bundles)** accepts bundle credentials and the aggregator-trust verification flow.
+- **Level 1, parsing.** Recognises the `om:` namespace; renders previews; surfaces signup URLs; ignores unknown elements.
+- **Level 2, URL-token authentication.** Persists per-feed URL tokens; follows `<om:unlock>` endpoints; substitutes unlocked content for previews.
+- **Level 3, OAuth bearer + DPoP.** Bearer flow with RFC 9728 discovery; time-windowed access (`<om:window>`); SCIM-provisioned group subscriptions.
+- **Level 4, Verifiable Credentials.** Presents W3C VC 2.0 credentials (OM-VC 1.0); reads Bitstring Status List for revocation; handles credential-bound bearer tokens.
+- **Level 5, commerce.** Parses `<om:offer>`; runs in-app checkout; polls entitlements; evaluates `<om:feature>` claims; honours proration policy.
+- **Level 6, value-for-value.** Parses `<om:value>`; supports recipient splits and time-based splits; integrates a payment rail (Lightning or fiat micropayments).
+- **Level 7, pseudonymous mode.** Adds OM-VC-SD 1.0 (BBS+ selective disclosure) and per-verifier pseudonym derivation.
+- **Level 8, bundle aggregation.** Accepts bundle credentials, verifies the `<om:bundled-from>` trust chain, matches the `audience` claim.
 
 ### 7.1 Recommended Profiles
 

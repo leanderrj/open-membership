@@ -146,7 +146,7 @@ The deliberate friction post-1.0 is what makes 1.0 mean something.
 
 An implementation claiming conformance to spec version N MUST continue to conform if the spec advances to N+1 or N+2 (same major version) without code changes. Minor version upgrades CAN add new optional features that implementations can choose to support, but cannot mutate existing features.
 
-Example: a Level 5 reader built for 1.0 must still work against a 1.4 feed. It may not understand new Level 6 features added in 1.2, but it must still correctly handle all Level 1-5 features from the original 1.0 spec.
+Example: a Level 5 (commerce) reader built for 1.0 must still work against a 1.4 feed. It may not understand new Level 6 (value-for-value) features added in 1.2, but it must still correctly handle all Level 1-5 features from the original 1.0 spec.
 
 ### Deprecation
 
