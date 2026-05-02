@@ -48,7 +48,7 @@ jobs:
           xml2rfc --text --html draft-om-rss-00.xml
 
       - name: Upload draft artefacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ietf-draft
           path: |
@@ -86,7 +86,7 @@ jobs:
         run: node scripts/render-pdfs.mjs
 
       - name: Upload PDFs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: spec-pdfs
           path: site/dist/_pdf/*.pdf
