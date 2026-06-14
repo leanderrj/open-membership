@@ -26,7 +26,7 @@
     "@hono/zod-validator": "^0.4.1",
     "better-sqlite3": "^11.5.0",
     "hono": "^4.6.12",
-    "jose": "^5.9.6",
+    "jose": "^6.2.3",
     "pino": "^9.5.0",
     "stripe": "^17.3.1",
     "xmlbuilder2": "^3.1.1",
